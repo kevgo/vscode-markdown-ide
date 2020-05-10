@@ -8,5 +8,5 @@ jobs:
       - checkout
       - run: pwd
       - run: ls -la
-      - run: cd vscode && make --no-print-directory setup
-      - run: cd vscode && make --no-print-directory test-ci
+      - run: make setup
+      - run: make test-ci
