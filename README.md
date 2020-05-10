@@ -1,5 +1,7 @@
 # VSCode Markdown IDE
 
+[![CircleCI](https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield)](https://circleci.com/gh/kevgo/vscode-markdown-ide)
+
 This plugin for [VSCode](https://code.visualstudio.com) provides IDE-grade editing and refactoring automation for Markdown files.
 
 **autocompletion**
@@ -15,4 +17,4 @@ This plugin for [VSCode](https://code.visualstudio.com) provides IDE-grade editi
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io).
 
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/tikibase/master/vscode/documentation/autocomplete.gif)
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
