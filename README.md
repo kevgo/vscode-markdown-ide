@@ -15,4 +15,4 @@ This plugin for [VSCode](https://code.visualstudio.com) provides IDE-grade editi
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io).
 
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/tikibase/master/vscode/documentation/autocomplete.gif)
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
