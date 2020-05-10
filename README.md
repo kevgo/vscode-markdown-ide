@@ -1,2 +1,18 @@
-# vscode-markdown-refactor
-A VSCode plugin that allows IDE-grade refactoring of Markdown
+# VSCode Markdown IDE
+
+This plugin for [VSCode](https://code.visualstudio.com) provides IDE-grade editing and refactoring automation for Markdown files.
+
+**autocompletion**
+
+- type `[` to trigger autocompletion for entering links to other Markdown files
+- type `![` to trigger autocompletion for links to local image files
+
+**refactoring**
+
+- updates links when renaming files
+- removes links when deleting files
+
+This extension works best with Markdown files formatted via
+[Prettier](https://prettier.io).
+
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/tikibase/master/vscode/documentation/autocomplete.gif)
