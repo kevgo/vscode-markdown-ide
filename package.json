@@ -1,0 +1,55 @@
+{
+  "name": "vscode-markdown-ide",
+  "displayName": "VSCode Markdown IDE",
+  "version": "0.0.0",
+  "description": "IDE-grade tooling for Markdown: refactoring and autocompletion",
+  "publisher": "kevgo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevgo/vscode-markdown-ide"
+  },
+  "bugs": {
+    "url": "https://github.com/kevgo/vscode-markdown-ide/issues"
+  },
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "documentation/tiki_head_square.jpg",
+  "keywords": [
+    "markdown",
+    "development",
+    "refactoring",
+    "autocompletion"
+  ],
+  "badges": [
+    {
+      "url": "https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield",
+      "href": "https://circleci.com/gh/kevgo/vscode-markdown-ide",
+      "description": "build status"
+    }
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./out/extension.js",
+  "license": "ISC",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "tslint -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/mocha": "7.0.2",
+    "@types/node": "10.17.18",
+    "@types/vscode": "1.43.0",
+    "mocha": "7.1.2",
+    "ts-node": "8.9.0",
+    "tslint": "6.1.2",
+    "typescript": "3.8.3",
+    "vsce": "1.75.0"
+  }
+}
