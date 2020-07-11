@@ -23,8 +23,7 @@ export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
     }
   }
   for (const folderPromise of folderPromises) {
-    const files = await folderPromise
-    result.push(...files)
+    result.push(...(await folderPromise))
   }
   return result
 }
