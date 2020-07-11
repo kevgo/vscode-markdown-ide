@@ -4,7 +4,6 @@ build:  # compiles the extension
 fix:  # auto-corrects all formatting issues
 	@prettier --write .
 
-
 help:   # shows all available Make commands
 	@cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
 
