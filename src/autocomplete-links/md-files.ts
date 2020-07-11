@@ -1,22 +1,23 @@
-import { promises as fs, readdirSync, statSync } from "fs";
+import { promises as fs, readdirSync, statSync } from "fs"
+import * as path from "path"
 
 // getFiles provides
-export async function mdFiles(dir: string, folders = []): Promise<string[]> {
-  const result: string[] = [];
+export async function mdFiles(
+  dir: string,
+  folders: string[] = []
+): Promise<string[]> {
+  const result: string[] = []
   for (const file of await fs.readdir(dir)) {
-    if (file.endsWith(".md")) {
-      result.push(file);
+    const filePath = path.join(dir, file)
+    const fileInfo = await fs.stat(filePath)
+    if (fileInfo.isDirectory()) {
+      folders.push(filePath)
+      result.concat(await mdFiles(filePath, folders))
+    } else {
+      if (file.endsWith(".md")) {
+        result.push(filePath)
+      }
     }
   }
-  return result;
+  return result
 }
-
-getAllSubFolders = (baseFolder, folderList = []) => {
-  let folders: string[] = readdirSync(baseFolder).filter((file) =>
-    statSync(path.join(baseFolder, file)).isDirectory()
-  );
-  folders.forEach((folder) => {
-    folderList.push(path.join(baseFolder, folder));
-    this.getAllSubFolders(path.join(baseFolder, folder), folderList);
-  });
-};
