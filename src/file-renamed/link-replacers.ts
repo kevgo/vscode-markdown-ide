@@ -17,7 +17,7 @@ export class LinkReplacers {
   register(oldName: string, newName: string) {
     this.replacements.push({
       regex: new RegExp(`\\[(.*?)\\]\\(${oldName}\\)`, "g"),
-      text: `[$1](${newName})`
+      text: `[$1](${newName})`,
     })
   }
 

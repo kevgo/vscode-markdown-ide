@@ -3,7 +3,7 @@
 // LinkTypes defines the different link types.
 export enum LinkTypes {
   md,
-  img
+  img,
 }
 
 // analyzeSearch provides the link type and search term

@@ -21,7 +21,10 @@ export async function fileDeletedHandler(e: vscode.FileDeleteEvent) {
     if (newContent === oldContent) {
       continue
     }
-    const range = new vscode.Range(new vscode.Position(0, 0), new vscode.Position(lineCount(oldContent), 0))
+    const range = new vscode.Range(
+      new vscode.Position(0, 0),
+      new vscode.Position(lineCount(oldContent), 0)
+    )
     edit.replace(file, range, newContent)
   }
   vscode.workspace.applyEdit(edit)
