@@ -9,6 +9,7 @@ editing and refactoring automation for Markdown files.
 
 - type `[` to trigger autocompletion for entering links to other Markdown files
 - type `![` to trigger autocompletion for links to local image files
+- files in `.git`, `node_modules`, and `vendor` are ignored
 
 **refactoring**
 
