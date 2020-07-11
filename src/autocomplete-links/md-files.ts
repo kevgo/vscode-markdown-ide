@@ -3,7 +3,7 @@ import * as path from "path"
 
 const IGNORE = [".git", "node_modules", "vendor"]
 
-// getFiles provides
+// mdFiles provides the relative path of all Markdown files in the given root folder
 export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
   const result: string[] = []
   const folderPromises: Array<Promise<string[]>> = []
