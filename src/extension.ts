@@ -5,7 +5,11 @@ import { fileDeletedHandler } from "./file-deleted/file-deleted-handler"
 
 export function activate(context: vscode.ExtensionContext) {
   // autocomplete links by typing `[`
-  const provider = vscode.languages.registerCompletionItemProvider("markdown", markdownLinkCompletionProvider, "[")
+  const provider = vscode.languages.registerCompletionItemProvider(
+    "markdown",
+    markdownLinkCompletionProvider,
+    "["
+  )
   context.subscriptions.push(provider)
 
   // file renamed --> update links
