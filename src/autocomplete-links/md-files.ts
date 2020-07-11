@@ -1,4 +1,4 @@
-import { promises as fs, readdirSync, statSync } from "fs"
+import { promises as fs } from "fs"
 import * as path from "path"
 
 const ignore = [".git", "node_modules", "vendor"]
