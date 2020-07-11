@@ -1,29 +1,25 @@
 import { promises as fs, readdirSync, statSync } from "fs"
 import * as path from "path"
 
-const ignore = [".git", "node_modules"]
+const ignore = [".git", "node_modules", "vendor"]
 
 // getFiles provides
-export async function mdFiles(
-  dir: string,
-  folders: string[] = []
-): Promise<string[]> {
-  const result: string[] = []
-  for (const file of await fs.readdir(dir)) {
-    if (ignore.includes(file)) {
+export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
+  let result: string[] = []
+  for (const file of await fs.readdir(path.join(root, subFolder))) {
+    if (file.startsWith(".") || ignore.includes(file)) {
       continue
     }
-    const filePath = path.join(dir, file)
-    const fileInfo = await fs.stat(filePath)
+    const relFilePath = path.join(subFolder, file)
+    const absFilePath = path.join(root, relFilePath)
+    const fileInfo = await fs.stat(absFilePath)
     if (fileInfo.isDirectory()) {
-      folders.push(filePath)
-      result.concat(await mdFiles(filePath, folders))
+      result = result.concat(await mdFiles(root, relFilePath))
     } else {
       if (file.endsWith(".md")) {
-        result.push(filePath)
+        result.push(relFilePath)
       }
     }
   }
-  console.log(dir, result)
   return result
 }
