@@ -33,3 +33,6 @@ test-ci:  # runs all the tests on ci
 
 unit:  # runs the unit tests
 	@mocha "src/**/*.test.ts"
+
+update:  # updates all dependencies
+	@yarn upgrade --latest
