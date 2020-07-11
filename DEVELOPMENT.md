@@ -3,12 +3,12 @@
 ### setup
 
 - clone the repo
-- run `make setup`
+- run <code textrun="make-target">make setup</code>
 
 ### test
 
-- run tests: `make test`
-- see all dev scripts: `make help`
+- run tests: <code textrun="make-target">make test</code>
+- see all dev scripts: <code textrun="make-target">make help</code>
 
 ### debug
 
@@ -21,16 +21,16 @@ Debug in VSCode:
 
 Local installation:
 
-- `make package`
+- <code textrun="make-target">make package</code>
 - run `code --install-extension tikibase-*.vsix` in terminal
 - restart VSCode
 
 ### update
 
-- `make update`
+- <code textrun="make-target">make update</code>
 
 ### release
 
-- `make publish-patch`
-- `make publish-minor`
-- `make publish-major`
+- <code textrun="make-target">make publish-patch</code>
+- <code textrun="make-target">make publish-minor</code>
+- <code textrun="make-target">make publish-major</code>
