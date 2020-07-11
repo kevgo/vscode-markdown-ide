@@ -6,6 +6,7 @@ const ignore = [".git", "node_modules", "vendor"]
 // getFiles provides
 export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
   const result: string[] = []
+  const folderPromises: Array<Promise<string[]>> = []
   for (const file of await fs.readdir(path.join(root, subFolder))) {
     if (file.startsWith(".") || ignore.includes(file)) {
       continue
@@ -14,13 +15,16 @@ export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
     const absFilePath = path.join(root, relFilePath)
     const fileInfo = await fs.stat(absFilePath)
     if (fileInfo.isDirectory()) {
-      const files = await mdFiles(root, relFilePath)
-      result.push(...files)
+      folderPromises.push(mdFiles(root, relFilePath))
     } else {
       if (file.endsWith(".md")) {
         result.push(relFilePath)
       }
     }
+  }
+  for (const folderPromise of folderPromises) {
+    const files = await folderPromise
+    result.push(...files)
   }
   return result
 }
