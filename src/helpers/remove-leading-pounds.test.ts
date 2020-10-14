@@ -10,6 +10,6 @@ test("removeLeadingPounds", function () {
     "###Foo": "Foo",
   }
   for (const [give, want] of Object.entries(tests)) {
-    assert.equal(want, removeLeadingPounds(give))
+    assert.equal(removeLeadingPounds(give), want)
   }
 })
