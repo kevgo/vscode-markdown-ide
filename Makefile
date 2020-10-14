@@ -16,7 +16,7 @@ help:   # shows all available Make commands
 
 lint:  # runs all linters
 	${CURDIR}/node_modules/.bin/eslint . --ext .ts
-	# prettier --list .
+	${CURDIR}/node_modules/.bin/prettier -l .
 
 package:  # package the extension for local installation
 	vsce package
