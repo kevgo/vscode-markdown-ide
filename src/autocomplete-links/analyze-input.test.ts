@@ -2,28 +2,34 @@ import { strict as assert } from "assert"
 
 import { analyzeInput, LinkType } from "./analyze-input"
 
-test("analyzeInput", function () {
-  const tests = [
-    {
-      give: ["Check out [the and here is another [one](one.md)", 14],
-      want: ["the", LinkType.MD],
-    },
-    {
-      give: ["[", 1],
-      want: ["", LinkType.MD],
-    },
-    {
-      give: ["Check out ![the and here is another [one](one.md)", 15],
-      want: ["the", LinkType.IMG],
-    },
-    {
-      give: ["![", 2],
-      want: ["", LinkType.IMG],
-    },
-  ]
-  for (const test of tests) {
-    // @ts-ignore TypeScript is too dumb to understand that the types are correct here
-    const have = analyzeInput(test.give[0], test.give[1])
-    assert.deepEqual(have, test.want)
-  }
+suite("analyzeInput", function () {
+  test("typing a Markdown link in the middle of a sentence", function () {
+    const have = analyzeInput(
+      "Check out [the and here is another [one](one.md)",
+      14
+    )
+    const want = ["the", LinkType.MD]
+    assert.deepEqual(have, want)
+  })
+
+  test("starting a Markdown link", function () {
+    const have = analyzeInput("[", 1)
+    const want = ["", LinkType.MD]
+    assert.deepEqual(have, want)
+  })
+
+  test("typing an image link in the middle of a sentence", function () {
+    const have = analyzeInput(
+      "Check out ![the and here is another [one](one.md)",
+      15
+    )
+    const want = ["the", LinkType.IMG]
+    assert.deepEqual(have, want)
+  })
+
+  test("starting an image link", function () {
+    const have = analyzeInput("![", 2)
+    const want = ["", LinkType.IMG]
+    assert.deepEqual(have, want)
+  })
 })
