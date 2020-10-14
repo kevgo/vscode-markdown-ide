@@ -1,17 +1,23 @@
 build:  # compiles the extension
-	@yarn compile
+	node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
-	@rm -rf dist
+	rm -rf out
+
+doc:  # runs the documentation tests
+	node_modules/.bin/text-run --format=dot
 
 fix:  # auto-corrects all formatting issues
-	@prettier --write .
+	prettier --write .
 
 help:   # shows all available Make commands
-	@cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
+	cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
+
+lint:  # runs all linters
+	tslint -p .
 
 package:  # package the extension for local installation
-	@vsce package
+	vsce package
 
 publish-patch:  # publishes a new patch version
 	vsce publish patch
@@ -23,20 +29,22 @@ publish-major:  # publishes a new major version
 	vsce publish major
 
 setup:  # prepare this code base for development
-	@yarn install
-	@yarn compile
+	yarn install
+	make build
 
 test:  # runs all the tests
-	@mocha "src/**/*.test.ts" &
-	@text-run --offline --format=dot &
-	@yarn compile
+	make unit &
+	make doc &
+	make build
 
 test-ci:  # runs all the tests on ci
-	@yarn compile
-	@node_modules/.bin/mocha "src/**/*.test.ts"
+	make build
+	make unit
 
 unit:  # runs the unit tests
-	@mocha "src/**/*.test.ts"
+	node_modules/.bin/mocha "src/**/*.test.ts"
 
 update:  # updates all dependencies
-	@yarn upgrade --latest
+	yarn upgrade --latest
+
+.SILENT:
