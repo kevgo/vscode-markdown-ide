@@ -2,12 +2,14 @@ import { strict as assert } from "assert"
 
 import { lineCount } from "./line-count"
 
-test("lineCount", function () {
+suite("lineCount", function () {
   const tests = {
     one: 1,
     "one\ntwo\nthree\n": 4,
   }
   for (const [give, want] of Object.entries(tests)) {
-    assert.equal(lineCount(give), want)
+    test(`${give.replace(/\n/g, "\\n")} --> ${want}`, function () {
+      assert.equal(lineCount(give), want)
+    })
   }
 })
