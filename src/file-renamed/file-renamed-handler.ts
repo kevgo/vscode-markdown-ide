@@ -1,11 +1,12 @@
-import * as vscode from "vscode"
-import { LinkReplacers } from "./link-replacers"
 import { promises as fs } from "fs"
-import { lineCount } from "../helpers/line-count"
+import * as vscode from "vscode"
 
-export async function fileRenamedHandler(e: vscode.FileRenameEvent) {
+import { lineCount } from "../helpers/line-count"
+import { LinkReplacers } from "./link-replacers"
+
+export async function fileRenamedHandler(e: vscode.FileRenameEvent): void {
   // make sure the filesystem contains the up-to-date contents
-  vscode.workspace.saveAll(false)
+  await vscode.workspace.saveAll(false)
 
   // prepare
   const replacers = new LinkReplacers()
@@ -29,5 +30,5 @@ export async function fileRenamedHandler(e: vscode.FileRenameEvent) {
     )
     edit.replace(file, range, newContent)
   }
-  vscode.workspace.applyEdit(edit)
+  await vscode.workspace.applyEdit(edit)
 }

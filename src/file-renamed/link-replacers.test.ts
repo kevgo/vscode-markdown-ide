@@ -1,5 +1,6 @@
-import { LinkReplacers } from "./link-replacers"
 import { strict as assert } from "assert"
+
+import { LinkReplacers } from "./link-replacers"
 
 test("LinkReplacers", function () {
   const replacers = new LinkReplacers()

@@ -1,4 +1,5 @@
 import { strict as assert } from "assert"
+
 import { lineCount } from "./line-count"
 
 test("lineCount", function () {

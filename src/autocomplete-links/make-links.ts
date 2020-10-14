@@ -1,7 +1,8 @@
 import { promises as fs } from "fs"
 import { posix as path } from "path"
-import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
+
 import { firstLine } from "../helpers/first-line"
+import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
 
 export async function makeMdLinks(
   dir: string,
@@ -19,17 +20,16 @@ export async function makeMdLinks(
   return result
 }
 
-export async function makeImgLinks(
+export function makeImgLinks(
   dir: string,
   filenames: string[],
   searchTerm: string
-): Promise<string[]> {
+): string[] {
   const result: string[] = []
   for (const filename of filenames) {
     if (!filename.startsWith(searchTerm)) {
       continue
     }
-    const content = await fs.readFile(path.join(dir, filename), "utf8")
     result.push(makeImgLink(filename))
   }
   return result

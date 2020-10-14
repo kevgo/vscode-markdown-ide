@@ -1,4 +1,5 @@
 import { strict as assert } from "assert"
+
 import { firstLine } from "./first-line"
 
 test("firstLine", function () {

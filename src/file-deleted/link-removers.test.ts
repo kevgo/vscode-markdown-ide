@@ -1,5 +1,6 @@
-import { LinkRemovers } from "./link-removers"
 import { strict as assert } from "assert"
+
+import { LinkRemovers } from "./link-removers"
 
 test("LinkRemovers", function () {
   const replacers = new LinkRemovers()

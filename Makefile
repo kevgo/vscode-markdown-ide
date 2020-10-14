@@ -8,13 +8,15 @@ doc:  # runs the documentation tests
 	node_modules/.bin/text-run --format=dot
 
 fix:  # auto-corrects all formatting issues
+	${CURDIR}/node_modules/.bin/eslint . --fix --ext .ts --ignore-path .eslintignore
 	prettier --write .
 
 help:   # shows all available Make commands
 	cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
 
 lint:  # runs all linters
-	tslint -p .
+	${CURDIR}/node_modules/.bin/eslint . --ext .ts
+	# prettier --list .
 
 package:  # package the extension for local installation
 	vsce package

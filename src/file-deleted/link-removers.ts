@@ -14,7 +14,7 @@ export class LinkRemovers {
   }
 
   // registers a new replacement from old to new
-  register(fileName: string) {
+  register(fileName: string): void {
     this.replacements.push({
       regex: new RegExp(`\\[(.*?)\\]\\(${fileName}\\)`, "g"),
       text: `$1`,
