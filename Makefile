@@ -28,7 +28,7 @@ setup:  # prepare this code base for development
 
 test:  # runs all the tests
 	@mocha "src/**/*.test.ts" &
-	@text-run --offline --format dot &
+	@text-run --offline --format=dot &
 	@yarn compile
 
 test-ci:  # runs all the tests on ci
