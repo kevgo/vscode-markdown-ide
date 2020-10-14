@@ -4,10 +4,12 @@ import { makeImgLink, makeMdLink } from "./make-links"
 
 suite("makeMdLink", function () {
   const have = makeMdLink("foo.md", "# Foo\nthe foo is strong today")
-  assert.equal("[Foo](foo.md)", have)
+  const want = "[Foo](foo.md)"
+  assert.equal(have, want)
 })
 
 test("makeImgLink", function () {
   const have = makeImgLink("foo.png")
-  assert.equal("[](foo.png)", have)
+  const want = "[](foo.png)"
+  assert.equal(have, want)
 })
