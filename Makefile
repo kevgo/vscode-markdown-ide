@@ -1,6 +1,9 @@
 build:  # compiles the extension
 	@yarn compile
 
+clean:  # removes all build artifacts
+	@rm -rf dist
+
 fix:  # auto-corrects all formatting issues
 	@prettier --write .
 
