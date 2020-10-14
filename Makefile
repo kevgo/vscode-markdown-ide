@@ -1,14 +1,17 @@
 build:  # compiles the extension
-	@yarn compile
+	@tsc -p .
 
 clean:  # removes all build artifacts
-	@rm -rf dist
+	@rm -rf out
 
 fix:  # auto-corrects all formatting issues
 	@prettier --write .
 
 help:   # shows all available Make commands
 	@cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
+
+lint:  # runs all linters
+	@tslint -p .
 
 package:  # package the extension for local installation
 	@vsce package
