@@ -1,24 +1,24 @@
 import { strict as assert } from "assert"
 
-import { analyzeInput, LinkTypes } from "./analyze-input"
+import { analyzeInput, LinkType } from "./analyze-input"
 
 test("analyzeInput", function () {
   const tests = [
     {
       give: ["Check out [the and here is another [one](one.md)", 14],
-      want: ["the", LinkTypes.md],
+      want: ["the", LinkType.MD],
     },
     {
       give: ["[", 1],
-      want: ["", LinkTypes.md],
+      want: ["", LinkType.MD],
     },
     {
       give: ["Check out ![the and here is another [one](one.md)", 15],
-      want: ["the", LinkTypes.img],
+      want: ["the", LinkType.IMG],
     },
     {
       give: ["![", 2],
-      want: ["", LinkTypes.img],
+      want: ["", LinkType.IMG],
     },
   ]
   for (const test of tests) {
