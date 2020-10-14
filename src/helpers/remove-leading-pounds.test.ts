@@ -2,7 +2,7 @@ import { strict as assert } from "assert"
 
 import { removeLeadingPounds } from "./remove-leading-pounds"
 
-test("removeLeadingPounds", function () {
+suite("removeLeadingPounds", function () {
   const tests = {
     Foo: "Foo",
     "# Foo": "Foo",
@@ -10,6 +10,8 @@ test("removeLeadingPounds", function () {
     "###Foo": "Foo",
   }
   for (const [give, want] of Object.entries(tests)) {
-    assert.equal(removeLeadingPounds(give), want)
+    test(`${give} --> ${want}`, function () {
+      assert.equal(removeLeadingPounds(give), want)
+    })
   }
 })
