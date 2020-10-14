@@ -5,7 +5,7 @@ import { imgFiles } from "./img-files"
 import { makeImgLinks, makeMdLinks } from "./make-links"
 import { mdFiles } from "./md-files"
 
-// Completion provider for MarkdownLinks
+/** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
   async provideCompletionItems(
     document: vscode.TextDocument,

@@ -1,11 +1,13 @@
-// Replacement describes a replacement of a regex with given text.
+/** describes a replacement of a regex with given text */
 interface Replacement {
   regex: RegExp
   text: string
 }
 
-// LinkReplacers replaces occurrences of the given filenames inside Markdown links to the given new filenames.
-// Call `register` to define the replacements, then `process` to replace them in a file content.
+/**
+ * replaces occurrences of the given filenames inside Markdown links to the given new filenames.
+ * Call `register` to define the replacements, then `process` to replace them in a file content.
+ */
 export class LinkRemovers {
   private replacements: Replacement[]
 
