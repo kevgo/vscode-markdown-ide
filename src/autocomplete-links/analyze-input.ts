@@ -1,13 +1,14 @@
-// findSearchTerm provides the search item and link type,
-
-// LinkTypes defines the different link types.
+// TODO: make string union
+/** the different link types */
 export enum LinkTypes {
   md,
   img,
 }
 
-// analyzeSearch provides the link type and search term
-// that the user is currently entering into the given line at the given position.
+/**
+ * provides the link type and search term that the user is currently entering
+ * into the given line at the given position.
+ */
 export function analyzeInput(line: string, pos: number): [string, LinkTypes] {
   let linkText = ""
   for (let i = pos - 1; i > 0; i--) {

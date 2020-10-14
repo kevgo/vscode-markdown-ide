@@ -11,7 +11,7 @@ module.exports = async function (activity) {
   }
 }
 
-// existingMakeTasks provides all tasks in the Makefile in the current folder.
+/** provides all tasks in the Makefile in the current folder */
 async function existingMakeTasks(activity) {
   const makefilePath = path.join(activity.configuration.sourceDir, "Makefile")
   const makefileContent = await fs.readFile(makefilePath, "utf8")
@@ -24,15 +24,13 @@ async function existingMakeTasks(activity) {
   return results
 }
 
-// returns whether the given line from a Makefile
-// defines a Make command
+/** indicates whether the given line from a Makefile defines a Make command */
 function lineDefinesMakeCommand(line) {
   return makeCommandRE.test(line) && !line.startsWith(".PHONY")
 }
 const makeCommandRE = /^[^ ]+:/
 
-// returns the defined command name
-// from a Makefile line that defines a Make command
+/** returns the defined command name from a Makefile line that defines a Make command */
 function extractMakeCommand(line) {
   return line.split(":")[0]
 }
