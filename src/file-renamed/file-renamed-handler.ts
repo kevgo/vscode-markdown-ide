@@ -4,7 +4,9 @@ import * as vscode from "vscode"
 import { lineCount } from "../helpers/line-count"
 import { LinkReplacers } from "./link-replacers"
 
-export async function fileRenamedHandler(e: vscode.FileRenameEvent): void {
+export async function fileRenamedHandler(
+  e: vscode.FileRenameEvent
+): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
   await vscode.workspace.saveAll(false)
 
