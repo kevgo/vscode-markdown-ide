@@ -1,5 +1,5 @@
 build:  # compiles the extension
-	tsc -p .
+	node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
 	rm -rf out
