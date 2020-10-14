@@ -1,4 +1,4 @@
-/** describes a replacement of a regex with given text */
+/** a replacement of a regex with text */
 interface Replacement {
   regex: RegExp
   text: string

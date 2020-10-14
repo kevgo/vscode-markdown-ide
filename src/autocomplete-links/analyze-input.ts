@@ -1,9 +1,5 @@
-// TODO: make string union
 /** the different link types */
-export enum LinkTypes {
-  md,
-  img,
-}
+export type LinkTypes = "md" | "img"
 
 /**
  * provides the link type and search term that the user is currently entering
@@ -18,10 +14,10 @@ export function analyzeInput(line: string, pos: number): [string, LinkTypes] {
     }
     const modifier = i === 0 ? "" : line[i - 1]
     if (modifier === "!") {
-      return [linkText, LinkTypes.img]
+      return [linkText, "img"]
     } else {
-      return [linkText, LinkTypes.md]
+      return [linkText, "md"]
     }
   }
-  return [linkText, LinkTypes.md]
+  return [linkText, "md"]
 }
