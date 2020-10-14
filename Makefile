@@ -1,11 +1,11 @@
 build:  # compiles the extension
-	node_modules/.bin/tsc -p .
+	${CURDIR}/node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
 	rm -rf out
 
 doc:  # runs the documentation tests
-	node_modules/.bin/text-run --format=dot
+	${CURDIR}/node_modules/.bin/text-run --format=dot
 
 fix:  # auto-corrects all formatting issues
 	${CURDIR}/node_modules/.bin/eslint . --fix --ext .ts --ignore-path .eslintignore
@@ -44,7 +44,7 @@ test-ci:  # runs all the tests on ci
 	make unit
 
 unit:  # runs the unit tests
-	node_modules/.bin/mocha "src/**/*.test.ts"
+	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
 
 update:  # updates all dependencies
 	yarn upgrade --latest
