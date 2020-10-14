@@ -8,6 +8,6 @@ test("lineCount", function () {
     "one\ntwo\nthree\n": 4,
   }
   for (const [give, want] of Object.entries(tests)) {
-    assert.equal(want, lineCount(give))
+    assert.equal(lineCount(give), want)
   }
 })
