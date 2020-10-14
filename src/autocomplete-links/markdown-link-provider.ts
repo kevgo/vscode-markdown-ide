@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-import { analyzeInput, LinkTypes } from "./analyze-input"
+import { analyzeInput, LinkType } from "./analyze-input"
 import { imgFiles } from "./img-files"
 import { makeImgLinks, makeMdLinks } from "./make-links"
 import { mdFiles } from "./md-files"
@@ -20,7 +20,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     )
     let links: string[]
     let files: string[]
-    if (linkType === LinkTypes.md) {
+    if (linkType === LinkType.MD) {
       files = await mdFiles(vscode.workspace.rootPath)
       links = await makeMdLinks(vscode.workspace.rootPath, files, searchTerm)
     } else {
