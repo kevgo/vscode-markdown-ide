@@ -1,4 +1,5 @@
 import { strict as assert } from "assert"
+
 import { removeLeadingPounds } from "./remove-leading-pounds"
 
 test("removeLeadingPounds", function () {

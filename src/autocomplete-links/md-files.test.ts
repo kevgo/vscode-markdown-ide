@@ -1,5 +1,6 @@
-import { mdFiles } from "./md-files"
 import { strict as assert } from "assert"
+
+import { mdFiles } from "./md-files"
 
 test("mdFiles", async function () {
   const have = await mdFiles(".")

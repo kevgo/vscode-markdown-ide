@@ -1,11 +1,14 @@
-import * as vscode from "vscode"
 import { promises as fs } from "fs"
+import * as vscode from "vscode"
+
 import { lineCount } from "../helpers/line-count"
 import { LinkRemovers } from "./link-removers"
 
-export async function fileDeletedHandler(e: vscode.FileDeleteEvent) {
+export async function fileDeletedHandler(
+  e: vscode.FileDeleteEvent
+): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
-  vscode.workspace.saveAll(false)
+  await vscode.workspace.saveAll(false)
 
   // prepare
   const removers = new LinkRemovers()
@@ -27,5 +30,5 @@ export async function fileDeletedHandler(e: vscode.FileDeleteEvent) {
     )
     edit.replace(file, range, newContent)
   }
-  vscode.workspace.applyEdit(edit)
+  await vscode.workspace.applyEdit(edit)
 }

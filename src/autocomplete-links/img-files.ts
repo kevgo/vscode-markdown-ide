@@ -1,4 +1,5 @@
 import { promises as fs } from "fs"
+
 import { isImageFile } from "../helpers/is-image-file"
 
 // imgFiles provides the filenames of all images in the given directory.

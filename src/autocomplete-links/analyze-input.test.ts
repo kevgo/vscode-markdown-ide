@@ -1,4 +1,5 @@
 import { strict as assert } from "assert"
+
 import { analyzeInput, LinkTypes } from "./analyze-input"
 
 test("analyzeInput", function () {
@@ -22,7 +23,7 @@ test("analyzeInput", function () {
   ]
   for (const test of tests) {
     // @ts-ignore TypeScript is too dumb to understand that the types are correct here
-    let have = analyzeInput(test.give[0], test.give[1])
+    const have = analyzeInput(test.give[0], test.give[1])
     assert.deepEqual(have, test.want)
   }
 })

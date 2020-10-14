@@ -1,8 +1,9 @@
 import * as vscode from "vscode"
+
 import { analyzeInput, LinkTypes } from "./analyze-input"
-import { mdFiles } from "./md-files"
-import { makeMdLinks, makeImgLinks } from "./make-links"
 import { imgFiles } from "./img-files"
+import { makeImgLinks, makeMdLinks } from "./make-links"
+import { mdFiles } from "./md-files"
 
 // Completion provider for MarkdownLinks
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
@@ -24,7 +25,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       links = await makeMdLinks(vscode.workspace.rootPath, files, searchTerm)
     } else {
       files = await imgFiles(vscode.workspace.rootPath)
-      links = await makeImgLinks(vscode.workspace.rootPath, files, searchTerm)
+      links = makeImgLinks(vscode.workspace.rootPath, files, searchTerm)
     }
     const result: vscode.CompletionItem[] = []
     for (const link of links) {
