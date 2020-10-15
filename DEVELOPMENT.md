@@ -20,6 +20,7 @@ Debug in VSCode:
 - open Debug view: VSCode menu: `View` > `Run`
 - choose `Run Extension`
 - click on the `play` icon
+- open folder > choose a different folder than the current one
 
 Local installation:
 
