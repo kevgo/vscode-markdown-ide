@@ -3,6 +3,8 @@
 ### setup
 
 - clone the repo
+- install [Node.js](https://nodejs.org) and [yarn](https://classic.yarnpkg.com)
+  (`npm i -g yarn`)
 - run <code type="make/command">make setup</code>
 
 ### test
