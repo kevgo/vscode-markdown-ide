@@ -2211,10 +2211,10 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-text-runner-core@5.0.0-pre9:
-  version "5.0.0-pre9"
-  resolved "https://registry.yarnpkg.com/text-runner-core/-/text-runner-core-5.0.0-pre9.tgz#174486846c07ef0f61d30140cbe02627986707df"
-  integrity sha512-XBX2/G4m4qZrvOZCoNHyv8krVIGSDX5SvfJfs18SDjRCtzmiwBEJj91+mUBi4dG+O21fc/OIkvM3mBdrvDKtSQ==
+text-runner-core@5.0.0-pre10:
+  version "5.0.0-pre10"
+  resolved "https://registry.yarnpkg.com/text-runner-core/-/text-runner-core-5.0.0-pre10.tgz#a677b71b440e16afd997bb2cf51b2b73bb79e77b"
+  integrity sha512-KPsUmtcYw1Dcrbkp8NWKkhjJJQRVZHCl73+NdeS/eI+A41Tsmw2RvKf8wswOCNWN/eClFkpRMbNDmFNALzm7rw==
   dependencies:
     "@sindresorhus/slugify" "1.1.0"
     anchor-markdown-header "0.5.7"
@@ -2230,10 +2230,10 @@ text-runner-core@5.0.0-pre9:
     rechoir "0.7.0"
     tmp-promise "3.0.2"
 
-text-runner@5.0.0-pre9:
-  version "5.0.0-pre9"
-  resolved "https://registry.yarnpkg.com/text-runner/-/text-runner-5.0.0-pre9.tgz#1b9b6b8c98067aee522b48d8ed16addb5a980e31"
-  integrity sha512-soNWwdWaMEXQ2I6hKhm8pq2hNl963PAoW9uyK2JwFq+2YfOT0Ns43cj5WATiTTWXzbrAsIdEXLhYOetwL3kAEw==
+text-runner@5.0.0-pre10:
+  version "5.0.0-pre10"
+  resolved "https://registry.yarnpkg.com/text-runner/-/text-runner-5.0.0-pre10.tgz#325ab43597b0c70c3f8a6e9414b6866f5da191f8"
+  integrity sha512-0Wcgjd+ildXROgI4KO0DvT66dhwTQJeqDGwZnDMS7vmCtvQsTQcHf6VAo95gFY6RosGcrjDghVMxdYSstxET9w==
   dependencies:
     "@babel/code-frame" "7.10.4"
     cli-cursor "3.1.0"
@@ -2241,7 +2241,7 @@ text-runner@5.0.0-pre9:
     colorette "1.2.1"
     end-child-processes "1.0.1"
     minimist "1.2.5"
-    text-runner-core "5.0.0-pre9"
+    text-runner-core "5.0.0-pre10"
     yamljs "0.3.0"
 
 text-table@^0.2.0:
@@ -2249,12 +2249,12 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-textrun-make@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/textrun-make/-/textrun-make-0.0.9.tgz#d2b5beefb7aa41e3f9061fafc877a0bfc9b328c1"
-  integrity sha512-uGV2JXE+S9HZwvPWRutMN0/4y929OnquhVJMYDi22/K+Q864aXtgfFXuDkfTiv6Gf9DVJomyrqb1FlIStbynVg==
+textrun-make@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/textrun-make/-/textrun-make-0.0.10.tgz#d96c7da38dc4254011f0382751ea81ce55c5c351"
+  integrity sha512-cJp5J/2UQJOQefWfORvt5VTptjhMLfGy4Ae/jHlhkQNqS5hpQ/oTvMV0Tpr5+7+9wOv8/3e7+FmYhtts2DI+uQ==
   dependencies:
-    text-runner-core "5.0.0-pre9"
+    text-runner-core "5.0.0-pre10"
 
 through@2, through@~2.3, through@~2.3.1:
   version "2.3.8"
