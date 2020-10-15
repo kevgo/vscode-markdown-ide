@@ -6,16 +6,19 @@ import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
 
 export async function makeMdLinks(
   dir: string,
-  filenames: string[],
+  document: string,
+  allFiles: string[],
   searchTerm: string
 ): Promise<string[]> {
   const result: string[] = []
-  for (const filename of filenames) {
+  for (const filename of allFiles) {
     if (!filename.startsWith(searchTerm)) {
       continue
     }
-    const content = await fs.readFile(path.join(dir, filename), "utf8")
-    result.push(makeMdLink(filename, content))
+    const filePath = path.join(dir, filename)
+    const content = await fs.readFile(filePath, "utf8")
+    const relativeFile = path.relative(path.dirname(document), filePath)
+    result.push(makeMdLink(relativeFile, content))
   }
   return result
 }
