@@ -11,14 +11,15 @@ export async function makeMdLinks(
   searchTerm: string
 ): Promise<string[]> {
   const result: string[] = []
-  for (const filename of allFiles) {
-    if (!filename.startsWith(searchTerm)) {
-      continue
-    }
-    const filePath = path.join(dir, filename)
-    const content = await fs.readFile(filePath, "utf8")
-    const relativeFile = path.relative(path.dirname(document), filePath)
-    result.push(makeMdLink(relativeFile, content))
+  const filePaths = allFiles
+    .filter((filename) => filename.startsWith(searchTerm))
+    .map((filename) => path.join(dir, filename))
+  const fileContents = await Promise.all(
+    filePaths.map((filePath) => fs.readFile(filePath, "utf-8"))
+  )
+  for (let i = 0; i < filePaths.length; i++) {
+    const relativeFile = path.relative(path.dirname(document), filePaths[i])
+    result.push(makeMdLink(relativeFile, fileContents[i]))
   }
   return result
 }
