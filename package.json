@@ -37,7 +37,9 @@
   "main": "./out/extension.js",
   "license": "ISC",
   "scripts": {
-    "vscode:prepublish": "make build"
+    "vscode:prepublish": "make build",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
     "@types/mocha": "8.0.3",
