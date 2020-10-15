@@ -22,13 +22,13 @@ package:  # package the extension for local installation
 	vsce package
 
 publish-patch:  # publishes a new patch version
-	vsce publish patch
+	vsce publish patch --no-yarn
 
 publish-minor:  # publishes a new minor version
-	vsce publish minor
+	vsce publish minor --no-yarn
 
 publish-major:  # publishes a new major version
-	vsce publish major
+	vsce publish major --no-yarn
 
 setup:  # prepare this code base for development
 	yarn install
