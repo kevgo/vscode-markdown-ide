@@ -12,7 +12,7 @@ export async function makeMdLinks(
 ): Promise<string[]> {
   const result: string[] = []
   const filePaths = allFiles
-    .filter((filename) => filename.startsWith(searchTerm))
+    .filter((filename) => path.basename(filename).startsWith(searchTerm))
     .map((filename) => path.join(dir, filename))
   const fileContents = await Promise.all(
     filePaths.map((filePath) => fs.readFile(filePath, "utf-8"))
