@@ -25,8 +25,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       links = await makeMdLinks(
         vscode.workspace.rootPath,
         document.fileName,
-        files,
-        searchTerm
+        files
       )
     } else {
       files = await imgFiles(vscode.workspace.rootPath)
