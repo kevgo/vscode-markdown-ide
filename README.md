@@ -2,16 +2,16 @@
 
 [![CircleCI](https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield)](https://circleci.com/gh/kevgo/vscode-markdown-ide)
 
-This plugin for [VSCode](https://code.visualstudio.com) provides IDE-grade
-editing and refactoring automation for Markdown files.
+This plugin for [VSCode](https://code.visualstudio.com) and [compatible editors](https://open-vsx.org) provides IDE-grade
+editing and refactoring support for Markdown files.
 
-**autocompletion**
+#### autocompletion
 
 - type `[` to trigger autocompletion for entering links to other Markdown files
 - type `![` to trigger autocompletion for links to local image files
 - ignores files in `.git`, `node_modules`, and `vendor`
 
-**refactoring**
+#### refactoring
 
 - updates links when renaming files
 - removes links when deleting files
