@@ -1,7 +1,7 @@
 /** describes a replacement of a regex with given text */
 interface Replacement {
-  regex: RegExp
-  text: string
+  readonly regex: RegExp
+  readonly text: string
 }
 
 /**
@@ -9,7 +9,7 @@ interface Replacement {
  * Call `register` to define the replacements, then `process` to replace them in a file content.
  */
 export class LinkRemovers {
-  private replacements: Replacement[]
+  private readonly replacements: Replacement[]
 
   constructor() {
     this.replacements = []
