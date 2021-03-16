@@ -1,0 +1,16 @@
+{
+  "actions": [
+    {
+      "trigger": { "command": "testAll" },
+      "run": "make test"
+    },
+
+    {
+      "trigger": {
+        "command": "testFile",
+        "file": "\\.ts$"
+      },
+      "run": "mocha {{file}}"
+    }
+  ]
+}
