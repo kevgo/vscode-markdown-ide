@@ -2,8 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield)](https://circleci.com/gh/kevgo/vscode-markdown-ide)
 
-This plugin for [VSCode](https://code.visualstudio.com) and [compatible editors](https://open-vsx.org) provides IDE-grade
-editing and refactoring support for Markdown files.
+This plugin for [VSCode](https://code.visualstudio.com) and
+[compatible editors](https://open-vsx.org) provides IDE-grade editing and
+refactoring support for Markdown files.
 
 #### autocompletion
 

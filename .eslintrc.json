@@ -19,7 +19,8 @@
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
-    "simple-import-sort/sort": "error"
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
   "parserOptions": {
     "project": "./tsconfig.json"
