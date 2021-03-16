@@ -3,6 +3,7 @@ import { posix as path } from "path"
 
 import { firstLine } from "../helpers/first-line"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
+import { removeLink } from "../helpers/remove-link"
 
 export async function makeMdLinks(
   dir: string,
@@ -39,7 +40,8 @@ export function makeImgLinks(
 }
 
 export function makeMdLink(fileName: string, fileContent: string): string {
-  return `[${removeLeadingPounds(firstLine(fileContent))}](${fileName})`
+  const title = removeLink(removeLeadingPounds(firstLine(fileContent)))
+  return `[${title}](${fileName})`
 }
 
 export function makeImgLink(fileName: string): string {

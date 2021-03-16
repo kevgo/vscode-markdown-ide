@@ -8,6 +8,11 @@ suite("makeMdLink", function () {
     const want = "[Foo](foo.md)"
     assert.equal(have, want)
   })
+  test("File with link in heading", function () {
+    const have = makeMdLink("foo.md", "# A [Foo](foo.md) walks into a bar")
+    const want = "[A Foo walks into a bar](foo.md)"
+    assert.equal(have, want)
+  })
 })
 
 suite("makeImgLink", function () {
