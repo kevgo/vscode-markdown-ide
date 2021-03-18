@@ -48,22 +48,19 @@ export function makeMdLink(
 ): string {
   const titleLine = firstLine(fileContent)
   let title = ""
-  if (titleRE) {
+  if (titleRE != null) {
     const match = titleRE.exec(titleLine)
     if (match == null) {
-      throw new Error(
-        `autocompleteTitleRegex (${titleRE}) did not match line "${titleLine}"`
-      )
-    }
-    if (match.length < 2) {
+      title = removeLeadingPounds(titleLine)
+    } else if (match.length < 2) {
       throw new Error(`no capture in autocompleteTitleRegex (${titleRE})`)
-    }
-    if (match.length > 2) {
+    } else if (match.length > 2) {
       throw new Error(
         `too many captures in autocompleteTitleRegex (${titleRE}): ${match}`
       )
+    } else {
+      title = match[1]
     }
-    title = match[1]
   } else {
     title = removeLeadingPounds(titleLine)
   }
