@@ -31,7 +31,7 @@ To configure this extension:
 - click on `Extensions`
 - click on <code type="configExtName">Markdown IDE</code>
 
-There you can change these configuration settings:
+Available configuration settings:
 
 <ul type="configurationOptions">
   <li>
