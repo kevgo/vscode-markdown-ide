@@ -16,18 +16,18 @@ async function actualOptions(): Promise<string[]> {
   const result = []
   const props = config.contributes.configuration.properties
   for (const key of Object.keys(props)) {
-    result.push(`${key.substr(12)}: ${props[key].description}`)
+    result.push(`${key.substr(12)}:`)
   }
   return result
 }
 
 function documentedOptions(nodes: tr.ast.NodeList) {
   const result = []
-  for (const node of nodes.nodesOfTypes("tr_open")) {
-    const row = nodes.nodesFor(node)
-    const command = row.nodesFor(row.nodeOfTypes("th")).text()
-    const desc = row.nodesFor(row.nodeOfTypes("td")).text()
-    result.push(`${command}: ${desc}`)
+  const ul = nodes.nodesFor(nodes.nodeOfTypes("bullet_list_open"))
+  const lis = ul.nodesOfTypes("list_item_open")
+  for (const li of lis) {
+    const bold = ul.nodesFor(ul.nodeOfTypes("strong_open"))
+    result.push(bold.text())
   }
   return result
 }
