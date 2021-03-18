@@ -45,4 +45,7 @@ Available configuration settings:
   `/\(([A-Z0-9]+)\)$/`, then an auto-completed link to this file looks like
   `[CPU](cpu.md)`.
 
+  If there is a problem with the regular expression, the extension pops up the
+  VSCode's Output Console with diagnostic messages.
+
 </a>
