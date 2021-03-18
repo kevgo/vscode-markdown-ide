@@ -27,7 +27,7 @@ This extension works best with Markdown files formatted via
 To configure this extension:
 
 - in the VSCode menu: go to `File` > `Preferences` > `Settings`
-- click on `Extensions` > <code type="configExtName">Markdown IDE</code>
+- click `Extensions` > <code type="configExtName">Markdown IDE</code>
 
 Available configuration settings:
 
