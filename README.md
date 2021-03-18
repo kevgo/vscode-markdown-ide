@@ -33,9 +33,9 @@ To configure this extension:
 
 There you can change these configuration settings:
 
-<table type="configurationSettings">
+<table type="configurationOptions">
   <tr>
 	  <th>autocompleteTitleRegex</th>
-		<td>A custom RegEx</td>
+		<td>A custom RegEx that captures which part of the linked document title will be used as the link title</td>
 	</tr>
 </table>
