@@ -33,17 +33,16 @@ Available configuration settings:
 
 <a type="configurationOptions">
 
-- **autocompleteTitleRegex:** Auto-completed links use the title of the linked
-  document as the link title by default. If you want to use only parts of the
-  linked document title, provide a regular expression with one capture group
-  that extracts the phrase to use as the link title from the linked document
-  title. If the regular expression doesn't match, it uses the full document
-  title.
+- **autocompleteTitleRegex:** By default, titles of auto-completed links are the
+  titles of the linked document. To use only parts of the linked document title,
+  provide a regular expression with one capture group. If the regular expression
+  doesn't match anything, it falls back to the full document title.
 
   As an example, let's say you want to link to a document with the filename
   `cpu.md` that contains `# Central Processing Unit (CPU)`. By default, the
-  created link is `[Central Processing Unit (CPU)](cpu.md)`. If you set the
-  regular expression `/\(([A-Z0-9]+)\)$/`, then the created link is
+  auto-completed links this extension creates look like
+  `[Central Processing Unit (CPU)](cpu.md)`. If you set the regular expression
+  `/\(([A-Z0-9]+)\)$/`, then an auto-completed link to this file looks like
   `[CPU](cpu.md)`.
 
 </a>
