@@ -21,3 +21,21 @@ This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io).
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
+
+#### configuration
+
+To configure this extension:
+
+- open VSCode
+- go to `File` > `Preferences` > `Settings`
+- click on `Extensions`
+- click on <code type="configExtName">Markdown IDE</code>
+
+There you can change these configuration settings:
+
+<table type="configurationSettings">
+  <tr>
+	  <th>autocompleteTitleRegex</th>
+		<td>A custom RegEx</td>
+	</tr>
+</table>
