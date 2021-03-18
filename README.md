@@ -28,8 +28,7 @@ To configure this extension:
 
 - open VSCode
 - go to `File` > `Preferences` > `Settings`
-- click on `Extensions`
-- click on <code type="configExtName">Markdown IDE</code>
+- click on `Extensions` > <code type="configExtName">Markdown IDE</code>
 
 Available configuration settings:
 
