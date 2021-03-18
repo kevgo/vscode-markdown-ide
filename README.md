@@ -1,6 +1,6 @@
 # VSCode Markdown IDE
 
-[![CircleCI](https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield)](https://circleci.com/gh/kevgo/vscode-markdown-ide)
+![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 This plugin for [VSCode](https://code.visualstudio.com) and
 [compatible editors](https://open-vsx.org) provides IDE-grade editing and
