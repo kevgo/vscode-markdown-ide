@@ -33,15 +33,14 @@ To configure this extension:
 
 Available configuration settings:
 
-<ul type="configurationOptions">
-  <li>
-	  <b>autocompleteTitleRegex:</b>
+<a type="configurationOptions">
+- **autocompleteTitleRegex:**
 		Auto-completed links use the title of the linked document as the link title by default.
 		If you want to use only parts of the linked document title, provide a regular expression with exacly one capture group that extracts the phrase to use as the link title from the linked document title.
 		If the regular expression doesn't match, it uses the full document title.
-		<br><br>
-		As an example, let's say you want to link to a document (cpu.md) with the title <code># Central Processing Unit (CPU)</code>.
-		By default, the created link is <code>[Central Processing Unit (CPU)](cpu.md)</code>.
-		If you set the regular expression <code>/\(([A-Z0-9]+)\)$/</code>, then the created link is <code>[CPU](cpu.md)</code>.
-	</li>
-</ul>
+
+    	As an example, let's say you want to link to a document (cpu.md) with the title `# Central Processing Unit (CPU)`.
+    	By default, the created link is `[Central Processing Unit (CPU)](cpu.md)`.
+    	If you set the regular expression `/\(([A-Z0-9]+)\)$/`, then the created link is `[CPU](cpu.md)`.
+
+</a>
