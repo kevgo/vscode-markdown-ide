@@ -3,15 +3,42 @@ import { strict as assert } from "assert"
 import { makeImgLink, makeMdLink } from "./make-links"
 
 suite("makeMdLink", function () {
-  test("link to heading", function () {
-    const have = makeMdLink("foo.md", "# Foo\nthe foo is strong today")
+  test("link to heading without regex", function () {
+    const have = makeMdLink(
+      "foo.md",
+      "# Foo\nthe foo is strong today",
+      null,
+      null
+    )
     const want = "[Foo](foo.md)"
+    assert.equal(have, want)
+  })
+  test("link to heading with normal regex", function () {
+    const have = makeMdLink(
+      "foo.md",
+      "# Foo\nthe foo is strong today",
+      null,
+      /^#+ (.*)$/
+    )
+    const want = "[Foo](foo.md)"
+    assert.equal(have, want)
+  })
+  test("link to heading with abbreviation regex", function () {
+    const have = makeMdLink(
+      "amazon-web-services.md",
+      "# Amazon Web Services (AWS)\na cloud provider",
+      null,
+      /\(([A-Z0-9]+)\)$/
+    )
+    const want = "[AWS](amazon-web-services.md)"
     assert.equal(have, want)
   })
   test("File with links in heading", function () {
     const have = makeMdLink(
       "foo.md",
-      "# A [Foo](foo.md) walks into a [bar](bar.md)"
+      "# A [Foo](foo.md) walks into a [bar](bar.md)",
+      null,
+      /^#+ (.*)$/
     )
     const want = "[A Foo walks into a bar](foo.md)"
     assert.equal(have, want)
