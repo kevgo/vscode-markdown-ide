@@ -24,8 +24,7 @@ async function actualOptions(): Promise<string[]> {
 function documentedOptions(nodes: tr.ast.NodeList) {
   const result = []
   const ul = nodes.nodesFor(nodes.nodeOfTypes("bullet_list_open"))
-  const lis = ul.nodesOfTypes("list_item_open")
-  for (const li of lis) {
+  for (const li of ul.nodesOfTypes("list_item_open")) {
     const bold = ul.nodesFor(ul.nodeOfTypes("strong_open"))
     result.push(bold.text())
   }
