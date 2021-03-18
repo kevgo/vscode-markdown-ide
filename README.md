@@ -36,10 +36,10 @@ Available configuration settings:
 
 - **autocompleteTitleRegex:** Auto-completed links use the title of the linked
   document as the link title by default. If you want to use only parts of the
-  linked document title, provide a regular expression with exacly one capture
-  group that extracts the phrase to use as the link title from the linked
-  document title. If the regular expression doesn't match, it uses the full
-  document title.
+  linked document title, provide a regular expression with one capture group
+  that extracts the phrase to use as the link title from the linked document
+  title. If the regular expression doesn't match, it uses the full document
+  title.
 
   As an example, let's say you want to link to a document with the filename
   `cpu.md` that contains `# Central Processing Unit (CPU)`. By default, the

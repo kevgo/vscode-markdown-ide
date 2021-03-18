@@ -10,7 +10,7 @@
       "properties": {
         "markdownIDE.autocompleteTitleRegex": {
           "type": "string",
-          "description": "A custom RegEx that captures which part of the linked document title will be used as the link title"
+          "description": "A regular expression that captures the part of linked document titles to use as the link title"
         }
       }
     }
