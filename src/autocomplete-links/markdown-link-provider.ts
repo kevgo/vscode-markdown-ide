@@ -22,6 +22,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     if (reS != null && reS !== "") {
       titleRE = new RegExp(reS)
     }
+    const debug = vscode.window.createOutputChannel("Markdown IDE")
 
     const [searchTerm, linkType] = analyzeInput(
       document.lineAt(position).text,
@@ -35,7 +36,8 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
         vscode.workspace.rootPath,
         document.fileName,
         files,
-        titleRE
+        titleRE,
+        debug
       )
     } else {
       files = await imgFiles(vscode.workspace.rootPath)

@@ -1,5 +1,6 @@
 import { promises as fs } from "fs"
 import { posix as path } from "path"
+import * as vscode from "vscode"
 
 import { firstLine } from "../helpers/first-line"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
@@ -9,18 +10,25 @@ export async function makeMdLinks(
   dir: string,
   document: string,
   allFiles: string[],
-  titleRE: RegExp | null
+  titleRE: RegExp | null,
+  debug: vscode.OutputChannel | null
 ): Promise<string[]> {
   const result: string[] = []
 
-  function linkToFile(filePath: string, content: string): void {
+  function linkToFile(
+    filePath: string,
+    debug: vscode.OutputChannel | null,
+    content: string
+  ): void {
     const relativeFile = path.relative(path.dirname(document), filePath)
-    result.push(makeMdLink(relativeFile, content, titleRE))
+    result.push(makeMdLink(relativeFile, content, debug, titleRE))
   }
   const operations = allFiles
     .map((filename) => path.join(dir, filename))
     .map((filePath) =>
-      fs.readFile(filePath, "utf-8").then(linkToFile.bind(null, filePath))
+      fs
+        .readFile(filePath, "utf-8")
+        .then(linkToFile.bind(null, filePath, debug))
     )
   await Promise.all(operations)
   return result
@@ -44,6 +52,7 @@ export function makeImgLinks(
 export function makeMdLink(
   fileName: string,
   fileContent: string,
+  debug: vscode.OutputChannel | null,
   titleRE: RegExp | null
 ): string {
   const titleLine = firstLine(fileContent)
@@ -53,11 +62,17 @@ export function makeMdLink(
     if (match == null) {
       title = removeLeadingPounds(titleLine)
     } else if (match.length < 2) {
-      throw new Error(`no capture group in autocompleteTitleRegex (${titleRE})`)
-    } else if (match.length > 2) {
-      throw new Error(
-        `too many capture groups in autocompleteTitleRegex (${titleRE})`
+      debug?.appendLine(
+        `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
       )
+      debug?.show()
+      title = removeLeadingPounds(titleLine)
+    } else if (match.length > 2) {
+      debug?.appendLine(
+        `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
+      )
+      debug?.show()
+      title = removeLeadingPounds(titleLine)
     } else {
       title = match[1]
     }

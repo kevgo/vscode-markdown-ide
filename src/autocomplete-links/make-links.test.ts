@@ -4,7 +4,12 @@ import { makeImgLink, makeMdLink } from "./make-links"
 
 suite("makeMdLink", function () {
   test("link to heading without regex", function () {
-    const have = makeMdLink("foo.md", "# Foo\nthe foo is strong today", null)
+    const have = makeMdLink(
+      "foo.md",
+      "# Foo\nthe foo is strong today",
+      null,
+      null
+    )
     const want = "[Foo](foo.md)"
     assert.equal(have, want)
   })
@@ -12,6 +17,7 @@ suite("makeMdLink", function () {
     const have = makeMdLink(
       "foo.md",
       "# Foo\nthe foo is strong today",
+      null,
       /^#+ (.*)$/
     )
     const want = "[Foo](foo.md)"
@@ -21,6 +27,7 @@ suite("makeMdLink", function () {
     const have = makeMdLink(
       "amazon-web-services.md",
       "# Amazon Web Services (AWS)\na cloud provider",
+      null,
       /\(([A-Z0-9]+)\)$/
     )
     const want = "[AWS](amazon-web-services.md)"
@@ -30,6 +37,7 @@ suite("makeMdLink", function () {
     const have = makeMdLink(
       "foo.md",
       "# A [Foo](foo.md) walks into a [bar](bar.md)",
+      null,
       /^#+ (.*)$/
     )
     const want = "[A Foo walks into a bar](foo.md)"
