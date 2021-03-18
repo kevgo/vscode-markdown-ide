@@ -14,6 +14,15 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     if (vscode.workspace.rootPath == null) {
       return
     }
+
+    // load configuration
+    const config = vscode.workspace.getConfiguration("markdownIDE")
+    let titleRE = null
+    const reS = config.get<string>("autocompleteTitleRegex")
+    if (reS != null) {
+      titleRE = new RegExp(reS)
+    }
+
     const [searchTerm, linkType] = analyzeInput(
       document.lineAt(position).text,
       position.character
@@ -25,7 +34,8 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       links = await makeMdLinks(
         vscode.workspace.rootPath,
         document.fileName,
-        files
+        files,
+        titleRE
       )
     } else {
       files = await imgFiles(vscode.workspace.rootPath)

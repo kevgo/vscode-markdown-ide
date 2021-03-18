@@ -1,6 +1,5 @@
 import { promises as fs } from "fs"
 import { posix as path } from "path"
-import * as vscode from "vscode"
 
 import { firstLine } from "../helpers/first-line"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
@@ -9,12 +8,10 @@ import { removeLink } from "../helpers/remove-link"
 export async function makeMdLinks(
   dir: string,
   document: string,
-  allFiles: string[]
+  allFiles: string[],
+  titleRE: RegExp | null
 ): Promise<string[]> {
   const result: string[] = []
-  const config = vscode.workspace.getConfiguration("markdownIDE")
-  const reS = config.get<string>("autocompleteTitleRegex") ?? "^#+ (.*)$"
-  const titleRE = new RegExp(reS)
 
   function linkToFile(filePath: string, content: string): void {
     const relativeFile = path.relative(path.dirname(document), filePath)
@@ -47,12 +44,25 @@ export function makeImgLinks(
 export function makeMdLink(
   fileName: string,
   fileContent: string,
-  titleRE: RegExp
+  titleRE: RegExp | null
 ): string {
   const titleLine = firstLine(fileContent)
-  const match = titleRE.exec(titleLine)
   let title = ""
-  if (match != null && match.length > 1) {
+  if (titleRE) {
+    const match = titleRE.exec(titleLine)
+    if (match == null) {
+      throw new Error(
+        `autocompleteTitleRegex (${titleRE}) did not match line "${titleLine}"`
+      )
+    }
+    if (match.length < 2) {
+      throw new Error(`no capture in autocompleteTitleRegex (${titleRE})`)
+    }
+    if (match.length > 2) {
+      throw new Error(
+        `too many captures in autocompleteTitleRegex (${titleRE}): ${match}`
+      )
+    }
     title = match[1]
   } else {
     title = removeLeadingPounds(titleLine)
