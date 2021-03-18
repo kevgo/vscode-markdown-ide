@@ -42,6 +42,7 @@ test:  # runs all the tests
 test-ci:  # runs all the tests on ci
 	make build
 	make unit
+	make doc
 
 unit:  # runs the unit tests
 	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
