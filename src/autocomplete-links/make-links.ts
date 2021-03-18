@@ -56,30 +56,28 @@ export function makeMdLink(
   titleRE: RegExp | null
 ): string {
   const titleLine = firstLine(fileContent)
-  let title = ""
-  if (titleRE != null) {
-    const match = titleRE.exec(titleLine)
-    if (match == null) {
-      title = removeLeadingPounds(titleLine)
-    } else if (match.length < 2) {
-      debug?.appendLine(
-        `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
-      )
-      debug?.show()
-      title = removeLeadingPounds(titleLine)
-    } else if (match.length > 2) {
-      debug?.appendLine(
-        `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
-      )
-      debug?.show()
-      title = removeLeadingPounds(titleLine)
-    } else {
-      title = match[1]
-    }
-  } else {
-    title = removeLeadingPounds(titleLine)
+  if (titleRE == null) {
+    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
   }
-  return `[${removeLink(title)}](${fileName})`
+  const match = titleRE.exec(titleLine)
+  if (match == null) {
+    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+  }
+  if (match.length < 2) {
+    debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
+    )
+    debug?.show()
+    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+  }
+  if (match.length > 2) {
+    debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
+    )
+    debug?.show()
+    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+  }
+  return `[${removeLink(match[1])}](${fileName})`
 }
 
 export function makeImgLink(fileName: string): string {
