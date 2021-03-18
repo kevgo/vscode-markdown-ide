@@ -19,7 +19,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     const config = vscode.workspace.getConfiguration("markdownIDE")
     let titleRE = null
     const reS = config.get<string>("autocompleteTitleRegex")
-    if (reS != null) {
+    if (reS != null && reS !== "") {
       titleRE = new RegExp(reS)
     }
 
