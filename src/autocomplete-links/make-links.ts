@@ -53,10 +53,10 @@ export function makeMdLink(
     if (match == null) {
       title = removeLeadingPounds(titleLine)
     } else if (match.length < 2) {
-      throw new Error(`no capture in autocompleteTitleRegex (${titleRE})`)
+      throw new Error(`no capture group in autocompleteTitleRegex (${titleRE})`)
     } else if (match.length > 2) {
       throw new Error(
-        `too many captures in autocompleteTitleRegex (${titleRE}): ${match}`
+        `too many capture groups in autocompleteTitleRegex (${titleRE})`
       )
     } else {
       title = match[1]
