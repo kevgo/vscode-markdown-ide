@@ -43,7 +43,7 @@ Available configuration settings:
   document title.
 
   As an example, let's say you want to link to a document with the filename
-  `cpu.md` and the title `# Central Processing Unit (CPU)`. By default, the
+  `cpu.md` that contains `# Central Processing Unit (CPU)`. By default, the
   created link is `[Central Processing Unit (CPU)](cpu.md)`. If you set the
   regular expression `/\(([A-Z0-9]+)\)$/`, then the created link is
   `[CPU](cpu.md)`.
