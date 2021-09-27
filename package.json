@@ -48,7 +48,7 @@
   "main": "./out/extension.js",
   "license": "ISC",
   "scripts": {
-    "vscode:prepublish": "make build",
+    "vscode:prepublish": "make --no-print-directory build",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
   },
