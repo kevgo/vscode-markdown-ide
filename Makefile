@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := help
+
 build:  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
