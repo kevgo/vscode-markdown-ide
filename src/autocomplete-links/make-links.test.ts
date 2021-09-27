@@ -23,7 +23,7 @@ suite("makeMdLink", function () {
     const want = "[Foo](foo.md)"
     assert.equal(have, want)
   })
-  test("link to heading with abbreviation regex", function () {
+  test("link to heading with full-cap abbreviation regex", function () {
     const have = makeMdLink(
       "amazon-web-services.md",
       "# Amazon Web Services (AWS)\na cloud provider",
@@ -31,6 +31,16 @@ suite("makeMdLink", function () {
       /\(([A-Z0-9]+)\)$/
     )
     const want = "[AWS](amazon-web-services.md)"
+    assert.equal(have, want)
+  })
+  test("link to heading with mixed-cap abbreviation regex", function () {
+    const have = makeMdLink(
+      "software-as-a-service.md",
+      "# Software-as-a-Service (SaaS)\na software distribution model",
+      null,
+      /\(([A-Z][A-Z0-9a-z]+[A-Z0-9])\)$/
+    )
+    const want = "[SaaS](software-as-a-service.md)"
     assert.equal(have, want)
   })
   test("File with links in heading", function () {
