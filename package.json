@@ -37,8 +37,8 @@
   ],
   "badges": [
     {
-      "url": "https://circleci.com/gh/kevgo/vscode-markdown-ide.svg?style=shield",
-      "href": "https://circleci.com/gh/kevgo/vscode-markdown-ide",
+      "url": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg",
+      "href": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml",
       "description": "build status"
     }
   ],
