@@ -34,17 +34,14 @@ publish-major:  # publishes a new major version
 
 setup:  # prepare this code base for development
 	yarn install
-	make build
+	make --no-print-directory build
 
 test:  # runs all the tests
-	make unit &
-	make doc &
-	make build
+	make --no-print-directory unit &
+	make --no-print-directory doc &
+	make --no-print-directory build
 
-test-ci:  # runs all the tests on ci
-	make build
-	make unit
-	make doc
+test-ci: build unit doc  # runs all the tests on ci
 
 unit:  # runs the unit tests
 	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
