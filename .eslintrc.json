@@ -24,5 +24,6 @@
   },
   "parserOptions": {
     "project": "./tsconfig.json"
-  }
+  },
+  "ignorePatterns": ["text-run"]
 }
