@@ -37,9 +37,10 @@ setup:  # prepare this code base for development
 	make --no-print-directory build
 
 test:  # runs all the tests
-	make --no-print-directory unit &
-	make --no-print-directory doc &
-	make --no-print-directory build
+	make --no-print-directory unit & \
+	make --no-print-directory doc & \
+	make --no-print-directory build & \
+	wait
 
 test-ci: build unit doc  # runs all the tests on ci
 
