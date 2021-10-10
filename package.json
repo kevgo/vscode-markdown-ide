@@ -1,7 +1,7 @@
 {
   "name": "vscode-markdown-ide",
   "displayName": "Markdown IDE",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "IDE-grade tooling for Markdown: refactoring and autocompletion",
   "publisher": "kevgo",
   "contributes": {
