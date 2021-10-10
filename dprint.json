@@ -1,0 +1,24 @@
+{
+  "incremental": true,
+  "typescript": {
+    "indentWidth": 2,
+    "semiColons": "asi",
+    "trailingCommas": "never"
+  },
+  "json": {
+  },
+  "markdown": {
+    "textWrap": "always"
+  },
+  "includes": ["**/*.{ts,json,md}"],
+  "excludes": [
+    "**/node_modules",
+    "out/",
+    "tmp/"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.57.0.wasm",
+    "https://plugins.dprint.dev/json-0.13.0.wasm",
+    "https://plugins.dprint.dev/markdown-0.10.0.wasm"
+  ]
+}

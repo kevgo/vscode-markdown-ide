@@ -16,5 +16,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
+      - uses: dprint/check@v1.5
       - run: make setup
       - run: make test-ci

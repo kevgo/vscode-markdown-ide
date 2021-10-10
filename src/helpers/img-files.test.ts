@@ -2,7 +2,7 @@ import { strict as assert } from "assert"
 
 import { isImageFile } from "./is-image-file"
 
-suite("isImageFile", function () {
+suite("isImageFile", function() {
   const tests = {
     "foo.jpg": true,
     "foo.jpeg": true,
@@ -11,10 +11,10 @@ suite("isImageFile", function () {
     "foo.tif": true,
     "foo.tiff": true,
     "foo.md": false,
-    "foo.yml": false,
+    "foo.yml": false
   }
   for (const [give, want] of Object.entries(tests)) {
-    test(`${give} --> ${want}`, function () {
+    test(`${give} --> ${want}`, function() {
       assert.equal(isImageFile(give), want, give)
     })
   }
