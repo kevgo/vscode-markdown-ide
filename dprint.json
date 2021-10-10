@@ -13,8 +13,8 @@
   "includes": ["**/*.{ts,json,md}"],
   "excludes": [
     "**/node_modules",
-    "out",
-    "tmp"
+    "out/",
+    "tmp/"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.57.0.wasm",
