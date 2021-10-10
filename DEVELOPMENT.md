@@ -10,7 +10,7 @@
 ### test
 
 - run tests: <code type="make/command">make test</code>
-- see all dev scripts: <code type="make/command">make help</code>
+- see all dev tasks: <code type="make/command">make help</code>
 
 ### debug
 
