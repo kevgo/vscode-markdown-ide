@@ -63,7 +63,6 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-typescript-sort-keys": "1.8.0",
     "mocha": "9.1.2",
-    "prettier": "2.4.1",
     "text-runner": "5.0.0",
     "textrun-make": "0.1.0",
     "ts-node": "10.2.1",

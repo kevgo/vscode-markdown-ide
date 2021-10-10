@@ -19,7 +19,7 @@ collections of Markdown documents with lots of link between them.
 - removes links when deleting files
 
 This extension works best with Markdown files formatted via
-[Prettier](https://prettier.io).
+[Prettier](https://prettier.io) or [dprint](https://dprint.dev).
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
 
