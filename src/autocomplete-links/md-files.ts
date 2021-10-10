@@ -17,10 +17,8 @@ export async function mdFiles(root: string, subFolder = ""): Promise<string[]> {
     const fileInfo = await fs.stat(absFilePath)
     if (fileInfo.isDirectory()) {
       folderPromises.push(mdFiles(root, relFilePath))
-    } else {
-      if (file.endsWith(".md")) {
-        result.push(relFilePath)
-      }
+    } else if (file.endsWith(".md")) {
+      result.push(relFilePath)
     }
   }
   for (const folderPromise of folderPromises) {
