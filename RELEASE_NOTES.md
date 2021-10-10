@@ -1,5 +1,11 @@
 # Markdown IDE Release Notes
 
+## 0.2
+
+- [treat filesystem entries that end in `.md` automatically as Markdown files](https://github.com/kevgo/vscode-markdown-ide/commit/2ed81ac0f4ec580d6aa67ef48084cbcf290cfce9):
+  this is a performance optimization for large document bases (> 1000 Markdown
+  files)
+
 ## 0.1
 
 - [Configuration option for shorter links](https://github.com/kevgo/vscode-markdown-ide/pull/32)
