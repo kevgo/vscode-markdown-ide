@@ -53,5 +53,5 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       )
     }
     return result
-  },
+  }
 }

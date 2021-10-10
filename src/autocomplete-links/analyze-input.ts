@@ -1,7 +1,7 @@
 /** the different link types */
 export enum LinkType {
   MD,
-  IMG,
+  IMG
 }
 
 /**

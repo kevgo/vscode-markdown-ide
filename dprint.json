@@ -1,10 +1,14 @@
 {
   "incremental": true,
   "typescript": {
+    "indentWidth": 2,
+    "semiColons": "asi",
+    "trailingCommas": "never"
   },
   "json": {
   },
   "markdown": {
+    "textWrap": "always"
   },
   "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md}"],
   "excludes": [

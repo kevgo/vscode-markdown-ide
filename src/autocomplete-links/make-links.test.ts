@@ -2,8 +2,8 @@ import { strict as assert } from "assert"
 
 import { makeImgLink, makeMdLink } from "./make-links"
 
-suite("makeMdLink", function () {
-  test("link to heading without regex", function () {
+suite("makeMdLink", function() {
+  test("link to heading without regex", function() {
     const have = makeMdLink(
       "foo.md",
       "# Foo\nthe foo is strong today",
@@ -13,7 +13,7 @@ suite("makeMdLink", function () {
     const want = "[Foo](foo.md)"
     assert.equal(have, want)
   })
-  test("link to heading with normal regex", function () {
+  test("link to heading with normal regex", function() {
     const have = makeMdLink(
       "foo.md",
       "# Foo\nthe foo is strong today",
@@ -23,7 +23,7 @@ suite("makeMdLink", function () {
     const want = "[Foo](foo.md)"
     assert.equal(have, want)
   })
-  test("link to heading with full-cap abbreviation regex", function () {
+  test("link to heading with full-cap abbreviation regex", function() {
     const have = makeMdLink(
       "amazon-web-services.md",
       "# Amazon Web Services (AWS)\na cloud provider",
@@ -33,7 +33,7 @@ suite("makeMdLink", function () {
     const want = "[AWS](amazon-web-services.md)"
     assert.equal(have, want)
   })
-  test("link to heading with mixed-cap abbreviation regex", function () {
+  test("link to heading with mixed-cap abbreviation regex", function() {
     const have = makeMdLink(
       "software-as-a-service.md",
       "# Software-as-a-Service (SaaS)\na software distribution model",
@@ -43,7 +43,7 @@ suite("makeMdLink", function () {
     const want = "[SaaS](software-as-a-service.md)"
     assert.equal(have, want)
   })
-  test("File with links in heading", function () {
+  test("File with links in heading", function() {
     const have = makeMdLink(
       "foo.md",
       "# A [Foo](foo.md) walks into a [bar](bar.md)",
@@ -55,8 +55,8 @@ suite("makeMdLink", function () {
   })
 })
 
-suite("makeImgLink", function () {
-  test("link to image", function () {
+suite("makeImgLink", function() {
+  test("link to image", function() {
     const have = makeImgLink("foo.png")
     const want = "[](foo.png)"
     assert.equal(have, want)

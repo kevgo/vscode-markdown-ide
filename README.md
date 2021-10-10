@@ -3,8 +3,9 @@
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 This plugin for [VSCode](https://code.visualstudio.com) and
-[compatible editors](https://open-vsx.org) provides a little bit of IDE-grade editing and
-refactoring support for Markdown files. It is most useful for large collections of Markdown documents with lots of link between them.
+[compatible editors](https://open-vsx.org) provides a little bit of IDE-grade
+editing and refactoring support for Markdown files. It is most useful for large
+collections of Markdown documents with lots of link between them.
 
 #### autocompletion
 
