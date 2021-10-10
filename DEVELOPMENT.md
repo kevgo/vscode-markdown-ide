@@ -22,6 +22,8 @@ Debug in VSCode:
 - click on the `play` icon
 - open folder > choose a different folder than the current one
 
+To print to the _debug console_ of the hosting VSCode instance: `console.log`
+
 Local installation:
 
 - <code type="make/command">make package</code>
