@@ -19,6 +19,7 @@ help:   # shows all available Make commands
 lint:  # runs all linters
 	${CURDIR}/node_modules/.bin/eslint . --ext .ts & \
 	dprint check & \
+	git diff --check \
 	wait
 
 package:  # package the extension for local installation
