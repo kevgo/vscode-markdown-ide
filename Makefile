@@ -45,7 +45,7 @@ test:  # runs all the tests
 	make --no-print-directory unit & \
 	wait
 
-test-ci: build unit doc  # runs all the tests on ci
+test-ci: build lint unit doc  # runs all the tests on ci
 
 unit:  # runs the unit tests
 	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
