@@ -19,7 +19,7 @@ help:   # shows all available Make commands
 lint:  # runs all linters
 	${CURDIR}/node_modules/.bin/eslint . --ext .ts & \
 	dprint check & \
-	git diff --check \
+	git diff --check & \
 	wait
 
 package:  # package the extension for local installation
@@ -39,12 +39,13 @@ setup:  # prepare this code base for development
 	make --no-print-directory build
 
 test:  # runs all the tests
-	make --no-print-directory unit & \
-	make --no-print-directory doc & \
 	make --no-print-directory build & \
+	make --no-print-directory doc & \
+	make --no-print-directory lint & \
+	make --no-print-directory unit & \
 	wait
 
-test-ci: build unit doc  # runs all the tests on ci
+test-ci: build lint unit doc  # runs all the tests on ci
 
 unit:  # runs the unit tests
 	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
