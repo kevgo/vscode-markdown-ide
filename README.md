@@ -45,11 +45,9 @@ Available configuration settings:
 - **autocompleteTitleRegex:** By default, the auto-completion feature of this
   extension creates links with the full title of the linked document. You can
   provide a regular expression with one capture group to use only parts of the
-  document title.
-
-  As an example, let's say you want to link to a document with the filename
-  `cpu.md` whose first line is `# Central Processing Unit (CPU)`. By default,
-  auto-completed links to this file look like
+  document title. As an example, let's say you want to link to a document with
+  the filename `cpu.md` whose first line is `# Central Processing Unit (CPU)`.
+  By default, auto-completed links to this file look like
   `[Central Processing Unit (CPU)](cpu.md)`. If you set this configuration
   option to `/\(([A-Z0-9]+)\)$/`, auto-completed links to this file are
   `[CPU](cpu.md)`.
