@@ -35,7 +35,7 @@ export async function renameTitle(): Promise<void> {
     const filePath = file.fsPath
     const relativeFile = path.relative(path.dirname(filePath), renamedFilePath)
     const replace = titleReplacer.create(oldTitle, relativeFile, newTitle)
-    const oldContent = await fs.readFile(file.path, "utf8")
+    const oldContent = await fs.readFile(file.fsPath, "utf8")
     const newContent = replace(oldContent)
     if (newContent === oldContent) {
       continue
