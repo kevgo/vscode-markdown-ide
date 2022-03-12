@@ -1,5 +1,6 @@
 import { promises as fs } from "fs"
-import { posix as path } from "path"
+import { posix as posixPath } from "path"
+import { win32 as winPath } from "path"
 import * as vscode from "vscode"
 
 import { firstLine } from "../helpers/first-line"
@@ -13,6 +14,7 @@ export async function makeMdLinks(
   titleRE: RegExp | null,
   debug: vscode.OutputChannel | null
 ): Promise<string[]> {
+  const path = process.platform == "win32" ? winPath : posixPath
   const result: string[] = []
 
   function linkToFile(
