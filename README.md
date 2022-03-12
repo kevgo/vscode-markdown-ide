@@ -21,12 +21,12 @@ Typing `[` triggers autocompletion for links to Markdown files.
 
 Typing `![` triggers autocompletion for links to image files.
 
-#### rename file --> update incoming links
+#### rename file ⇒ update incoming links
 
 When you rename a file, links to this file in other Markdown files would be
 broken. Markdown IDE fixes this.
 
-#### delete file --> remove incoming links
+#### delete file ⇒ remove incoming links
 
 When you delete a file, links to this file in other Markdown files would be
 broken. Markdown IDE fixes this.
