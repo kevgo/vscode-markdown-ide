@@ -19,7 +19,7 @@ export async function fileDeletedHandler(
   // update all links in all files
   const edit = new vscode.WorkspaceEdit()
   for (const file of await vscode.workspace.findFiles("**/*.md")) {
-    const oldContent = await fs.readFile(file.path, "utf8")
+    const oldContent = await fs.readFile(file.fsPath, "utf8")
     const newContent = removers.process(oldContent)
     if (newContent === oldContent) {
       continue
