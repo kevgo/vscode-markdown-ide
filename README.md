@@ -7,26 +7,35 @@ This plugin for [VSCode](https://code.visualstudio.com) and
 refactoring support for Markdown files. This is most useful with large
 collections of Markdown documents with lots of links between them.
 
-#### autocomplete links to other Markdown documents
+This extension works best with Markdown files formatted via
+[Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
+files in the `.git`, `node_modules`, and `vendor` folders.
 
-- type `[` to trigger autocompletion for entering links to other Markdown files
-- ignores files in `.git`, `node_modules`, and `vendor`
+#### autocomplete links to Markdown documents
+
+Typing `[` triggers autocompletion for links to Markdown files.
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
 
 #### autocomplete links to image files
 
-- type `![` to trigger autocompletion for links to local image files
+Typing `![` triggers autocompletion for links to image files.
 
-#### refactoring
+#### rename file --> update incoming links
 
-- updates links when renaming files
-- removes links when deleting files
-- when updating the first heading of a document, updates matching links to that
-  document
+When you rename a file, links to this file in other Markdown files would be
+broken. Markdown IDE fixes this.
 
-This extension works best with Markdown files formatted via
-[Prettier](https://prettier.io) or [dprint](https://dprint.dev).
+#### delete file --> remove incoming links
+
+When you delete a file, links to this file in other Markdown files would be
+broken. Markdown IDE fixes this.
+
+#### rename Markdown file title --> update incoming links
+
+Run the "Markdown IDE: Rename document title" command to change the primary
+heading of a document. Markdown IDE updates the title of matching links to that
+document.
 
 #### configuration
 
