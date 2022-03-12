@@ -3,25 +3,33 @@
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 This plugin for [VSCode](https://code.visualstudio.com) and
-[compatible editors](https://open-vsx.org) provides a little bit of IDE-grade
-editing and refactoring support for Markdown files. It is most useful for large
-collections of Markdown documents with lots of link between them.
-
-#### autocompletion
-
-- type `[` to trigger autocompletion for entering links to other Markdown files
-- type `![` to trigger autocompletion for links to local image files
-- ignores files in `.git`, `node_modules`, and `vendor`
-
-#### refactoring
-
-- updates links when renaming files
-- removes links when deleting files
+[compatible editors](https://open-vsx.org) provides IDE-grade editing and
+refactoring support for Markdown files. This is most useful with large
+collections of Markdown documents with lots of links between them.
 
 This extension works best with Markdown files formatted via
-[Prettier](https://prettier.io) or [dprint](https://dprint.dev).
+[Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
+files in the `.git`, `node_modules`, and `vendor` folders.
+
+#### autocomplete links to Markdown documents
+
+Typing `[` triggers autocompletion for links to Markdown files.
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
+
+#### autocomplete links to image files
+
+Typing `![` triggers autocompletion for links to image files.
+
+#### rename file --> update incoming links
+
+When you rename a file, links to this file in other Markdown files would be
+broken. Markdown IDE fixes this.
+
+#### delete file --> remove incoming links
+
+When you delete a file, links to this file in other Markdown files would be
+broken. Markdown IDE fixes this.
 
 #### configuration
 
