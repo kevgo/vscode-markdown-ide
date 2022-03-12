@@ -33,12 +33,7 @@ broken. Markdown IDE fixes this.
 
 #### configuration
 
-To configure this extension:
-
-- in the VSCode menu: go to `File` > `Preferences` > `Settings`
-- click `Extensions` > <code type="configExtName">Markdown IDE</code>
-
-Available configuration settings:
+Possible configuration settings in the VSCode Preferences pane:
 
 <a type="configurationOptions">
 
