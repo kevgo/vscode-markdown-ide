@@ -42,10 +42,10 @@ Available configuration settings:
 
 <a type="configurationOptions">
 
-- **autocompleteTitleRegex:** By default, titles of auto-completed links are the
-  titles of the linked document. To use only parts of the linked document title,
-  provide a regular expression with one capture group. If the regular expression
-  doesn't match anything, it falls back to the full document title.
+- **autocompleteTitleRegex:** By default, the auto-completion feature of this
+  extension creates links with the full title of the linked document. You can
+  provide a regular expression with one capture group to use only parts of the
+  document title.
 
   As an example, let's say you want to link to a document with the filename
   `cpu.md` whose first line is `# Central Processing Unit (CPU)`. By default,
