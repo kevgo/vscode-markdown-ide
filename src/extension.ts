@@ -18,4 +18,11 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // file deleted --> remove links to this file
   vscode.workspace.onDidDeleteFiles(fileDeletedHandler)
+
+  // rename document title
+  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
+}
+
+export function renameTitle(): void {
+  console.log("RENAME TITLE")
 }
