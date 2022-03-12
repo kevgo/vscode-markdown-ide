@@ -49,9 +49,9 @@ Available configuration settings:
 
   As an example, let's say you want to link to a document with the filename
   `cpu.md` whose first line is `# Central Processing Unit (CPU)`. By default,
-  the auto-completed links this extension creates look like
-  `[Central Processing Unit (CPU)](cpu.md)`. If you set the regular expression
-  `/\(([A-Z0-9]+)\)$/`, then an auto-completed link to this file looks like
+  auto-completed links to this file look like
+  `[Central Processing Unit (CPU)](cpu.md)`. If you set this configuration
+  option to `/\(([A-Z0-9]+)\)$/`, auto-completed links to this file look like
   `[CPU](cpu.md)`.
 
   If there is a problem with the regular expression, the extension pops up the
