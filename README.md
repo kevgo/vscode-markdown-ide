@@ -48,8 +48,8 @@ Available configuration settings:
   doesn't match anything, it falls back to the full document title.
 
   As an example, let's say you want to link to a document with the filename
-  `cpu.md` that contains `# Central Processing Unit (CPU)`. By default, the
-  auto-completed links this extension creates look like
+  `cpu.md` whose first line is `# Central Processing Unit (CPU)`. By default,
+  the auto-completed links this extension creates look like
   `[Central Processing Unit (CPU)](cpu.md)`. If you set the regular expression
   `/\(([A-Z0-9]+)\)$/`, then an auto-completed link to this file looks like
   `[CPU](cpu.md)`.
