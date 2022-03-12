@@ -1,4 +1,5 @@
 import { strict as assert } from "assert"
+import * as path from "path"
 
 import { mdFiles } from "./md-files"
 
@@ -9,7 +10,7 @@ suite("mdFiles", function() {
       "DEVELOPMENT.md",
       "README.md",
       "RELEASE_NOTES.md",
-      "documentation/fixtures/test.md"
+      path.join("documentation", "fixtures", "test.md")
     ]
     assert.deepEqual(have, want)
   })
