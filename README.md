@@ -3,25 +3,30 @@
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 This plugin for [VSCode](https://code.visualstudio.com) and
-[compatible editors](https://open-vsx.org) provides a little bit of IDE-grade
-editing and refactoring support for Markdown files. It is most useful for large
-collections of Markdown documents with lots of link between them.
+[compatible editors](https://open-vsx.org) provides IDE-grade editing and
+refactoring support for Markdown files. This is most useful with large
+collections of Markdown documents with lots of links between them.
 
-#### autocompletion
+#### autocomplete links to other Markdown documents
 
 - type `[` to trigger autocompletion for entering links to other Markdown files
-- type `![` to trigger autocompletion for links to local image files
 - ignores files in `.git`, `node_modules`, and `vendor`
+
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
+
+#### autocomplete links to image files
+
+- type `![` to trigger autocompletion for links to local image files
 
 #### refactoring
 
 - updates links when renaming files
 - removes links when deleting files
+- when updating the first heading of a document, updates matching links to that
+  document
 
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev).
-
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
 
 #### configuration
 
