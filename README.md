@@ -4,8 +4,8 @@
 
 This plugin for [VSCode](https://code.visualstudio.com) and
 [compatible editors](https://open-vsx.org) provides IDE-grade editing and
-refactoring support for Markdown files. This is most useful with large
-collections of Markdown documents with lots of links between them.
+refactoring support for Markdown files. This is most useful for large
+collections of Markdown documents containing lots of links between them.
 
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
