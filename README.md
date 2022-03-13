@@ -32,6 +32,12 @@ filename.
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
+#### rename Markdown file title ⇒ update incoming links
+
+Run the "Markdown IDE: Rename document title" command to change the primary
+heading of a document. Markdown IDE updates the title of matching links to that
+document.
+
 #### configuration
 
 You can configure this extension via settings in the VSCode Preferences pane.

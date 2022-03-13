@@ -5,6 +5,21 @@
   "description": "IDE-grade tooling for Markdown: refactoring and autocompletion",
   "publisher": "kevgo",
   "contributes": {
+    "commands": [
+      {
+        "command": "markdownIDE.renameDocumentTitle",
+        "title": "Rename document title",
+        "category": "Markdown IDE"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "markdownIDE.renameDocumentTitle",
+          "when": "editorLangId == markdown"
+        }
+      ]
+    },
     "configuration": {
       "title": "Markdown IDE",
       "properties": {
