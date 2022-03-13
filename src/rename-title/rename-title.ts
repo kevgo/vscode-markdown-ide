@@ -4,7 +4,7 @@ import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
-import * as titleReplacer from "./title-replacer"
+import { replaceLinkTitle } from "./replace-link-title"
 
 export async function renameTitle(): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
@@ -42,9 +42,8 @@ export async function renameTitle(): Promise<void> {
   const edit = new vscode.WorkspaceEdit()
   for (const file of await vscode.workspace.findFiles("**/*.md")) {
     const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
-    const replace = titleReplacer.create({ oldTitle, target: pathToActive, newTitle })
     const oldContent = await fs.readFile(file.fsPath, "utf8")
-    const newContent = replace(oldContent)
+    const newContent = replaceLinkTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
     if (newContent === oldContent) {
       continue
     }
