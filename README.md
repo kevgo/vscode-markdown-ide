@@ -35,7 +35,7 @@ broken. Markdown IDE fixes this.
 
 You can configure this extension via settings in the VSCode Preferences pane.
 
-![VSCode settings example](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/settings.gif)
+![VSCode settings example](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-doc/documentation/settings.gif)
 
 <a type="configurationOptions">
 
