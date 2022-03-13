@@ -57,7 +57,7 @@ export async function renameTitle(): Promise<void> {
   await vscode.workspace.applyEdit(edit)
 }
 
-/** queries the new document title from the user via a text input dialog */
+/** lets the user enter the new document title via a text input dialog */
 async function enterTitle(oldTitle: string): Promise<string | undefined> {
   return vscode.window.showInputBox({
     title: "new document title",
