@@ -17,14 +17,14 @@ export async function renameTitle(): Promise<void> {
   }
   const activeFilePath = editor.document.fileName
   if (activeFilePath === undefined) {
-    // current file has no name
+    // active file has no name
     return
   }
 
   // determine the existing and new title for the current document
   const titleLine = editor.document.lineAt(0)
   if (!titleLine) {
-    // document doesn't have content
+    // active document doesn't have content
     return
   }
   const oldTitle = removeLeadingPounds(titleLine.text)
