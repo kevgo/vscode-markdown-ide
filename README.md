@@ -15,7 +15,7 @@ files in the `.git`, `node_modules`, and `vendor` folders.
 
 Typing `[` triggers autocompletion for links to Markdown files.
 
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/master/documentation/autocomplete.gif)
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete.gif)
 
 #### autocomplete links to image files
 
@@ -33,8 +33,9 @@ broken. Markdown IDE fixes this.
 
 #### configuration
 
-You can configure this extension via these settings in the VSCode Preferences
-pane:
+You can configure this extension via settings in the VSCode Preferences pane.
+
+![VSCode settings example](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/settings.gif)
 
 <a type="configurationOptions">
 
