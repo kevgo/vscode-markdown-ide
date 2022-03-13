@@ -32,10 +32,6 @@ filename.
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
-#### autocomplete links to image files
-
-Typing `![` triggers autocompletion for links to image files.
-
 #### rename Markdown file title --> update incoming links
 
 Run the "Markdown IDE: Rename document title" command to change the primary
