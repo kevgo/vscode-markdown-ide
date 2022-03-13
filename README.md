@@ -30,8 +30,7 @@ filename.
 #### delete file ⇒ remove incoming links
 
 When you delete a file, all links to this file in other Markdown files would be
-broken. Markdown IDE fixes this by removing these links, leaving only their
-title as text.
+broken. Markdown IDE fixes this by removing these links.
 
 #### configuration
 
