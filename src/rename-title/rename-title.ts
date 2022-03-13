@@ -28,7 +28,7 @@ export async function renameTitle(): Promise<void> {
     return
   }
   const oldTitle = removeLeadingPounds(titleLine.text)
-  const newTitle = await queryTitle(oldTitle)
+  const newTitle = await enterTitle(oldTitle)
   if (newTitle === undefined) {
     // user aborted the dialog
     return
@@ -58,7 +58,7 @@ export async function renameTitle(): Promise<void> {
 }
 
 /** queries the new document title from the user via a text input dialog */
-async function queryTitle(oldTitle: string): Promise<string | undefined> {
+async function enterTitle(oldTitle: string): Promise<string | undefined> {
   return vscode.window.showInputBox({
     title: "new document title",
     value: oldTitle,
