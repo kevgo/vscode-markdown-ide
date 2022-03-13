@@ -42,7 +42,7 @@ export async function renameTitle(): Promise<void> {
   const edit = new vscode.WorkspaceEdit()
   for (const file of await vscode.workspace.findFiles("**/*.md")) {
     const relativePath = path.relative(path.dirname(file.fsPath), activeFilePath)
-    const replace = titleReplacer.create(oldTitle, relativePath, newTitle)
+    const replace = titleReplacer.create({ oldTitle, target: relativePath, newTitle })
     const oldContent = await fs.readFile(file.fsPath, "utf8")
     const newContent = replace(oldContent)
     if (newContent === oldContent) {
