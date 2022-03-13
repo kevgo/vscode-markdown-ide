@@ -11,34 +11,38 @@ export async function renameTitle(): Promise<void> {
   await vscode.workspace.saveAll(false)
 
   const editor = vscode.window.activeTextEditor
-  if (editor === undefined) { // no open editor
+  if (editor === undefined) {
+    // no open editor
     return
   }
-  const renamedFilePath = editor.document.fileName
-  if (renamedFilePath === undefined) { // current file has no name
+  const activeFilePath = editor.document.fileName
+  if (activeFilePath === undefined) {
+    // current file has no name
     return
   }
 
   // determine the existing and new title for the current document
   const titleLine = editor.document.lineAt(0)
-  if (!titleLine) { // document doesn't have a first line
+  if (!titleLine) {
+    // document doesn't have content
     return
   }
   const oldTitle = removeLeadingPounds(titleLine.text)
   const newTitle = await queryTitle(oldTitle)
-  if (newTitle === undefined) { // user aborted the dialog
+  if (newTitle === undefined) {
+    // user aborted the dialog
     return
   }
-  if (oldTitle === newTitle) { // no change to the title
+  if (oldTitle === newTitle) {
+    // title not changed
     return
   }
 
   // replace the old title in all documents in the current workspace
   const edit = new vscode.WorkspaceEdit()
   for (const file of await vscode.workspace.findFiles("**/*.md")) {
-    const filePath = file.fsPath
-    const relativeFile = path.relative(path.dirname(filePath), renamedFilePath)
-    const replace = titleReplacer.create(oldTitle, relativeFile, newTitle)
+    const relativePath = path.relative(path.dirname(file.fsPath), activeFilePath)
+    const replace = titleReplacer.create(oldTitle, relativePath, newTitle)
     const oldContent = await fs.readFile(file.fsPath, "utf8")
     const newContent = replace(oldContent)
     if (newContent === oldContent) {
