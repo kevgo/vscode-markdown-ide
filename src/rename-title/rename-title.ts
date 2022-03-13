@@ -10,13 +10,17 @@ export async function renameTitle(): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
   await vscode.workspace.saveAll(false)
 
-  const renamedFilePath = vscode.window.activeTextEditor?.document.fileName
-  if (renamedFilePath === undefined) { // no file open in editor
+  const editor = vscode.window.activeTextEditor
+  if (editor === undefined) { // no open editor
+    return
+  }
+  const renamedFilePath = editor.document.fileName
+  if (renamedFilePath === undefined) { // current file has no name
     return
   }
 
   // determine the existing and new title for the current document
-  const titleLine = vscode.window.activeTextEditor?.document.lineAt(0)
+  const titleLine = editor.document.lineAt(0)
   if (!titleLine) { // document doesn't have a first line
     return
   }
