@@ -1,8 +1,8 @@
 import { strict as assert } from "assert"
 
-import { isImageFile } from "./is-image-file"
+import * as filetype from "./filetype"
 
-suite("isImageFile", function() {
+suite("isImage", function() {
   const tests = {
     "foo.jpg": true,
     "foo.jpeg": true,
@@ -15,7 +15,7 @@ suite("isImageFile", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`${give} --> ${want}`, function() {
-      assert.equal(isImageFile(give), want, give)
+      assert.equal(filetype.isImage(give), want, give)
     })
   }
 })

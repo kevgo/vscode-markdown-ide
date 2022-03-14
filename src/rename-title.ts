@@ -2,12 +2,11 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { lineCount } from "../helpers/line-count"
-import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
-import { replaceLinkTitle } from "./replace-link-title"
+import * as line from "./helpers/line"
+import * as links from "./helpers/links"
 
 export async function renameTitle(): Promise<void> {
-  // make sure the filesystem contains the up-to-date contents
+  // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
   const editor = vscode.window.activeTextEditor
@@ -27,7 +26,7 @@ export async function renameTitle(): Promise<void> {
     // active document doesn't have content
     return
   }
-  const oldTitle = removeLeadingPounds(titleLine.text)
+  const oldTitle = line.removeLeadingPounds(titleLine.text)
   const newTitle = await enterTitle(oldTitle)
   if (newTitle === undefined) {
     // user aborted the dialog
@@ -43,19 +42,16 @@ export async function renameTitle(): Promise<void> {
     async () => {
       // replace the old title in all documents in the current workspace
       const edit = new vscode.WorkspaceEdit()
-      const files = await vscode.workspace.findFiles("**/*.md")
-      const fileCount = files.length
-      for (let i = 0; i < fileCount; i++) {
-        const file = files[i]
+      for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
         const oldContent = await fs.readFile(file.fsPath, "utf8")
-        const newContent = replaceLinkTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
+        const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
         if (newContent === oldContent) {
           continue
         }
         const range = new vscode.Range(
           new vscode.Position(0, 0),
-          new vscode.Position(lineCount(oldContent), 0)
+          new vscode.Position(line.count(oldContent), 0)
         )
         edit.replace(file, range, newContent)
       }
