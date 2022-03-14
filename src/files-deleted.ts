@@ -2,7 +2,7 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { lineCount } from "./helpers/line-count"
+import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
 export async function filesDeleted(
@@ -29,7 +29,7 @@ export async function filesDeleted(
         }
         const range = new vscode.Range(
           new vscode.Position(0, 0),
-          new vscode.Position(lineCount(oldContent), 0)
+          new vscode.Position(line.count(oldContent), 0)
         )
         edit.replace(file, range, newContent)
       }
