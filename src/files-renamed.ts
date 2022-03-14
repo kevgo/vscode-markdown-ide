@@ -5,9 +5,7 @@ import * as vscode from "vscode"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
-export async function filesRenamed(
-  renamedEvent: vscode.FileRenameEvent
-): Promise<void> {
+export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
