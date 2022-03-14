@@ -2,7 +2,7 @@ import { promises as fs } from "fs"
 import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
-import { LinkReplacers } from "./link-replacers"
+import { LinkTargetReplacer } from "./link-target-replacer"
 
 export async function fileRenamedHandler(
   e: vscode.FileRenameEvent
@@ -11,11 +11,11 @@ export async function fileRenamedHandler(
   await vscode.workspace.saveAll(false)
 
   // prepare
-  const replacers = new LinkReplacers()
+  const replacer = new LinkTargetReplacer()
   for (const file of e.files) {
     const before = vscode.workspace.asRelativePath(file.oldUri)
     const after = vscode.workspace.asRelativePath(file.newUri)
-    replacers.register(before, after)
+    replacer.register(before, after)
   }
 
   await vscode.window.withProgress(
@@ -25,7 +25,7 @@ export async function fileRenamedHandler(
       const edit = new vscode.WorkspaceEdit()
       for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const oldContent = await fs.readFile(file.fsPath, "utf8")
-        const newContent = replacers.process(oldContent)
+        const newContent = replacer.process(oldContent)
         if (newContent === oldContent) {
           continue
         }
