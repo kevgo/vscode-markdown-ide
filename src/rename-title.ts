@@ -42,10 +42,7 @@ export async function renameTitle(): Promise<void> {
     async () => {
       // replace the old title in all documents in the current workspace
       const edit = new vscode.WorkspaceEdit()
-      const files = await vscode.workspace.findFiles("**/*.md")
-      const fileCount = files.length
-      for (let i = 0; i < fileCount; i++) {
-        const file = files[i]
+      for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
         const oldContent = await fs.readFile(file.fsPath, "utf8")
         const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
