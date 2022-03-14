@@ -2,7 +2,7 @@ import { strict as assert } from "assert"
 
 import * as filetype from "./filetype"
 
-suite("isImageFile", function() {
+suite("isImage", function() {
   const tests = {
     "foo.jpg": true,
     "foo.jpeg": true,
