@@ -23,7 +23,7 @@ export async function filesDeleted(
       const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
       let newContent = oldContent
       for (const deletedFile of e.files) {
-        newContent = links.removeToTarget({
+        newContent = links.removeWithTarget({
           text: newContent,
           target: path.relative(path.dirname(wsFile.fsPath), deletedFile.fsPath)
         })

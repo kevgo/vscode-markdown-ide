@@ -20,7 +20,7 @@ const linkRE = /\[[^\]]*\]\([^)]*\)/g
 const titleRE = /\[([^\]]*)\]/
 
 /** removes all links to the given target from the given text */
-export function removeToTarget(args: { target: string; text: string }): string {
+export function removeWithTarget(args: { target: string; text: string }): string {
   const re = new RegExp(`\\[(.*?)\\]\\(${args.target}\\)`, "g")
   return args.text.replace(re, "$1")
 }
