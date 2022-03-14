@@ -12,8 +12,7 @@ const titleRE = /\[([^\]]*)\]/
 
 /** removes all links to the given target from the given text */
 export function removeWithTarget(args: { target: string; text: string }): string {
-  const re = new RegExp(`\\[(.*?)\\]\\(${args.target}\\)`, "g")
-  return args.text.replace(re, "$1")
+  return args.text.replace(new RegExp(`\\[(.*?)\\]\\(${args.target}\\)`, "g"), "$1")
 }
 
 /** replaces the given oldTarget in all Markdown links of the given text with the newTarget */
