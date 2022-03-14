@@ -2,8 +2,8 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { lineCount } from "../helpers/line-count"
-import * as links from "../helpers/links"
+import { lineCount } from "./helpers/line-count"
+import * as links from "./helpers/links"
 
 export async function filesRenamed(
   e: vscode.FileRenameEvent

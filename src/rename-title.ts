@@ -2,9 +2,9 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { lineCount } from "../helpers/line-count"
-import * as links from "../helpers/links"
-import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
+import { lineCount } from "./helpers/line-count"
+import * as links from "./helpers/links"
+import { removeLeadingPounds } from "./helpers/remove-leading-pounds"
 
 export async function renameTitle(): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
