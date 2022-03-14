@@ -38,22 +38,30 @@ export async function renameTitle(): Promise<void> {
     return
   }
 
-  // replace the old title in all documents in the current workspace
-  const edit = new vscode.WorkspaceEdit()
-  for (const file of await vscode.workspace.findFiles("**/*.md")) {
-    const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
-    const oldContent = await fs.readFile(file.fsPath, "utf8")
-    const newContent = replaceLinkTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
-    if (newContent === oldContent) {
-      continue
+  await vscode.window.withProgress(
+    { location: vscode.ProgressLocation.Window, title: "updating link titles", cancellable: false },
+    async () => {
+      // replace the old title in all documents in the current workspace
+      const edit = new vscode.WorkspaceEdit()
+      const files = await vscode.workspace.findFiles("**/*.md")
+      const fileCount = files.length
+      for (let i = 0; i < fileCount; i++) {
+        const file = files[i]
+        const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
+        const oldContent = await fs.readFile(file.fsPath, "utf8")
+        const newContent = replaceLinkTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
+        if (newContent === oldContent) {
+          continue
+        }
+        const range = new vscode.Range(
+          new vscode.Position(0, 0),
+          new vscode.Position(lineCount(oldContent), 0)
+        )
+        edit.replace(file, range, newContent)
+      }
+      await vscode.workspace.applyEdit(edit)
     }
-    const range = new vscode.Range(
-      new vscode.Position(0, 0),
-      new vscode.Position(lineCount(oldContent), 0)
-    )
-    edit.replace(file, range, newContent)
-  }
-  await vscode.workspace.applyEdit(edit)
+  )
 }
 
 /** lets the user enter the new document title via a text input dialog */

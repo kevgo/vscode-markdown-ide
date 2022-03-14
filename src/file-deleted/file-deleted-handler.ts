@@ -17,18 +17,23 @@ export async function fileDeletedHandler(
   }
 
   // update all links in all files
-  const edit = new vscode.WorkspaceEdit()
-  for (const file of await vscode.workspace.findFiles("**/*.md")) {
-    const oldContent = await fs.readFile(file.fsPath, "utf8")
-    const newContent = removers.process(oldContent)
-    if (newContent === oldContent) {
-      continue
+  await vscode.window.withProgress(
+    { location: vscode.ProgressLocation.Window, title: "removing links", cancellable: false },
+    async () => {
+      const edit = new vscode.WorkspaceEdit()
+      for (const file of await vscode.workspace.findFiles("**/*.md")) {
+        const oldContent = await fs.readFile(file.fsPath, "utf8")
+        const newContent = removers.process(oldContent)
+        if (newContent === oldContent) {
+          continue
+        }
+        const range = new vscode.Range(
+          new vscode.Position(0, 0),
+          new vscode.Position(lineCount(oldContent), 0)
+        )
+        edit.replace(file, range, newContent)
+      }
+      await vscode.workspace.applyEdit(edit)
     }
-    const range = new vscode.Range(
-      new vscode.Position(0, 0),
-      new vscode.Position(lineCount(oldContent), 0)
-    )
-    edit.replace(file, range, newContent)
-  }
-  await vscode.workspace.applyEdit(edit)
+  )
 }
