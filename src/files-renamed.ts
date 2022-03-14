@@ -6,7 +6,7 @@ import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
 export async function filesRenamed(
-  e: vscode.FileRenameEvent
+  renamedEvent: vscode.FileRenameEvent
 ): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
@@ -21,7 +21,7 @@ export async function filesRenamed(
     for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
       const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
       let newContent = oldContent
-      for (const renamedFile of e.files) {
+      for (const renamedFile of renamedEvent.files) {
         newContent = links.replaceTarget({
           text: newContent,
           oldTarget: path.relative(path.dirname(wsFile.fsPath), renamedFile.oldUri.fsPath),

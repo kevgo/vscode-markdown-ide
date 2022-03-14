@@ -6,7 +6,7 @@ import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
 export async function filesDeleted(
-  e: vscode.FileDeleteEvent
+  deletedEvent: vscode.FileDeleteEvent
 ): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
@@ -21,7 +21,7 @@ export async function filesDeleted(
     for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
       const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
       let newContent = oldContent
-      for (const deletedFile of e.files) {
+      for (const deletedFile of deletedEvent.files) {
         newContent = links.removeWithTarget({
           text: newContent,
           target: path.relative(path.dirname(wsFile.fsPath), deletedFile.fsPath)
