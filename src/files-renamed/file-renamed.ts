@@ -3,7 +3,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
-import { replaceLinkTarget } from "./link-target-replacer"
+import * as links from "../helpers/links"
 
 export async function filesRenamed(
   e: vscode.FileRenameEvent
@@ -22,7 +22,7 @@ export async function filesRenamed(
         for (const renamedFile of e.files) {
           const oldTarget = path.relative(path.dirname(wsFile.fsPath), renamedFile.oldUri.fsPath)
           const newTarget = path.relative(path.dirname(wsFile.fsPath), renamedFile.newUri.fsPath)
-          newContent = replaceLinkTarget(newContent, oldTarget, newTarget)
+          newContent = links.replaceTarget({ text: newContent, oldTarget, newTarget })
         }
         if (newContent === oldContent) {
           continue

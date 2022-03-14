@@ -3,7 +3,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
-import { removeLinkToTarget } from "./link-remover"
+import * as links from "../helpers/links"
 
 export async function filesDeleted(
   e: vscode.FileDeleteEvent
@@ -21,7 +21,7 @@ export async function filesDeleted(
         let newContent = oldContent
         for (const deletedFile of e.files) {
           const pathToDeleted = path.relative(path.dirname(file.fsPath), deletedFile.fsPath)
-          newContent = removeLinkToTarget(newContent, pathToDeleted)
+          newContent = links.removeToTarget({ text: newContent, target: pathToDeleted })
         }
         if (newContent === oldContent) {
           // didn't delete any links in this file --> move on to the next file

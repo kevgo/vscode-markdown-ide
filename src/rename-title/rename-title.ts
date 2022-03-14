@@ -3,8 +3,8 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
+import * as links from "../helpers/links"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
-import { replaceLinkTitle } from "./replace-link-title"
 
 export async function renameTitle(): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
@@ -49,7 +49,7 @@ export async function renameTitle(): Promise<void> {
         const file = files[i]
         const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
         const oldContent = await fs.readFile(file.fsPath, "utf8")
-        const newContent = replaceLinkTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
+        const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
         if (newContent === oldContent) {
           continue
         }
