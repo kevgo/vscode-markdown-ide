@@ -2,7 +2,7 @@ import { strict as assert } from "assert"
 
 import * as links from "./links"
 
-suite("removeLink", function() {
+suite("remove", function() {
   const tests = {
     Foo: "Foo",
     "A [Foo](foo.md) bar": "A Foo bar",
