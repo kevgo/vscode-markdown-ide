@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as lines from "./lines"
+import * as line from "./line"
 
 suite("count", function() {
   const tests = {
@@ -9,20 +9,20 @@ suite("count", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`${give.replace(/\n/g, "\\n")} --> ${want}`, function() {
-      assert.equal(lines.count(give), want)
+      assert.equal(line.count(give), want)
     })
   }
 })
 
 suite("first", function() {
   test("single-line string", function() {
-    assert.equal(lines.first("# Foo"), "# Foo")
+    assert.equal(line.first("# Foo"), "# Foo")
   })
   test("multi-line string", function() {
-    assert.equal(lines.first("# Foo\nbar"), "# Foo")
+    assert.equal(line.first("# Foo\nbar"), "# Foo")
   })
   test("empty string", function() {
-    assert.equal(lines.first(""), "")
+    assert.equal(line.first(""), "")
   })
 })
 
@@ -35,7 +35,7 @@ suite("removeLeadingPounds", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`${give} --> ${want}`, function() {
-      assert.equal(lines.removeLeadingPounds(give), want)
+      assert.equal(line.removeLeadingPounds(give), want)
     })
   }
 })

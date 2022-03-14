@@ -2,7 +2,7 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as lines from "./helpers/lines"
+import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
 export async function filesRenamed(
@@ -29,7 +29,7 @@ export async function filesRenamed(
         }
         const range = new vscode.Range(
           new vscode.Position(0, 0),
-          new vscode.Position(lines.count(oldContent), 0)
+          new vscode.Position(line.count(oldContent), 0)
         )
         edit.replace(wsFile, range, newContent)
       }
