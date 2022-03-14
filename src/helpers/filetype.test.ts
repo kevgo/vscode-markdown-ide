@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as files from "./files"
+import * as files from "./filetype"
 
 suite("isImageFile", function() {
   const tests = {

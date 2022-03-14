@@ -1,4 +1,4 @@
-// This file contains helper functions for filenames and extensions.
+// helper functions for types
 
 const imgExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", "tiff"]
 

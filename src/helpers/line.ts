@@ -1,4 +1,4 @@
-// This file contains helper functions for lines of text.
+// helper functions for lines of text.
 
 /** provides the number of lines in the given text */
 export function count(text: string): number {

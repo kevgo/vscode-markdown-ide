@@ -1,4 +1,4 @@
-// This file contains helper functions for Markdown links.
+// helper functions for Markdown links
 
 /** removes all links in the given Markdown text*/
 export function remove(text: string): string {
