@@ -8,32 +8,36 @@ import * as links from "./helpers/links"
 export async function filesRenamed(
   e: vscode.FileRenameEvent
 ): Promise<void> {
-  // make sure the filesystem contains the up-to-date contents
+  // make sure the filesystem contains the up-to-date changes
+  // since we are looking at the filesystem contents
   await vscode.workspace.saveAll(false)
 
-  // update all links in all files
-  await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Window, title: "updating link targets", cancellable: false },
-    async () => {
-      const edit = new vscode.WorkspaceEdit()
-      for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
-        const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
-        let newContent = oldContent
-        for (const renamedFile of e.files) {
-          const oldTarget = path.relative(path.dirname(wsFile.fsPath), renamedFile.oldUri.fsPath)
-          const newTarget = path.relative(path.dirname(wsFile.fsPath), renamedFile.newUri.fsPath)
-          newContent = links.replaceTarget({ text: newContent, oldTarget, newTarget })
-        }
-        if (newContent === oldContent) {
-          continue
-        }
-        const range = new vscode.Range(
-          new vscode.Position(0, 0),
-          new vscode.Position(line.count(oldContent), 0)
-        )
-        edit.replace(wsFile, range, newContent)
+  const progressOpts: vscode.ProgressOptions = {
+    location: vscode.ProgressLocation.Window,
+    title: "updating link targets",
+    cancellable: false
+  }
+  await vscode.window.withProgress(progressOpts, async () => {
+    const edit = new vscode.WorkspaceEdit()
+    for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
+      const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
+      let newContent = oldContent
+      for (const renamedFile of e.files) {
+        newContent = links.replaceTarget({
+          text: newContent,
+          oldTarget: path.relative(path.dirname(wsFile.fsPath), renamedFile.oldUri.fsPath),
+          newTarget: path.relative(path.dirname(wsFile.fsPath), renamedFile.newUri.fsPath)
+        })
       }
-      await vscode.workspace.applyEdit(edit)
+      if (newContent === oldContent) {
+        continue
+      }
+      const range = new vscode.Range(
+        new vscode.Position(0, 0),
+        new vscode.Position(line.count(oldContent), 0)
+      )
+      edit.replace(wsFile, range, newContent)
     }
-  )
+    await vscode.workspace.applyEdit(edit)
+  })
 }

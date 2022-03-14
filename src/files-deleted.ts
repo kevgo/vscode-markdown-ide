@@ -8,32 +8,35 @@ import * as links from "./helpers/links"
 export async function filesDeleted(
   e: vscode.FileDeleteEvent
 ): Promise<void> {
-  // make sure the filesystem contains the up-to-date contents
+  // make sure the filesystem contains the up-to-date changes
+  // since we are looking at the filesystem contents
   await vscode.workspace.saveAll(false)
 
-  // update all links in all files
-  await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Window, title: "removing links", cancellable: false },
-    async () => {
-      const edit = new vscode.WorkspaceEdit()
-      for (const file of await vscode.workspace.findFiles("**/*.md")) {
-        const oldContent = await fs.readFile(file.fsPath, "utf8")
-        let newContent = oldContent
-        for (const deletedFile of e.files) {
-          const pathToDeleted = path.relative(path.dirname(file.fsPath), deletedFile.fsPath)
-          newContent = links.removeToTarget({ text: newContent, target: pathToDeleted })
-        }
-        if (newContent === oldContent) {
-          // didn't delete any links in this file --> move on to the next file
-          continue
-        }
-        const range = new vscode.Range(
-          new vscode.Position(0, 0),
-          new vscode.Position(line.count(oldContent), 0)
-        )
-        edit.replace(file, range, newContent)
+  const progressOpts: vscode.ProgressOptions = {
+    location: vscode.ProgressLocation.Window,
+    title: "removing links",
+    cancellable: false
+  }
+  await vscode.window.withProgress(progressOpts, async () => {
+    const edit = new vscode.WorkspaceEdit()
+    for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
+      const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
+      let newContent = oldContent
+      for (const deletedFile of e.files) {
+        newContent = links.removeToTarget({
+          text: newContent,
+          target: path.relative(path.dirname(wsFile.fsPath), deletedFile.fsPath)
+        })
       }
-      await vscode.workspace.applyEdit(edit)
+      if (newContent === oldContent) {
+        continue
+      }
+      const range = new vscode.Range(
+        new vscode.Position(0, 0),
+        new vscode.Position(line.count(oldContent), 0)
+      )
+      edit.replace(wsFile, range, newContent)
     }
-  )
+    await vscode.workspace.applyEdit(edit)
+  })
 }
