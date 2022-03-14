@@ -2,7 +2,7 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { firstLine } from "../helpers/first-line"
+import { first } from "../helpers/lines"
 import * as links from "../helpers/links"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
 
@@ -55,29 +55,29 @@ export function makeMdLink(
   debug: vscode.OutputChannel | null,
   titleRE: RegExp | null
 ): string {
-  const titleLine = firstLine(fileContent)
+  const titleLine = first(fileContent)
   if (titleRE == null) {
-    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.remove(removeLeadingPounds(titleLine))}](${fileName})`
   }
   const match = titleRE.exec(titleLine)
   if (match == null) {
-    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.remove(removeLeadingPounds(titleLine))}](${fileName})`
   }
   if (match.length < 2) {
     debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
     )
     debug?.show()
-    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.remove(removeLeadingPounds(titleLine))}](${fileName})`
   }
   if (match.length > 2) {
     debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
     )
     debug?.show()
-    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.remove(removeLeadingPounds(titleLine))}](${fileName})`
   }
-  return `[${links.removeAll(match[1])}](${fileName})`
+  return `[${links.remove(match[1])}](${fileName})`
 }
 
 export function makeImgLink(fileName: string): string {

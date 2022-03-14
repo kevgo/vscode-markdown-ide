@@ -10,7 +10,7 @@ suite("removeLink", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`${give} --> ${want}`, function() {
-      assert.equal(links.removeAll(give), want)
+      assert.equal(links.remove(give), want)
     })
   }
 })

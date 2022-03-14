@@ -1,5 +1,7 @@
+// This file contains helper functions for Markdown links.
+
 /** removes all links in the given Markdown text*/
-export function removeAll(text: string): string {
+export function remove(text: string): string {
   let result = text
   const matches = text.match(linkRE)
   if (matches == null) {

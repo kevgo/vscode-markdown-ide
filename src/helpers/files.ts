@@ -1,3 +1,5 @@
+// This file contains helper functions for filenames and extensions.
+
 const imgExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", "tiff"]
 
 /** indicates whether the given filename belongs to an image file */
