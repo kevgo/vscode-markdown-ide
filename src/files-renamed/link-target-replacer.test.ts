@@ -1,15 +1,12 @@
 import { strict as assert } from "assert"
 
-import { LinkTargetReplacer } from "./link-target-replacer"
+import { replaceLinkTarget } from "./link-target-replacer"
 
-suite("LinkReplacers", function() {
-  test("replacing two links", function() {
-    const replacer = new LinkTargetReplacer()
-    replacer.register("old1.md", "new1.md")
-    replacer.register("old2.md", "new2.md")
-    const give = "# Test\n\nlink to [file1](old1.md) and [file2](old2.md) and [another file](another.md)."
-    const want = "# Test\n\nlink to [file1](new1.md) and [file2](new2.md) and [another file](another.md)."
-    const have = replacer.process(give)
+suite("replaceLinkTarget", function() {
+  test("multiple matching links", function() {
+    const give = "# Test\n\nlink to [file1](old.md) and [file1 again](old.md) and [another file](another.md)."
+    const want = "# Test\n\nlink to [file1](new.md) and [file1 again](new.md) and [another file](another.md)."
+    const have = replaceLinkTarget(give, "old.md", "new.md")
     assert.equal(have, want)
   })
 })
