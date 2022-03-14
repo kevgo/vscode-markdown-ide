@@ -2,28 +2,30 @@ import { promises as fs } from "fs"
 import * as vscode from "vscode"
 
 import { lineCount } from "../helpers/line-count"
-import { LinkRemovers } from "./link-removers"
+import { LinkTargetReplacer } from "./link-target-replacer"
 
-export async function fileDeletedHandler(
-  e: vscode.FileDeleteEvent
+export async function filesRenamed(
+  e: vscode.FileRenameEvent
 ): Promise<void> {
   // make sure the filesystem contains the up-to-date contents
   await vscode.workspace.saveAll(false)
 
   // prepare
-  const removers = new LinkRemovers()
+  const replacer = new LinkTargetReplacer()
   for (const file of e.files) {
-    removers.register(vscode.workspace.asRelativePath(file.path))
+    const before = vscode.workspace.asRelativePath(file.oldUri)
+    const after = vscode.workspace.asRelativePath(file.newUri)
+    replacer.register(before, after)
   }
 
-  // update all links in all files
   await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Window, title: "removing links", cancellable: false },
+    { location: vscode.ProgressLocation.Window, title: "updating link targets", cancellable: false },
     async () => {
+      // update all links in all files
       const edit = new vscode.WorkspaceEdit()
       for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const oldContent = await fs.readFile(file.fsPath, "utf8")
-        const newContent = removers.process(oldContent)
+        const newContent = replacer.process(oldContent)
         if (newContent === oldContent) {
           continue
         }
