@@ -2,6 +2,19 @@ import { strict as assert } from "assert"
 
 import * as links from "./links"
 
+suite("removeLink", function() {
+  const tests = {
+    Foo: "Foo",
+    "A [Foo](foo.md) bar": "A Foo bar",
+    "A [Foo](foo.md) and a [bar](bar.md)": "A Foo and a bar"
+  }
+  for (const [give, want] of Object.entries(tests)) {
+    test(`${give} --> ${want}`, function() {
+      assert.equal(links.removeAll(give), want)
+    })
+  }
+})
+
 suite("removeLinkToTarget", function() {
   test("two matching links", function() {
     const give = "# Test\n\nlink to [file1](old.md) and [file2](old.md) and [another file](another.md)."

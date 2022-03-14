@@ -1,3 +1,22 @@
+const linkRE = /\[[^\]]*\]\([^)]*\)/g
+const titleRE = /\[([^\]]*)\]/
+/** removes all links in the given markdown text*/
+export function removeAll(text: string): string {
+  let result = text
+  const matches = text.match(linkRE)
+  if (matches == null) {
+    return text
+  }
+  for (const match of matches) {
+    const title = titleRE.exec(match)
+    if (title == null) {
+      continue
+    }
+    result = result.replace(match, title[1])
+  }
+  return result
+}
+
 /** removes all links to the given target from the given text */
 export function removeToTarget(args: { target: string; text: string }): string {
   const re = new RegExp(`\\[(.*?)\\]\\(${args.target}\\)`, "g")

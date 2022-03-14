@@ -3,8 +3,8 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import { firstLine } from "../helpers/first-line"
+import * as links from "../helpers/links"
 import { removeLeadingPounds } from "../helpers/remove-leading-pounds"
-import { removeLink } from "../helpers/remove-link"
 
 export async function makeMdLinks(
   dir: string,
@@ -57,27 +57,27 @@ export function makeMdLink(
 ): string {
   const titleLine = firstLine(fileContent)
   if (titleRE == null) {
-    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
   }
   const match = titleRE.exec(titleLine)
   if (match == null) {
-    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
   }
   if (match.length < 2) {
     debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
     )
     debug?.show()
-    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
   }
   if (match.length > 2) {
     debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
     )
     debug?.show()
-    return `[${removeLink(removeLeadingPounds(titleLine))}](${fileName})`
+    return `[${links.removeAll(removeLeadingPounds(titleLine))}](${fileName})`
   }
-  return `[${removeLink(match[1])}](${fileName})`
+  return `[${links.removeAll(match[1])}](${fileName})`
 }
 
 export function makeImgLink(fileName: string): string {
