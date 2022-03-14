@@ -15,15 +15,16 @@ suite("count", function() {
 })
 
 suite("first", function() {
-  test("single-line string", function() {
-    assert.equal(line.first("# Foo"), "# Foo")
-  })
-  test("multi-line string", function() {
-    assert.equal(line.first("# Foo\nbar"), "# Foo")
-  })
-  test("empty string", function() {
-    assert.equal(line.first(""), "")
-  })
+  const tests = {
+    "# Foo": "# Foo",
+    "# Foo\nbar": "# Foo",
+    "": ""
+  }
+  for (const [give, want] of Object.entries(tests)) {
+    test(`${give.replace(/\n/g, "\\n")} --> ${want}`, function() {
+      assert.equal(line.first(give), want)
+    })
+  }
 })
 
 suite("removeLeadingPounds", function() {
