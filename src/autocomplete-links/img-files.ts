@@ -1,12 +1,12 @@
 import { promises as fs } from "fs"
 
-import { isImageFile } from "../helpers/is-image-file"
+import * as files from "../helpers/files"
 
 /** provides the filenames of all images in the given directory */
 export async function imgFiles(dir: string): Promise<string[]> {
   const result: string[] = []
   for (const file of await fs.readdir(dir)) {
-    if (isImageFile(file)) {
+    if (files.isImage(file)) {
       result.push(file)
     }
   }
