@@ -8,8 +8,7 @@ import * as links from "./helpers/links"
 export async function filesDeleted(
   e: vscode.FileDeleteEvent
 ): Promise<void> {
-  // make sure the filesystem contains the up-to-date changes
-  // since we are looking at the filesystem contents
+  // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
   const progressOpts: vscode.ProgressOptions = {

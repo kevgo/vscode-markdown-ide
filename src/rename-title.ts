@@ -6,7 +6,7 @@ import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
 export async function renameTitle(): Promise<void> {
-  // make sure the filesystem contains the up-to-date contents
+  // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
   const editor = vscode.window.activeTextEditor
