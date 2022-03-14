@@ -26,6 +26,10 @@
         "markdownIDE.autocompleteTitleRegex": {
           "type": "string",
           "description": "A regular expression that captures the part of linked document titles to use as the link title."
+        },
+        "markdownIDE.tikibase.enabled": {
+          "type": "boolean",
+          "description": "Tikibase (https://github.com/kevgo/tikibase) is a linter for semantic knowledge bases in Markdown."
         }
       }
     }
