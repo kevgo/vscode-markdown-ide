@@ -20,11 +20,11 @@ export function markdown(args: {
 }): string {
   const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
   const result = `[${titleLine}](${args.fileName})`
-  if (args.titleRE == null) {
+  if (!args.titleRE) {
     return result
   }
   const match = args.titleRE.exec(titleLine)
-  if (match == null) {
+  if (!match) {
     return result
   }
   if (match.length < 2) {
