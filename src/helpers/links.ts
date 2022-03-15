@@ -1,4 +1,48 @@
+import * as vscode from "vscode"
+
+import * as line from "../helpers/line"
+
 // helper functions for Markdown links
+
+/** creates a Markdown link to the given image */
+export function image(fileName: string): string {
+  return `[](${fileName})`
+}
+
+/** creates a Markdown link to the file with the given name and content */
+export function markdown(args: {
+  /** vscode debug channel to print user guidance if the titleRE is wrong */
+  debug?: vscode.OutputChannel | null
+  fileContent: string
+  fileName: string
+  /** the regex to extract parts of the title */
+  titleRE?: RegExp | null
+}): string {
+  const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
+  const result = `[${titleLine}](${args.fileName})`
+  if (!args.titleRE) {
+    return result
+  }
+  const match = args.titleRE.exec(titleLine)
+  if (!match) {
+    return result
+  }
+  if (match.length < 2) {
+    args.debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${args.titleRE}" has no capture group`
+    )
+    args.debug?.show()
+    return result
+  }
+  if (match.length > 2) {
+    args.debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${args.titleRE}" has too many capture groups`
+    )
+    args.debug?.show()
+    return result
+  }
+  return `[${match[1]}](${args.fileName})`
+}
 
 /** removes all links in the given Markdown text*/
 export function remove(text: string): string {
