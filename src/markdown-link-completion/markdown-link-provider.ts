@@ -5,7 +5,7 @@ import * as vscode from "vscode"
 import { Configuration } from "../configuration"
 import * as files from "../helpers/files"
 import * as links from "../helpers/links"
-import { analyzeInput, LinkType } from "./analyze-input"
+import * as input from "./input"
 
 /** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
@@ -15,10 +15,10 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     if (!workspacePath) {
       return
     }
-    const { searchTerm, linkType } = analyzeInput(document.lineAt(position).text, position.character)
+    const { searchTerm, linkType } = input.analyze(document.lineAt(position).text, position.character)
     let links: string[]
     switch (linkType) {
-      case LinkType.MD:
+      case input.LinkType.MD:
         links = await makeMdLinks({
           wsRoot: workspacePath,
           document: document.fileName,
@@ -27,7 +27,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
           debug: vscode.window.createOutputChannel("Markdown IDE")
         })
         break
-      case LinkType.IMG:
+      case input.LinkType.IMG:
         links = makeImgLinks({
           filenames: await files.images(),
           searchTerm
