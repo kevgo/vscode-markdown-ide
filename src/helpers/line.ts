@@ -20,11 +20,12 @@ export function first(text: string): string {
 /** provides the content of the given line with leading # removed */
 export function removeLeadingPounds(line: string): string {
   // NOTE: implemented as a for low-level loop for performance reasons
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i]
-    if (c !== "#" && c !== " ") {
-      return line.substring(i)
-    }
+  let i = 0
+  while (line[i] === "#" && i < line.length) {
+    i++
   }
-  return ""
+  while (line[i] === " " && i < line.length) {
+    i++
+  }
+  return line.substring(i)
 }
