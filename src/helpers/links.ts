@@ -1,8 +1,44 @@
+import * as vscode from "vscode"
+
+import * as line from "../helpers/line"
+
 // helper functions for Markdown links
 
 /** creates a Markdown link to the given image */
 export function image(fileName: string): string {
   return `[](${fileName})`
+}
+
+/** creates a Markdown link to the file with the given name and content */
+export function markdown(args: {
+  debug?: vscode.OutputChannel | null
+  fileContent: string
+  fileName: string
+  titleRE?: RegExp | null
+}): string {
+  const titleLine = line.first(args.fileContent)
+  if (titleRE == null) {
+    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+  }
+  const match = titleRE.exec(titleLine)
+  if (match == null) {
+    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+  }
+  if (match.length < 2) {
+    args.debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
+    )
+    args.debug?.show()
+    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+  }
+  if (match.length > 2) {
+    args.debug?.appendLine(
+      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
+    )
+    args.debug?.show()
+    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+  }
+  return `[${remove(match[1])}](${args.fileName})`
 }
 
 /** removes all links in the given Markdown text*/
