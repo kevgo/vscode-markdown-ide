@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as filetype from "./filetype"
+import * as files from "./files"
 
 suite("isImage", function() {
   const tests = {
@@ -15,7 +15,19 @@ suite("isImage", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`${give} --> ${want}`, function() {
-      assert.equal(filetype.isImage(give), want, give)
+      assert.equal(files.isImage(give), want, give)
     })
   }
+})
+
+suite("markdown", function() {
+  test("with subdirectories", async function() {
+    const have = await files.markdown(".")
+    const want = [
+      "DEVELOPMENT.md",
+      "README.md",
+      "RELEASE_NOTES.md"
+    ]
+    assert.deepEqual(have, want)
+  })
 })
