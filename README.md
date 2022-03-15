@@ -46,7 +46,7 @@ You can configure this extension via settings in the VSCode Preferences pane.
 
 <a type="configurationOptions">
 
-- **autocompleteTitleRegex:** By default, the auto-completion feature of this
+- **autocomplete.titleRegex:** By default, the auto-completion feature of this
   extension creates links with the full title of the linked document. You can
   provide a regular expression with one capture group to use only parts of the
   document title. As an example, let's say you want to link to a document with
