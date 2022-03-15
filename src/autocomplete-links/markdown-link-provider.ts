@@ -37,10 +37,10 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
         debug
       )
     } else {
-      links = makeImgLinks(
-        await files.images(),
+      links = makeImgLinks({
+        filenames: await files.images(),
         searchTerm
-      )
+      })
     }
     const result: vscode.CompletionItem[] = []
     for (const link of links) {
