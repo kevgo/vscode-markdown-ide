@@ -56,4 +56,8 @@ You can configure this extension via settings in the VSCode Preferences pane.
   configuration option to `/\(([A-Z0-9]+)\)$/`, auto-completed links to this
   file are `[CPU](cpu.md)`.
 
+- **markdownIDE.tikibase.enabled:**
+  [Tikibase](https://github.com/kevgo/tikibase) is an advanced linter for
+  Markdown-based knowledge bases.
+
 </a>
