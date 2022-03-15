@@ -43,7 +43,7 @@ export function makeImgLinks(
     if (!filename.startsWith(searchTerm)) {
       continue
     }
-    result.push(makeImgLink(filename))
+    result.push(links.image(filename))
   }
   return result
 }
@@ -77,8 +77,4 @@ export function makeMdLink(
     return `[${links.remove(line.removeLeadingPounds(titleLine))}](${fileName})`
   }
   return `[${links.remove(match[1])}](${fileName})`
-}
-
-export function makeImgLink(fileName: string): string {
-  return `[](${fileName})`
 }

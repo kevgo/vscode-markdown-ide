@@ -1,5 +1,10 @@
 // helper functions for Markdown links
 
+/** creates a Markdown link to the given image */
+export function image(fileName: string): string {
+  return `[](${fileName})`
+}
+
 /** removes all links in the given Markdown text*/
 export function remove(text: string): string {
   for (const match of text.match(linkRE) || []) {

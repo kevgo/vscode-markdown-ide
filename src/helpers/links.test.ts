@@ -2,6 +2,14 @@ import { strict as assert } from "assert"
 
 import * as links from "./links"
 
+suite("image", function() {
+  test("valid filename", function() {
+    const have = links.image("foo.png")
+    const want = "[](foo.png)"
+    assert.equal(have, want)
+  })
+})
+
 suite("remove", function() {
   const tests = {
     "": "",
