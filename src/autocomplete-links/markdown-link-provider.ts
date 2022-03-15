@@ -13,7 +13,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       return
     }
     const titleRE = loadTitleRE()
-    const [searchTerm, linkType] = analyzeInput(document.lineAt(position).text, position.character)
+    const { searchTerm, linkType } = analyzeInput(document.lineAt(position).text, position.character)
     let links: string[]
     switch (linkType) {
       case LinkType.MD:
