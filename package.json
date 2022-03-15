@@ -29,7 +29,7 @@
         },
         "markdownIDE.tikibase.enabled": {
           "type": "boolean",
-          "description": "Tikibase (https://github.com/kevgo/tikibase) is a linter for semantic knowledge bases in Markdown."
+          "description": "Tikibase is a linter for Markdown-based knowledge bases."
         }
       }
     }
