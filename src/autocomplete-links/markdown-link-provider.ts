@@ -10,7 +10,8 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     document: vscode.TextDocument,
     position: vscode.Position
   ) {
-    if (vscode.workspace.rootPath == null) {
+    const wsRoot = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath
+    if (!wsRoot) {
       return
     }
 
@@ -30,7 +31,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     let links: string[]
     if (linkType === LinkType.MD) {
       links = await makeMdLinks({
-        wsRoot: vscode.workspace.rootPath,
+        wsRoot,
         document: document.fileName,
         relativeFilePaths: await files.markdown(),
         titleRE,
