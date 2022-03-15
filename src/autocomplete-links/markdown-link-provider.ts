@@ -7,12 +7,10 @@ import { makeImgLinks, makeMdLinks } from "./make-links"
 /** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
   async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-    const debug = vscode.window.createOutputChannel("Markdown IDE")
     const workspaceDir = getWorkspace()
     if (!workspaceDir) {
       return
     }
-    const titleRE = loadTitleRE()
     const { searchTerm, linkType } = analyzeInput(document.lineAt(position).text, position.character)
     let links: string[]
     switch (linkType) {
@@ -21,8 +19,8 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
           wsRoot: workspaceDir,
           document: document.fileName,
           relativeFilePaths: await files.markdown(),
-          titleRE,
-          debug
+          titleRE: loadTitleRE(),
+          debug: vscode.window.createOutputChannel("Markdown IDE")
         })
         break
       case LinkType.IMG:
