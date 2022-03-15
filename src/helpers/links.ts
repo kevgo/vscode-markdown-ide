@@ -16,29 +16,29 @@ export function markdown(args: {
   fileName: string
   titleRE?: RegExp | null
 }): string {
-  const titleLine = line.removeLeadingPounds(line.first(args.fileContent))
+  const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
   if (args.titleRE == null) {
-    return `[${remove(titleLine)}](${args.fileName})`
+    return `[${titleLine}](${args.fileName})`
   }
   const match = args.titleRE.exec(titleLine)
   if (match == null) {
-    return `[${remove(titleLine)}](${args.fileName})`
+    return `[${titleLine}](${args.fileName})`
   }
   if (match.length < 2) {
     args.debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex": the regular expression "${args.titleRE}" has no capture group`
     )
     args.debug?.show()
-    return `[${remove(titleLine)}](${args.fileName})`
+    return `[${titleLine}](${args.fileName})`
   }
   if (match.length > 2) {
     args.debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${args.titleRE}" has too many capture groups`
     )
     args.debug?.show()
-    return `[${remove(titleLine)}](${args.fileName})`
+    return `[${titleLine}](${args.fileName})`
   }
-  return `[${remove(match[1])}](${args.fileName})`
+  return `[${match[1]}](${args.fileName})`
 }
 
 /** removes all links in the given Markdown text*/
