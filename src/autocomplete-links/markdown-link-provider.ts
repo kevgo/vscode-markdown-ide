@@ -10,8 +10,20 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     document: vscode.TextDocument,
     position: vscode.Position
   ) {
-    const wsRoot = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath
-    if (!wsRoot) {
+    const debug = vscode.window.createOutputChannel("Markdown IDE")
+    const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
+    if (!currentFilePath) {
+      return
+    }
+    let wsRoot = ""
+    for (const wsFolder of vscode.workspace.workspaceFolders || []) {
+      const wsPath = wsFolder.uri.fsPath
+      if (currentFilePath.startsWith(wsPath)) {
+        wsRoot = wsPath
+        break
+      }
+    }
+    if (wsRoot === "") {
       return
     }
 
@@ -22,7 +34,6 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     if (reS != null && reS !== "") {
       titleRE = new RegExp(reS)
     }
-    const debug = vscode.window.createOutputChannel("Markdown IDE")
 
     const [searchTerm, linkType] = analyzeInput(
       document.lineAt(position).text,

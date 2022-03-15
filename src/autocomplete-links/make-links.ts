@@ -13,17 +13,19 @@ export async function makeMdLinks(args: {
 }): Promise<string[]> {
   // NOTE: for performance reasons, we start loading all file contents concurrently first
   // and then assemble the result as the individual file contents become available.
-  const filePromises: Array<{ content: Promise<string>; relativePath: string }> = []
+  const filePromises: Array<{ content: Promise<string>; fullPath: string }> = []
   for (const relativeFilePath of args.relativeFilePaths) {
+    const fullPath = path.join(args.wsRoot, relativeFilePath)
     filePromises.push({
-      relativePath: relativeFilePath,
-      content: fs.readFile(path.join(args.wsRoot, relativeFilePath), "utf-8")
+      fullPath,
+      content: fs.readFile(fullPath, "utf-8")
     })
   }
+  const documentDir = path.dirname(args.document)
   const result = []
   for (const file of filePromises) {
     result.push(links.markdown({
-      fileName: path.relative(path.dirname(args.document), file.relativePath),
+      fileName: path.relative(documentDir, file.fullPath),
       fileContent: await file.content,
       debug: args.debug,
       titleRE: args.titleRE
