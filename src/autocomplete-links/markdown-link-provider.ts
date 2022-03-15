@@ -29,13 +29,13 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     )
     let links: string[]
     if (linkType === LinkType.MD) {
-      links = await makeMdLinks(
-        vscode.workspace.rootPath,
-        document.fileName,
-        await files.markdown(),
+      links = await makeMdLinks({
+        wsRoot: vscode.workspace.rootPath,
+        document: document.fileName,
+        relativeFilePaths: await files.markdown(),
         titleRE,
         debug
-      )
+      })
     } else {
       links = makeImgLinks({
         filenames: await files.images(),

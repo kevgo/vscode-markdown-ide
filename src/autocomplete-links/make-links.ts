@@ -4,29 +4,29 @@ import * as vscode from "vscode"
 
 import * as links from "../helpers/links"
 
-export async function makeMdLinks(
-  wsRoot: string,
-  document: string,
-  relativeFilePaths: string[],
-  titleRE: RegExp | null,
+export async function makeMdLinks(args: {
   debug: vscode.OutputChannel
-): Promise<string[]> {
+  document: string
+  relativeFilePaths: string[]
+  titleRE: RegExp | null
+  wsRoot: string
+}): Promise<string[]> {
   // NOTE: for performance reasons, we start loading all file contents concurrently first
   // and then assemble the result as the individual file contents become available.
   const filePromises: Array<{ content: Promise<string>; relativePath: string }> = []
-  for (const relativeFilePath of relativeFilePaths) {
+  for (const relativeFilePath of args.relativeFilePaths) {
     filePromises.push({
       relativePath: relativeFilePath,
-      content: fs.readFile(path.join(wsRoot, relativeFilePath), "utf-8")
+      content: fs.readFile(path.join(args.wsRoot, relativeFilePath), "utf-8")
     })
   }
   const result = []
   for (const file of filePromises) {
     result.push(links.markdown({
-      fileName: path.relative(path.dirname(document), file.relativePath),
+      fileName: path.relative(path.dirname(args.document), file.relativePath),
       fileContent: await file.content,
-      debug,
-      titleRE
+      debug: args.debug,
+      titleRE: args.titleRE
     }))
   }
   return result
