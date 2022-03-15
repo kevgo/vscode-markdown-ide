@@ -33,7 +33,6 @@ export async function makeMdLinks(
 }
 
 export function makeImgLinks(
-  dir: string,
   filenames: string[],
   searchTerm: string
 ): string[] {

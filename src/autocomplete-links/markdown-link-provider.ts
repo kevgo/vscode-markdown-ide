@@ -38,7 +38,6 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       )
     } else {
       links = makeImgLinks(
-        vscode.workspace.rootPath,
         await files.images(),
         searchTerm
       )
