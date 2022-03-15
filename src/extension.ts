@@ -1,8 +1,8 @@
 import * as vscode from "vscode"
 
-import { markdownLinkCompletionProvider } from "./autocomplete-links/markdown-link-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
+import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
 import { renameTitle } from "./rename-title"
 
 export function activate(context: vscode.ExtensionContext): void {

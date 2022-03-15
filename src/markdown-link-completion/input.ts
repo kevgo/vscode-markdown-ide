@@ -8,7 +8,7 @@ export enum LinkType {
  * provides the link type and search term that the user is currently entering
  * into the given line at the given position.
  */
-export function analyzeInput(line: string, pos: number): { linkType: LinkType; searchTerm: string } {
+export function analyze(line: string, pos: number): { linkType: LinkType; searchTerm: string } {
   let linkText = ""
   for (let i = pos - 1; i > 0; i--) {
     const currentChar = line[i]
