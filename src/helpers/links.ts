@@ -16,27 +16,27 @@ export function markdown(args: {
   fileName: string
   titleRE?: RegExp | null
 }): string {
-  const titleLine = line.first(args.fileContent)
-  if (titleRE == null) {
-    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+  const titleLine = line.removeLeadingPounds(line.first(args.fileContent))
+  if (args.titleRE == null) {
+    return `[${remove(titleLine)}](${args.fileName})`
   }
-  const match = titleRE.exec(titleLine)
+  const match = args.titleRE.exec(titleLine)
   if (match == null) {
-    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+    return `[${remove(titleLine)}](${args.fileName})`
   }
   if (match.length < 2) {
     args.debug?.appendLine(
-      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
+      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${args.titleRE}" has no capture group`
     )
     args.debug?.show()
-    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+    return `[${remove(titleLine)}](${args.fileName})`
   }
   if (match.length > 2) {
     args.debug?.appendLine(
-      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
+      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${args.titleRE}" has too many capture groups`
     )
     args.debug?.show()
-    return `[${remove(line.removeLeadingPounds(titleLine))}](${args.fileName})`
+    return `[${remove(titleLine)}](${args.fileName})`
   }
   return `[${remove(match[1])}](${args.fileName})`
 }
