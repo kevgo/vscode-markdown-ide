@@ -17,26 +17,27 @@ export function markdown(args: {
   titleRE?: RegExp | null
 }): string {
   const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
+  const result = `[${titleLine}](${args.fileName})`
   if (args.titleRE == null) {
-    return `[${titleLine}](${args.fileName})`
+    return result
   }
   const match = args.titleRE.exec(titleLine)
   if (match == null) {
-    return `[${titleLine}](${args.fileName})`
+    return result
   }
   if (match.length < 2) {
     args.debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex": the regular expression "${args.titleRE}" has no capture group`
     )
     args.debug?.show()
-    return `[${titleLine}](${args.fileName})`
+    return result
   }
   if (match.length > 2) {
     args.debug?.appendLine(
       `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${args.titleRE}" has too many capture groups`
     )
     args.debug?.show()
-    return `[${titleLine}](${args.fileName})`
+    return result
   }
   return `[${match[1]}](${args.fileName})`
 }
