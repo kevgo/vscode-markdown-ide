@@ -2,83 +2,44 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as line from "../helpers/line"
 import * as links from "../helpers/links"
 
-export async function makeMdLinks(
-  dir: string,
-  document: string,
-  allFiles: string[],
-  titleRE: RegExp | null,
-  debug: vscode.OutputChannel | null
-): Promise<string[]> {
-  const result: string[] = []
-
-  function linkToFile(
-    filePath: string,
-    debug: vscode.OutputChannel | null,
-    content: string
-  ): void {
-    const relativeFile = path.relative(path.dirname(document), filePath)
-    result.push(makeMdLink(relativeFile, content, debug, titleRE))
+export async function makeMdLinks(args: {
+  debug: vscode.OutputChannel
+  document: string
+  relativeFilePaths: string[]
+  titleRE: RegExp | undefined
+  wsRoot: string
+}): Promise<string[]> {
+  // NOTE: for performance reasons, we start loading all file contents concurrently first
+  // and then assemble the result as the individual file contents become available.
+  const filePromises: Array<{ content: Promise<string>; fullPath: string }> = []
+  for (const relativeFilePath of args.relativeFilePaths) {
+    const fullPath = path.join(args.wsRoot, relativeFilePath)
+    filePromises.push({
+      fullPath,
+      content: fs.readFile(fullPath, "utf-8")
+    })
   }
-  const operations = allFiles
-    .map((filename) => path.join(dir, filename))
-    .map((filePath) =>
-      fs
-        .readFile(filePath, "utf-8")
-        .then(linkToFile.bind(null, filePath, debug))
-    )
-  await Promise.all(operations)
+  const documentDir = path.dirname(args.document)
+  const result = []
+  for (const file of filePromises) {
+    result.push(links.markdown({
+      fileName: path.relative(documentDir, file.fullPath),
+      fileContent: await file.content,
+      debug: args.debug,
+      titleRE: args.titleRE
+    }))
+  }
   return result
 }
 
-export function makeImgLinks(
-  dir: string,
-  filenames: string[],
-  searchTerm: string
-): string[] {
+export function makeImgLinks(args: { filenames: string[]; searchTerm: string }): string[] {
   const result: string[] = []
-  for (const filename of filenames) {
-    if (!filename.startsWith(searchTerm)) {
-      continue
+  for (const filename of args.filenames) {
+    if (filename.startsWith(args.searchTerm)) {
+      result.push(links.image(filename))
     }
-    result.push(makeImgLink(filename))
   }
   return result
-}
-
-export function makeMdLink(
-  fileName: string,
-  fileContent: string,
-  debug: vscode.OutputChannel | null,
-  titleRE: RegExp | null
-): string {
-  const titleLine = line.first(fileContent)
-  if (titleRE == null) {
-    return `[${links.remove(line.removeLeadingPounds(titleLine))}](${fileName})`
-  }
-  const match = titleRE.exec(titleLine)
-  if (match == null) {
-    return `[${links.remove(line.removeLeadingPounds(titleLine))}](${fileName})`
-  }
-  if (match.length < 2) {
-    debug?.appendLine(
-      `Error in configuration setting "autocompleteTitleRegex": the regular expression "${titleRE}" has no capture group`
-    )
-    debug?.show()
-    return `[${links.remove(line.removeLeadingPounds(titleLine))}](${fileName})`
-  }
-  if (match.length > 2) {
-    debug?.appendLine(
-      `Error in configuration setting "autocompleteTitleRegex":  the regular expression "${titleRE}" has too many capture groups`
-    )
-    debug?.show()
-    return `[${links.remove(line.removeLeadingPounds(titleLine))}](${fileName})`
-  }
-  return `[${links.remove(match[1])}](${fileName})`
-}
-
-export function makeImgLink(fileName: string): string {
-  return `[](${fileName})`
 }

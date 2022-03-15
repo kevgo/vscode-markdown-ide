@@ -6,52 +6,64 @@ import { makeImgLinks, makeMdLinks } from "./make-links"
 
 /** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
-  async provideCompletionItems(
-    document: vscode.TextDocument,
-    position: vscode.Position
-  ) {
-    if (vscode.workspace.rootPath == null) {
+  async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+    const workspaceDir = getWorkspace()
+    if (!workspaceDir) {
       return
     }
-
-    // load configuration
-    const config = vscode.workspace.getConfiguration("markdownIDE")
-    let titleRE = null
-    const reS = config.get<string>("autocomplete.titleRegex")
-    if (reS != null && reS !== "") {
-      titleRE = new RegExp(reS)
-    }
-    const debug = vscode.window.createOutputChannel("Markdown IDE")
-
-    const [searchTerm, linkType] = analyzeInput(
-      document.lineAt(position).text,
-      position.character
-    )
+    const { searchTerm, linkType } = analyzeInput(document.lineAt(position).text, position.character)
     let links: string[]
-    if (linkType === LinkType.MD) {
-      links = await makeMdLinks(
-        vscode.workspace.rootPath,
-        document.fileName,
-        await files.markdown(),
-        titleRE,
-        debug
-      )
-    } else {
-      links = makeImgLinks(
-        vscode.workspace.rootPath,
-        await files.images(),
-        searchTerm
-      )
+    switch (linkType) {
+      case LinkType.MD:
+        links = await makeMdLinks({
+          wsRoot: workspaceDir,
+          document: document.fileName,
+          relativeFilePaths: await files.markdown(),
+          titleRE: loadTitleRE(),
+          debug: vscode.window.createOutputChannel("Markdown IDE")
+        })
+        break
+      case LinkType.IMG:
+        links = makeImgLinks({
+          filenames: await files.images(),
+          searchTerm
+        })
+        break
+      default:
+        throw new Error(`Unknown link type: ${linkType}`)
     }
     const result: vscode.CompletionItem[] = []
     for (const link of links) {
       result.push(
         new vscode.CompletionItem(
-          link.substr(1),
+          link.substring(1),
           vscode.CompletionItemKind.Text
         )
       )
     }
     return result
+  }
+}
+
+/** provides the active VSCode workspace path */
+function getWorkspace(): string | undefined {
+  const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
+  if (!currentFilePath) {
+    return
+  }
+  for (const wsFolder of vscode.workspace.workspaceFolders || []) {
+    const wsPath = wsFolder.uri.fsPath
+    if (currentFilePath.startsWith(wsPath)) {
+      return wsPath
+    }
+  }
+}
+
+/** provides the titleRegex configuration setting */
+function loadTitleRE(): RegExp | undefined {
+  const config = vscode.workspace.getConfiguration("markdownIDE")
+  const setting = config.get<string>("autocomplete.titleRegex")
+  if (setting && setting.length > 0) {
+    return new RegExp(setting)
   }
 }
