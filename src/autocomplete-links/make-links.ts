@@ -37,10 +37,9 @@ export async function makeMdLinks(args: {
 export function makeImgLinks(args: { filenames: string[]; searchTerm: string }): string[] {
   const result: string[] = []
   for (const filename of args.filenames) {
-    if (!filename.startsWith(args.searchTerm)) {
-      continue
+    if (filename.startsWith(args.searchTerm)) {
+      result.push(links.image(filename))
     }
-    result.push(links.image(filename))
   }
   return result
 }
