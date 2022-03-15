@@ -1,5 +1,6 @@
 import * as vscode from "vscode"
 
+import { Configuration } from "../configuration"
 import * as files from "../helpers/files"
 import { analyzeInput, LinkType } from "./analyze-input"
 import { makeImgLinks, makeMdLinks } from "./make-links"
@@ -7,8 +8,9 @@ import { makeImgLinks, makeMdLinks } from "./make-links"
 /** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
   async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-    const workspaceDir = getWorkspace()
-    if (!workspaceDir) {
+    const config = new Configuration()
+    const workspacePath = config.workspacePath()
+    if (!workspacePath) {
       return
     }
     const { searchTerm, linkType } = analyzeInput(document.lineAt(position).text, position.character)
@@ -16,10 +18,10 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     switch (linkType) {
       case LinkType.MD:
         links = await makeMdLinks({
-          wsRoot: workspaceDir,
+          wsRoot: workspacePath,
           document: document.fileName,
           relativeFilePaths: await files.markdown(),
-          titleRE: loadTitleRE(),
+          titleRE: config.titleRegExp(),
           debug: vscode.window.createOutputChannel("Markdown IDE")
         })
         break
@@ -42,28 +44,5 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       )
     }
     return result
-  }
-}
-
-/** provides the active VSCode workspace path */
-function getWorkspace(): string | undefined {
-  const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
-  if (!currentFilePath) {
-    return
-  }
-  for (const wsFolder of vscode.workspace.workspaceFolders || []) {
-    const wsPath = wsFolder.uri.fsPath
-    if (currentFilePath.startsWith(wsPath)) {
-      return wsPath
-    }
-  }
-}
-
-/** provides the titleRegex configuration setting */
-function loadTitleRE(): RegExp | undefined {
-  const config = vscode.workspace.getConfiguration("markdownIDE")
-  const setting = config.get<string>("autocomplete.titleRegex")
-  if (setting && setting.length > 0) {
-    return new RegExp(setting)
   }
 }
