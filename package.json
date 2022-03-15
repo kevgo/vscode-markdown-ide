@@ -23,7 +23,7 @@
     "configuration": {
       "title": "Markdown IDE",
       "properties": {
-        "markdownIDE.autocompleteTitleRegex": {
+        "markdownIDE.autocomplete.titleRegex": {
           "type": "string",
           "description": "A regular expression that captures the part of linked document titles to use as the link title."
         },
