@@ -8,20 +8,17 @@ import { makeImgLinks, makeMdLinks } from "./make-links"
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
   async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
     const debug = vscode.window.createOutputChannel("Markdown IDE")
-    const wsRoot = getWsRoot()
-    if (!wsRoot) {
+    const workspaceDir = getWorkspace()
+    if (!workspaceDir) {
       return
     }
     const titleRE = loadTitleRE()
-    const [searchTerm, linkType] = analyzeInput(
-      document.lineAt(position).text,
-      position.character
-    )
+    const [searchTerm, linkType] = analyzeInput(document.lineAt(position).text, position.character)
     let links: string[]
     switch (linkType) {
       case LinkType.MD:
         links = await makeMdLinks({
-          wsRoot,
+          wsRoot: workspaceDir,
           document: document.fileName,
           relativeFilePaths: await files.markdown(),
           titleRE,
@@ -41,7 +38,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     for (const link of links) {
       result.push(
         new vscode.CompletionItem(
-          link.substr(1),
+          link.substring(1),
           vscode.CompletionItemKind.Text
         )
       )
@@ -51,7 +48,7 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
 }
 
 /** provides the active VSCode workspace path */
-function getWsRoot(): string | undefined {
+function getWorkspace(): string | undefined {
   const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
   if (!currentFilePath) {
     return
