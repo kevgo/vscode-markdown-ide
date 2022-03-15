@@ -6,24 +6,10 @@ import { makeImgLinks, makeMdLinks } from "./make-links"
 
 /** Completion provider for MarkdownLinks */
 export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
-  async provideCompletionItems(
-    document: vscode.TextDocument,
-    position: vscode.Position
-  ) {
+  async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
     const debug = vscode.window.createOutputChannel("Markdown IDE")
-    const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
-    if (!currentFilePath) {
-      return
-    }
-    let wsRoot = ""
-    for (const wsFolder of vscode.workspace.workspaceFolders || []) {
-      const wsPath = wsFolder.uri.fsPath
-      if (currentFilePath.startsWith(wsPath)) {
-        wsRoot = wsPath
-        break
-      }
-    }
-    if (wsRoot === "") {
+    const wsRoot = getWsRoot()
+    if (!wsRoot) {
       return
     }
 
@@ -64,5 +50,19 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
       )
     }
     return result
+  }
+}
+
+/** provides the active VSCode workspace path */
+function getWsRoot(): string | undefined {
+  const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
+  if (!currentFilePath) {
+    return
+  }
+  for (const wsFolder of vscode.workspace.workspaceFolders || []) {
+    const wsPath = wsFolder.uri.fsPath
+    if (currentFilePath.startsWith(wsPath)) {
+      return wsPath
+    }
   }
 }
