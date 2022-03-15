@@ -12,33 +12,30 @@ export const markdownLinkCompletionProvider: vscode.CompletionItemProvider = {
     if (!wsRoot) {
       return
     }
-
-    // load configuration
-    const config = vscode.workspace.getConfiguration("markdownIDE")
-    let titleRE = null
-    const reS = config.get<string>("autocomplete.titleRegex")
-    if (reS != null && reS !== "") {
-      titleRE = new RegExp(reS)
-    }
-
+    const titleRE = loadTitleRE()
     const [searchTerm, linkType] = analyzeInput(
       document.lineAt(position).text,
       position.character
     )
     let links: string[]
-    if (linkType === LinkType.MD) {
-      links = await makeMdLinks({
-        wsRoot,
-        document: document.fileName,
-        relativeFilePaths: await files.markdown(),
-        titleRE,
-        debug
-      })
-    } else {
-      links = makeImgLinks({
-        filenames: await files.images(),
-        searchTerm
-      })
+    switch (linkType) {
+      case LinkType.MD:
+        links = await makeMdLinks({
+          wsRoot,
+          document: document.fileName,
+          relativeFilePaths: await files.markdown(),
+          titleRE,
+          debug
+        })
+        break
+      case LinkType.IMG:
+        links = makeImgLinks({
+          filenames: await files.images(),
+          searchTerm
+        })
+        break
+      default:
+        throw new Error(`Unknown link type: ${linkType}`)
     }
     const result: vscode.CompletionItem[] = []
     for (const link of links) {
@@ -64,5 +61,14 @@ function getWsRoot(): string | undefined {
     if (currentFilePath.startsWith(wsPath)) {
       return wsPath
     }
+  }
+}
+
+/** provides the titleRegex configuration setting */
+function loadTitleRE(): RegExp | undefined {
+  const config = vscode.workspace.getConfiguration("markdownIDE")
+  const setting = config.get<string>("autocomplete.titleRegex")
+  if (setting && setting.length > 0) {
+    return new RegExp(setting)
   }
 }

@@ -8,7 +8,7 @@ export async function makeMdLinks(args: {
   debug: vscode.OutputChannel
   document: string
   relativeFilePaths: string[]
-  titleRE: RegExp | null
+  titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<string[]> {
   // NOTE: for performance reasons, we start loading all file contents concurrently first
