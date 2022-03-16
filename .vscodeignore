@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# ignore folders starting with a period
+.*/
+
+documentation/
+out/**/*.test.js
+out/test/*
+src/
+text-run/
