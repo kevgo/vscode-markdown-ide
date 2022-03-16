@@ -14,7 +14,7 @@ fix:  # auto-corrects all formatting issues
 	dprint fmt
 
 help:   # shows all available Make commands
-	cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
+	cat Makefile | grep '^[^ ]*:' | grep -v '.PHONY' | grep -v '.SILENT' | grep -v help | sed 's/:.*#/#/' | column -s "#" -t
 
 lint:  # runs all linters
 	${CURDIR}/node_modules/.bin/eslint . --ext .ts & \
@@ -22,7 +22,7 @@ lint:  # runs all linters
 	git diff --check & \
 	wait
 
-list-shipped-files:  # lists all the files that will get shipped in the compiled extension
+list-shipped-files:  # lists all the files that will get shipped in the compiled extension, edit .vscodeignore to change
 	vsce ls
 
 package:  # package the extension for local installation

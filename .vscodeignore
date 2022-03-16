@@ -1,9 +1,8 @@
-# Ignore everything
+# This file defines which files end up in the compiled .vsix file.
+# Test this configuration by running "make list-shipped-files.
+
 *
-
-# ignore folders starting with a period
 .*/
-
 documentation/
 out/**/*.test.js
 out/test/*
