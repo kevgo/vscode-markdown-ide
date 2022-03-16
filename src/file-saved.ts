@@ -2,10 +2,10 @@ import * as vscode from "vscode"
 
 import * as tikibase from "./tikibase"
 
-type Listener = (e: vscode.TextDocument) => any
+type Listener = (e: vscode.TextDocument) => void
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
-export function callback(args: { debug: vscode.OutputChannel; workspacePath: string }): Listener {
+export function createCb(args: { debug: vscode.OutputChannel; workspacePath: string }): Listener {
   const handler = new SaveEventHandler(args)
   return handler.fileSaved.bind(handler)
 }

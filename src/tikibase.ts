@@ -1,7 +1,5 @@
 import * as childProcess from "child_process"
-import * as util from "util"
 import * as vscode from "vscode"
-const execFile = util.promisify(childProcess.execFile)
 
 export async function run(
   args: { debug?: vscode.OutputChannel; opts: childProcess.ExecFileOptions }
@@ -10,13 +8,29 @@ export async function run(
   const output = await exec(args.opts)
   args.debug?.appendLine("TIKIBASE OUTPUT:")
   args.debug?.appendLine(output)
-  return parse(await exec(args.opts))
+  return parse(output)
 }
 
 /** runs the Tikibase binary and provides the output */
-async function exec(opts: childProcess.ExecFileOptions): Promise<string> {
-  const { stdout, stderr } = await execFile("tikibase", opts)
-  return stdout + stderr
+function exec(opts: childProcess.ExecFileOptions): Promise<string> {
+  return new Promise((resolve, reject) => {
+    childProcess.execFile("tikibase", ["c"], opts, (error, stdout, stderr) => {
+      if (error?.code === "ENOENT") {
+        vscode.window.showErrorMessage(
+          "Tikibase is enabled but the tikibase binary is not in the path."
+        ).then(
+          () => {
+            reject(error)
+          },
+          () => {
+            // ignore errors showing the error message
+          }
+        )
+      } else {
+        resolve(stdout + stderr)
+      }
+    })
+  })
 }
 
 export interface Issue {

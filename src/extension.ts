@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
   // save file --> run Tikibase linter
-  vscode.workspace.onDidSaveTextDocument(fileSaved.callback({ debug, workspacePath }))
+  vscode.workspace.onDidSaveTextDocument(fileSaved.createCb({ debug, workspacePath }))
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
