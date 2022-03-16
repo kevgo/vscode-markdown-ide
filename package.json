@@ -64,6 +64,7 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
+  "files": ["out/**/!(*.test).js", "!out/test/*"],
   "main": "./out/extension.js",
   "license": "ISC",
   "scripts": {
