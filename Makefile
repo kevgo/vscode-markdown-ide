@@ -48,7 +48,7 @@ test:  # runs all the tests
 test-ci: build lint unit doc  # runs all the tests on ci
 
 unit: build  # runs the unit tests
-	node out/run_tests.js
+	node out/test/main.js
 
 update:  # updates all dependencies
 	yarn upgrade --latest
