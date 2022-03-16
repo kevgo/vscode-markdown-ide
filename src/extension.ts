@@ -34,13 +34,4 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
-
-  // if (vscode.window.activeTextEditor) {
-  //   tikibase.updateDiagnostics(vscode.window.activeTextEditor.document, collection)
-  // }
-  // context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(editor => {
-  //   if (editor) {
-  //     tikibase.updateDiagnostics(editor.document, collection)
-  //   }
-  // }))
 }

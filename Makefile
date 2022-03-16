@@ -47,8 +47,8 @@ test:  # runs all the tests
 
 test-ci: build lint unit doc  # runs all the tests on ci
 
-unit:  # runs the unit tests
-	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
+unit: build  # runs the unit tests
+	node out/run_tests.js
 
 update:  # updates all dependencies
 	yarn upgrade --latest

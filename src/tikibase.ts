@@ -1,6 +1,7 @@
 import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
+/** runs the Tikibase binary and provides {@link Issue}s found */
 export async function run(
   args: { debug?: vscode.OutputChannel; opts: childProcess.ExecFileOptions }
 ): Promise<Issue[]> {
@@ -27,11 +28,13 @@ function exec(opts: childProcess.ExecFileOptions): Promise<string> {
   })
 }
 
+/** Issue represents an issue that Tikibase found */
 export interface Issue {
   diagnostics: vscode.Diagnostic[]
   file: vscode.Uri
 }
 
+/** parses the given Tikibase output into {@link Issue}s */
 export function parse(output: string): Issue[] {
   return []
 }
