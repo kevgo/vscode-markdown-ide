@@ -22,6 +22,9 @@ lint:  # runs all linters
 	git diff --check & \
 	wait
 
+list-shipped-files:  # lists all the files that will get shipped in the compiled extension, edit .vscodeignore to change
+	vsce ls
+
 package:  # package the extension for local installation
 	vsce package
 
