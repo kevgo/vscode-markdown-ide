@@ -14,9 +14,11 @@ export async function run(
 /** runs the Tikibase binary and provides the output */
 function exec(opts: childProcess.ExecFileOptions): Promise<string> {
   return new Promise((resolve, reject) => {
-    childProcess.execFile("tikibae", ["c"], opts, function(error, stdout, stderr) {
+    childProcess.execFile("tikibase", ["c"], opts, function(error, stdout, stderr) {
       if (error?.code === "ENOENT") {
-        vscode.window.setStatusBarMessage("Tikibase is enabled but the tikibase binary is not in the path.", 5000)
+        void vscode.window.showErrorMessage(
+          "Tikibase is enabled but the tikibase binary is not in the path."
+        )
         reject()
         return
       }
