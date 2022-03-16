@@ -1,6 +1,9 @@
 import * as vscodeTestElectron from "@vscode/test-electron"
 import * as path from "path"
 
+// runs the unit tests inside VSCode's Extension Development Host
+// so that the "vscode" module is available
+
 async function main() {
   try {
     await vscodeTestElectron.runTests({
