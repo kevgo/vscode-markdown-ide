@@ -5,7 +5,7 @@ async function main() {
   try {
     await vscodeTestElectron.runTests({
       extensionDevelopmentPath: path.resolve(__dirname, "../../"),
-      extensionTestsPath: path.resolve(__dirname, "./run_mocha")
+      extensionTestsPath: path.resolve(__dirname, "run_mocha")
     })
   } catch (err) {
     console.error("Failed to run tests")
