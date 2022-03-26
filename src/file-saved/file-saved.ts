@@ -1,7 +1,6 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { groupByFile } from "./group-by-file"
 import * as tikibase from "./tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
@@ -27,7 +26,7 @@ class SaveEventHandler {
     this.collection.clear()
     groupByFile(errorMessages).forEach((messagesForFile, file) => {
       const uri = vscode.Uri.file(path.join(this.workspacePath, file))
-      const diagnostics: vscode.Diagnostic[] = messagesForFile.map((message) => {
+      const diagnostics: vscode.Diagnostic[] = messagesForFile.map((message: tikibase.Message) => {
         return {
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
@@ -37,4 +36,18 @@ class SaveEventHandler {
       this.collection.set(uri, diagnostics)
     })
   }
+}
+
+/** groups the given messages by file */
+export function groupByFile(messages: tikibase.Message[]): Map<string, tikibase.Message[]> {
+  const result: Map<string, tikibase.Message[]> = new Map()
+  for (const message of messages) {
+    const messagesForFile = result.get(message.file)
+    if (messagesForFile) {
+      messagesForFile.push(message)
+    } else {
+      result.set(message.file, [message])
+    }
+  }
+  return result
 }

@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import { groupByFile } from "./group-by-file"
+import { groupByFile } from "./file-saved"
 import { Message } from "./tikibase"
 
 suite("groupByFile", function() {
