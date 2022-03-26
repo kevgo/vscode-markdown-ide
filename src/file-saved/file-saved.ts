@@ -5,7 +5,7 @@ import * as vscode from "vscode"
 import { groupByFile } from "./group-by-file"
 import * as tikibase from "./tikibase"
 
-type Listener = (e: vscode.TextDocument) => void
+type Listener = () => void
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCb(args: { debug: vscode.OutputChannel; workspacePath: string }): Listener {
