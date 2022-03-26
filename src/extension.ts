@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext): void {
   const fileSaveCallback = fileSaved.createCb({ debug, workspacePath })
   vscode.workspace.onDidSaveTextDocument(fileSaveCallback)
   // run the linter now to show Markdown document issues on VSCode startup
-  // @ts-ignore
+  // @ts-ignore: fileSaveCallback doesn't need the current document
   fileSaveCallback(vscode.window.activeTextEditor?.document)
 
   // rename document title --> update links with the old document title
