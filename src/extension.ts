@@ -30,10 +30,10 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
   // save file --> run Tikibase linter
-  const fileSaveCallback = fileSaved.createCb({ debug, workspacePath })
-  vscode.workspace.onDidSaveTextDocument(fileSaveCallback)
+  const fileSaveCb = fileSaved.createCallback({ debug, workspacePath })
+  vscode.workspace.onDidSaveTextDocument(fileSaveCb)
   // run the linter now to show Markdown document issues on VSCode startup
-  fileSaveCallback()
+  fileSaveCb()
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
