@@ -12,6 +12,7 @@
   },
   "includes": ["**/*.{ts,json,md}"],
   "excludes": [
+    ".vscode-test",
     "**/node_modules",
     "out/",
     "tmp/"

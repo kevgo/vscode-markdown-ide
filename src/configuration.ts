@@ -8,6 +8,10 @@ export class Configuration {
     this.config = vscode.workspace.getConfiguration("markdownIDE")
   }
 
+  tikibaseEnabled(): boolean {
+    return this.config.get<boolean>("tikibase.enabled") ?? false
+  }
+
   /** provides the titleRegex setting */
   titleRegExp(): RegExp | undefined {
     const setting = this.config.get<string>("autocomplete.titleRegex")

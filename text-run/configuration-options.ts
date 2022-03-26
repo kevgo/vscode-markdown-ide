@@ -25,7 +25,8 @@ function documentedOptions(nodes: tr.ast.NodeList) {
   const result = []
   const ul = nodes.nodesFor(nodes.nodeOfTypes("bullet_list_open"))
   for (const li of ul.nodesOfTypes("list_item_open")) {
-    const bold = ul.nodesFor(ul.nodeOfTypes("strong_open"))
+    const liNodes = ul.nodesFor(li)
+    const bold = liNodes.nodesFor(liNodes.nodeOfTypes("strong_open"))
     result.push(bold.text().replace(/\:$/, ""))
   }
   return result

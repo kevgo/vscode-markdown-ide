@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-build:  # compiles the extension
+build: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
@@ -50,8 +50,8 @@ test:  # runs all the tests
 
 test-ci: build lint unit doc  # runs all the tests on ci
 
-unit:  # runs the unit tests
-	${CURDIR}/node_modules/.bin/mocha "src/**/*.test.ts"
+unit: build  # runs the unit tests
+	node out/test/main.js
 
 update:  # updates all dependencies
 	yarn upgrade --latest
