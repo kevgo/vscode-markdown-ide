@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 import { Configuration } from "./configuration"
-import * as fileSaved from "./file-saved"
+import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
@@ -30,7 +30,11 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
   // save file --> run Tikibase linter
-  vscode.workspace.onDidSaveTextDocument(fileSaved.createCb({ debug, workspacePath }))
+  const fileSaveCallback = fileSaved.createCb({ debug, workspacePath })
+  vscode.workspace.onDidSaveTextDocument(fileSaveCallback)
+  // run the linter now to show Markdown document issues on VSCode startup
+  // @ts-ignore
+  fileSaveCallback(vscode.window.activeTextEditor?.document)
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
