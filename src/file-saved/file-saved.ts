@@ -17,7 +17,6 @@ class SaveEventHandler {
   readonly debug: vscode.OutputChannel
   readonly workspacePath: string
 
-  a = 1
   constructor(args: { debug: vscode.OutputChannel; workspacePath: string }) {
     this.collection = vscode.languages.createDiagnosticCollection("Markdown IDE")
     this.debug = args.debug
