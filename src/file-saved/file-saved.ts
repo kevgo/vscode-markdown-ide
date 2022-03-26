@@ -5,12 +5,12 @@ import * as tikibase from "./tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(args: { debug: vscode.OutputChannel; workspacePath: string }): () => void {
-  const handler = new SaveEventHandler(args)
-  return handler.fileSaved.bind(handler)
+  const manager = new SaveEventManager(args)
+  return manager.fileSaved.bind(manager)
 }
 
 /** collection of state and logic around handling onDidSaveTextDocument events in VSCode */
-class SaveEventHandler {
+class SaveEventManager {
   readonly collection: vscode.DiagnosticCollection
   readonly debug: vscode.OutputChannel
   readonly workspacePath: string
