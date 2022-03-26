@@ -1,5 +1,4 @@
 import * as path from "path"
-import * as util from "util"
 import * as vscode from "vscode"
 
 import { groupByFile } from "./group-by-file"
@@ -24,14 +23,10 @@ class SaveEventHandler {
   }
 
   async fileSaved() {
-    const messages = await tikibase.run({ debug: this.debug, opts: { cwd: this.workspacePath } })
-    // const issues =
+    const messages = await tikibase.run({ debug: this.debug, execOpts: { cwd: this.workspacePath } })
     this.collection.clear()
-    const grouped = groupByFile(messages)
-    grouped.forEach((messages, file) => {
-      this.debug.appendLine(`FILE: ${file}, MESSAGES: ${util.inspect(messages)}`)
-      const fullPath = path.join(this.workspacePath, file)
-      const uri = vscode.Uri.file(fullPath)
+    groupByFile(messages).forEach((messages, file) => {
+      const uri = vscode.Uri.file(path.join(this.workspacePath, file))
       const diagnostics: vscode.Diagnostic[] = messages.map((message) => {
         return {
           range: new vscode.Range(message.line, message.start, message.line, message.end),

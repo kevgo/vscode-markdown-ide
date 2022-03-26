@@ -3,10 +3,10 @@ import * as vscode from "vscode"
 
 /** runs the Tikibase binary and provides {@link Issue}s found */
 export async function run(
-  args: { debug?: vscode.OutputChannel; opts: childProcess.ExecFileOptions }
+  args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
 ): Promise<Message[]> {
   args.debug?.appendLine("running tikibase ...")
-  const output = await exec(args.opts)
+  const output = await exec(args.execOpts)
   args.debug?.appendLine("TIKIBASE OUTPUT:")
   args.debug?.appendLine(output)
   return parseOutput({ output, debug: args.debug })
