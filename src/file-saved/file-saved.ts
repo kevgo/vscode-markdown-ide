@@ -38,7 +38,7 @@ class SaveEventHandler {
   }
 }
 
-/** groups the given messages by file */
+/** organizes the given Tikibase messages by filename, i.e. in the structure VSCode needs */
 export function groupByFile(messages: tikibase.Message[]): Map<string, tikibase.Message[]> {
   const result: Map<string, tikibase.Message[]> = new Map()
   for (const message of messages) {
