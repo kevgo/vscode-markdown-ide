@@ -1,25 +1,23 @@
 import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
-/** runs the Tikibase binary and provides {@link Issue}s found */
+/** runs the Tikibase binary and provides its output in a typesafe way */
 export async function run(
   args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
 ): Promise<Message[]> {
-  args.debug?.appendLine("running tikibase ...")
-  const output = await exec(args.execOpts)
-  args.debug?.appendLine("TIKIBASE OUTPUT:")
-  args.debug?.appendLine(output)
+  const output = await exec(args)
   return parseOutput({ output, debug: args.debug })
 }
 
 /** runs the Tikibase binary and provides the output */
-function exec(opts: childProcess.ExecFileOptions): Promise<string> {
+function exec(args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }): Promise<string> {
+  // NOTE: need to do manual promises here because TypeScript
+  // doesn't properly translate types when using util.promisify
   return new Promise((resolve, reject) => {
-    childProcess.execFile("tikibase", ["--format=json", "check"], opts, function(error, stdout, stderr) {
+    childProcess.execFile("tikibase", ["--format=json", "check"], args.execOpts, function(error, stdout, stderr) {
       if (error?.code === "ENOENT") {
-        void vscode.window.showErrorMessage(
-          "Tikibase is enabled but the tikibase binary is not in the path."
-        )
+        args.debug?.appendLine("Error: Tikibase is enabled but the tikibase binary is not in the path.")
+        args.debug?.show()
         reject()
         return
       }
@@ -28,9 +26,9 @@ function exec(opts: childProcess.ExecFileOptions): Promise<string> {
   })
 }
 
-/** parses the given Tikibase output into {@link Issue}s */
+/** parses the given Tikibase output into TS structures */
 function parseOutput(
-  args: { debug?: vscode.OutputChannel; output: string /* wsRoot: string */ }
+  args: { debug?: vscode.OutputChannel; output: string }
 ): Message[] {
   try {
     const parsed: Message[] = JSON.parse(args.output)
@@ -41,6 +39,7 @@ function parseOutput(
   }
 }
 
+/** structure of how Tikibase describes issues */
 export interface Message {
   readonly end: number
   readonly file: string
