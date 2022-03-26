@@ -23,11 +23,11 @@ class SaveEventHandler {
   }
 
   async fileSaved() {
-    const messages = await tikibase.run({ debug: this.debug, execOpts: { cwd: this.workspacePath } })
+    const errorMessages = await tikibase.run({ debug: this.debug, execOpts: { cwd: this.workspacePath } })
     this.collection.clear()
-    groupByFile(messages).forEach((messages, file) => {
+    groupByFile(errorMessages).forEach((messagesForFile, file) => {
       const uri = vscode.Uri.file(path.join(this.workspacePath, file))
-      const diagnostics: vscode.Diagnostic[] = messages.map((message) => {
+      const diagnostics: vscode.Diagnostic[] = messagesForFile.map((message) => {
         return {
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
