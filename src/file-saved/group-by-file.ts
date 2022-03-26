@@ -4,12 +4,12 @@ import { Message } from "./tikibase"
 export function groupByFile(messages: Message[]): Map<string, Message[]> {
   const result: Map<string, Message[]> = new Map()
   for (const message of messages) {
-    let forFile = result.get(message.file)
-    if (!forFile) {
-      forFile = []
-      result.set(message.file, forFile)
+    const messagesForFile = result.get(message.file)
+    if (!messagesForFile) {
+      result.set(message.file, [message])
+    } else {
+      messagesForFile.push(message)
     }
-    forFile.push(message)
   }
   return result
 }
