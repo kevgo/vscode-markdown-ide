@@ -35,6 +35,7 @@ function parseOutput(
     return parsed
   } catch (e) {
     args.debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
+    args.debug?.show()
     return []
   }
 }
