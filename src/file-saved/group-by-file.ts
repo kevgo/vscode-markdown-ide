@@ -1,6 +1,6 @@
 import { Message } from "./tikibase"
 
-export function organize(messages: Message[]): Map<string, Message[]> {
+export function groupByFile(messages: Message[]): Map<string, Message[]> {
   const result: Map<string, Message[]> = new Map()
   for (const message of messages) {
     let forFile = result.get(message.file)

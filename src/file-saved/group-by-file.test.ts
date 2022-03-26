@@ -1,9 +1,9 @@
 import { strict as assert } from "assert"
 
-import { organize } from "./issues-builder"
+import { groupByFile } from "./group-by-file"
 import { Message } from "./tikibase"
 
-suite("organize", function() {
+suite("groupByFile", function() {
   test("works", function() {
     const give: Message[] = [{
       file: "1.md",
@@ -24,7 +24,7 @@ suite("organize", function() {
       start: 21,
       end: 22
     }]
-    const have = organize(give)
+    const have = groupByFile(give)
     const want = new Map()
     want.set("1.md", [{
       file: "1.md",

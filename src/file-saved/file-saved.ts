@@ -2,6 +2,7 @@ import * as path from "path"
 import * as util from "util"
 import * as vscode from "vscode"
 
+import { groupByFile } from "./group-by-file"
 import * as tikibase from "./tikibase"
 
 type Listener = (e: vscode.TextDocument) => void
@@ -29,16 +30,19 @@ class SaveEventHandler {
     const messages = await tikibase.run({ debug: this.debug, opts: { cwd: this.workspacePath } })
     // const issues =
     this.collection.clear()
-    for (const message of messages) {
-      this.debug.appendLine(`MESSAGE: ${util.inspect(message)}`)
-      const fullPath = path.join(this.workspacePath, message.file)
+    const grouped = groupByFile(messages)
+    grouped.forEach((messages, file) => {
+      this.debug.appendLine(`FILE: ${file}, MESSAGES: ${util.inspect(messages)}`)
+      const fullPath = path.join(this.workspacePath, file)
       const uri = vscode.Uri.file(fullPath)
-      const diagnostic: vscode.Diagnostic = {
-        range: new vscode.Range(message.line, message.start, message.line, message.end),
-        message: message.text,
-        severity: vscode.DiagnosticSeverity.Error
-      }
-      this.collection.set(uri, [diagnostic])
-    }
+      const diagnostics: vscode.Diagnostic[] = messages.map((message) => {
+        return {
+          range: new vscode.Range(message.line, message.start, message.line, message.end),
+          message: message.text,
+          severity: vscode.DiagnosticSeverity.Error
+        }
+      })
+      this.collection.set(uri, diagnostics)
+    })
   }
 }
