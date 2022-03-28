@@ -15,7 +15,7 @@ export function markdownLinkCompletionProvider(
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const time = new Date().getTime()
       const config = new Configuration()
-      const { searchTerm, linkType } = input.analyze(document.lineAt(position).text, position.character)
+      const linkType = input.analyze(document.lineAt(position).text, position.character)
       debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       let links: string[]
       const documentDir = path.dirname(document.fileName)
@@ -34,7 +34,7 @@ export function markdownLinkCompletionProvider(
       } else if (linkType === input.LinkType.IMG) {
         const filenames: string[] = []
         await files.imagesFast(workspacePath, filenames)
-        links = makeImgLinks({ filenames, searchTerm })
+        links = makeImgLinks({ filenames, wsRoot: workspacePath, documentDir })
       } else {
         throw new Error(`Unknown link type: ${linkType}`)
       }
@@ -76,10 +76,13 @@ export async function makeMdLinks(args: {
   return result
 }
 
-export function makeImgLinks(args: { filenames: string[]; searchTerm: string }): string[] {
+export function makeImgLinks(args: { documentDir: string; filenames: string[]; wsRoot: string }): string[] {
   const result: string[] = []
   for (const filename of args.filenames) {
-    result.push(links.image(filename))
+    const relPath = args.documentDir !== args.wsRoot
+      ? path.relative(args.documentDir, path.join(args.wsRoot, filename))
+      : filename
+    result.push(links.image(relPath))
   }
   return result
 }
