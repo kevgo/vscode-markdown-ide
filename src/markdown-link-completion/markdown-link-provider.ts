@@ -17,72 +17,78 @@ export function markdownLinkCompletionProvider(
       const config = new Configuration()
       const linkType = input.analyze(document.lineAt(position).text, position.character)
       debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
-      let links: string[]
       const documentDir = path.dirname(document.fileName)
       debug.appendLine(`documentDir: ${documentDir}`)
-      if (linkType === input.LinkType.MD) {
-        const mdFiles: files.FileResult[] = []
-        await files.markdown(workspacePath, mdFiles)
-        links = await makeMdLinks({
-          wsRoot: workspacePath,
-          documentDir,
-          mdFiles,
-          time,
-          titleRE: config.titleRegExp(),
-          debug
-        })
-      } else if (linkType === input.LinkType.IMG) {
-        const filenames: string[] = []
-        await files.images(workspacePath, filenames)
-        links = makeImgLinks({ filenames, wsRoot: workspacePath, documentDir })
-      } else {
-        throw new Error(`Unknown link type: ${linkType}`)
+      switch (linkType) {
+        case input.LinkType.MD:
+          return mdCompletionItems({
+            wsRoot: workspacePath,
+            documentDir,
+            time,
+            titleRE: config.titleRegExp(),
+            debug
+          })
+        case input.LinkType.IMG:
+          return imgCompletionItems({ debug, time, wsRoot: workspacePath, documentDir })
+        default:
+          throw new Error(`Unknown link type: ${linkType}`)
       }
-      debug.appendLine(`${new Date().getTime() - time}ms:  ${links.length} links created`)
-      const result: vscode.CompletionItem[] = []
-      for (const link of links) {
-        result.push(
-          new vscode.CompletionItem(
-            link.substring(1),
-            vscode.CompletionItemKind.Text
-          )
-        )
-      }
-      return result
     }
   }
 }
 
-export async function makeMdLinks(args: {
+async function mdCompletionItems(args: {
   debug: vscode.OutputChannel
   documentDir: string
-  mdFiles: files.FileResult[]
   time: number
   titleRE: RegExp | undefined
   wsRoot: string
-}): Promise<string[]> {
+}): Promise<vscode.CompletionItem[]> {
+  const mdFiles: files.FileResult[] = []
+  await files.markdown(args.wsRoot, mdFiles)
   const result = []
-  for (const mdFile of args.mdFiles) {
+  for (const mdFile of mdFiles) {
     const relPath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
-    result.push(links.markdown({
+    const link = links.markdown({
       fileName: relPath,
       fileContent: await mdFile.content,
       debug: args.debug,
       titleRE: args.titleRE
-    }))
+    })
+    result.push(
+      new vscode.CompletionItem(
+        link.substring(1),
+        vscode.CompletionItemKind.Text
+      )
+    )
   }
+  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  ${result.length} links created`)
   return result
 }
 
-export function makeImgLinks(args: { documentDir: string; filenames: string[]; wsRoot: string }): string[] {
-  const result: string[] = []
-  for (const filename of args.filenames) {
+async function imgCompletionItems(args: {
+  debug: vscode.OutputChannel
+  documentDir: string
+  time: number
+  wsRoot: string
+}): Promise<vscode.CompletionItem[]> {
+  const filenames: string[] = []
+  await files.images(args.wsRoot, filenames)
+  const result: vscode.CompletionItem[] = []
+  for (const filename of filenames) {
     const relPath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, filename))
       : filename
-    result.push(links.image(relPath))
+    const image = links.image(relPath)
+    result.push(
+      new vscode.CompletionItem(
+        image.substring(1),
+        vscode.CompletionItemKind.Text
+      )
+    )
   }
+  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  ${result.length} links created`)
   return result
 }
