@@ -1,18 +1,18 @@
 import { promises as fs } from "fs"
 import * as path from "path"
 
-const ignore = [".git", "node_modules", "vendor"]
+const ignoreDirs = [".git", "node_modules", "vendor"]
 const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".tif", ".tiff"]
 
 /** provides all Markdown files (filenames and promise of content) in the given root directory */
-export async function markdownFast(root: string, result: FileResult[], subdir = ""): Promise<void> {
+export async function markdown(root: string, result: FileResult[], subdir = ""): Promise<void> {
   const fullRoot = path.join(root, subdir)
   for (const entry of await fs.readdir(fullRoot, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      if (ignore.includes(entry.name)) {
+      if (ignoreDirs.includes(entry.name)) {
         continue
       }
-      await markdownFast(root, result, entry.name)
+      await markdown(root, result, path.join(subdir, entry.name))
     } else {
       if (!entry.name.endsWith(".md")) {
         continue
@@ -25,15 +25,20 @@ export async function markdownFast(root: string, result: FileResult[], subdir = 
   }
 }
 
+export interface FileResult {
+  content: Promise<string>
+  filePath: string
+}
+
 /** provides all Markdown files (filenames and promise of content) in the given root directory */
-export async function imagesFast(root: string, result: string[], subdir = ""): Promise<void> {
+export async function images(root: string, result: string[], subdir = ""): Promise<void> {
   const fullRoot = path.join(root, subdir)
   for (const entry of await fs.readdir(fullRoot, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      if (ignore.includes(entry.name)) {
+      if (ignoreDirs.includes(entry.name)) {
         continue
       }
-      await imagesFast(root, result, entry.name)
+      await images(root, result, path.join(subdir, entry.name))
     } else {
       if (!isImage(entry.name)) {
         continue
@@ -51,9 +56,4 @@ export function isImage(filename: string): boolean {
     }
   }
   return false
-}
-
-export interface FileResult {
-  content: Promise<string>
-  filePath: string
 }

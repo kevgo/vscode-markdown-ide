@@ -22,7 +22,7 @@ export function markdownLinkCompletionProvider(
       debug.appendLine(`documentDir: ${documentDir}`)
       if (linkType === input.LinkType.MD) {
         const mdFiles: files.FileResult[] = []
-        await files.markdownFast(workspacePath, mdFiles)
+        await files.markdown(workspacePath, mdFiles)
         links = await makeMdLinks({
           wsRoot: workspacePath,
           documentDir,
@@ -33,7 +33,7 @@ export function markdownLinkCompletionProvider(
         })
       } else if (linkType === input.LinkType.IMG) {
         const filenames: string[] = []
-        await files.imagesFast(workspacePath, filenames)
+        await files.images(workspacePath, filenames)
         links = makeImgLinks({ filenames, wsRoot: workspacePath, documentDir })
       } else {
         throw new Error(`Unknown link type: ${linkType}`)
