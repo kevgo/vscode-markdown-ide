@@ -20,25 +20,23 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
       const { searchTerm, linkType } = input.analyze(document.lineAt(position).text, position.character)
       debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       let links: string[]
-      switch (linkType) {
-        case input.LinkType.MD:
-          links = await makeMdLinks({
-            wsRoot: workspacePath,
-            document: document.fileName,
-            relativeFilePaths: await files.markdownFast(),
-            time,
-            titleRE: config.titleRegExp(),
-            debug
-          })
-          break
-        case input.LinkType.IMG:
-          links = makeImgLinks({
-            filenames: await files.images(),
-            searchTerm
-          })
-          break
-        default:
-          throw new Error(`Unknown link type: ${linkType}`)
+      if (linkType === input.LinkType.MD) {
+        const mdFiles: files.FileResult[] = []
+        await files.markdownFast(workspacePath, mdFiles)
+        links = await makeMdLinks({
+          wsRoot: workspacePath,
+          document: document.fileName,
+          mdFiles,
+          time,
+          titleRE: config.titleRegExp(),
+          debug
+        })
+      } else if (linkType === input.LinkType.IMG) {
+        const filenames: string[] = []
+        await files.imagesFast(workspacePath, filenames)
+        links = makeImgLinks({ filenames, searchTerm })
+      } else {
+        throw new Error(`Unknown link type: ${linkType}`)
       }
       debug.appendLine(`${new Date().getTime() - time}ms:  links created`)
       const result: vscode.CompletionItem[] = []
@@ -58,7 +56,7 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
 export async function makeMdLinks(args: {
   debug: vscode.OutputChannel
   document: string
-  relativeFilePaths: string[]
+  mdFiles: files.FileResult[]
   time: number
   titleRE: RegExp | undefined
   wsRoot: string
@@ -66,13 +64,6 @@ export async function makeMdLinks(args: {
   // NOTE: for performance reasons, we start loading all file contents concurrently first
   // and then assemble the result as the individual file contents become available.
   const filePromises: Array<{ content: Promise<string>; fullPath: string }> = []
-  for (const relativeFilePath of args.relativeFilePaths) {
-    const fullPath = path.join(args.wsRoot, relativeFilePath)
-    filePromises.push({
-      fullPath,
-      content: fs.readFile(fullPath, "utf-8")
-    })
-  }
   args.debug.appendLine(`${new Date().getTime() - args.time}ms:  file promises created`)
   const documentDir = path.dirname(args.document)
   const result = []
