@@ -11,12 +11,14 @@ import * as input from "./input"
 export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+      const time = new Date().getTime()
       const config = new Configuration()
       const workspacePath = config.workspacePath()
       if (!workspacePath) {
         return
       }
       const { searchTerm, linkType } = input.analyze(document.lineAt(position).text, position.character)
+      debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       let links: string[]
       switch (linkType) {
         case input.LinkType.MD:
@@ -24,6 +26,7 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
             wsRoot: workspacePath,
             document: document.fileName,
             relativeFilePaths: await files.markdown(),
+            time,
             titleRE: config.titleRegExp(),
             debug
           })
@@ -37,6 +40,7 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
         default:
           throw new Error(`Unknown link type: ${linkType}`)
       }
+      debug.appendLine(`${new Date().getTime() - time}ms:  links created`)
       const result: vscode.CompletionItem[] = []
       for (const link of links) {
         result.push(
@@ -55,6 +59,7 @@ export async function makeMdLinks(args: {
   debug: vscode.OutputChannel
   document: string
   relativeFilePaths: string[]
+  time: number
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<string[]> {
@@ -68,6 +73,7 @@ export async function makeMdLinks(args: {
       content: fs.readFile(fullPath, "utf-8")
     })
   }
+  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  file promises created`)
   const documentDir = path.dirname(args.document)
   const result = []
   for (const file of filePromises) {
