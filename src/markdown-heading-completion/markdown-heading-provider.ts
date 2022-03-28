@@ -19,12 +19,22 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.Com
       }
       const mdFiles = await files.markdown()
       time = new Date().getTime() - start
-      debug.appendLine(`${time}ms:  loaded files: ${mdFiles.length}`)
-      const headings = await getAllHeadings(mdFiles, workspacePath)
+      debug.appendLine(`${time}ms:  found all files: ${mdFiles.length}`)
+      const filePromises: Array<Promise<string>> = []
+      for (const fileName of mdFiles) {
+        const fullPath = path.join(workspacePath, fileName)
+        filePromises.push(fs.readFile(fullPath, "utf-8"))
+      }
       time = new Date().getTime() - start
-      debug.appendLine(`${time}ms  headings`)
+      debug.appendLine(`${time}ms:  created all file load promises: ${mdFiles.length}`)
+      const unique: Set<string> = new Set()
+      for (const filePromise of filePromises) {
+        headings.inFile(await filePromise, unique)
+      }
+      time = new Date().getTime() - start
+      debug.appendLine(`${time}ms  have headings`)
       const result: vscode.CompletionItem[] = []
-      for (const heading of headings) {
+      for (const heading of unique) {
         result.push(
           new vscode.CompletionItem(
             heading.substring(1),
@@ -35,25 +45,4 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.Com
       return result
     }
   }
-}
-
-export async function getAllHeadings(
-  fileNames: string[],
-  wsRoot: string
-): Promise<Iterable<string>> {
-  // NOTE: for performance reasons, we start loading all file contents concurrently first
-  // and then assemble the result as the individual file contents become available.
-  const filePromises: Array<{ content: Promise<string>; fullPath: string }> = []
-  for (const fileName of fileNames) {
-    const fullPath = path.join(wsRoot, fileName)
-    filePromises.push({
-      fullPath,
-      content: fs.readFile(fullPath, "utf-8")
-    })
-  }
-  const result: Set<string> = new Set()
-  for (const file of filePromises) {
-    headings.inFile(await file.content, result)
-  }
-  return result.values()
 }
