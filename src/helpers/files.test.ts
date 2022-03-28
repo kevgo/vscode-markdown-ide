@@ -5,27 +5,29 @@ import * as files from "./files"
 
 suite("files", function() {
   test("markdown", async function() {
+    const examplesPath = path.join(__dirname, "..", "..", "examples")
     const results: files.FileResult[] = []
-    await files.markdown(path.join(__dirname, "..", "..", "examples"), results)
+    await files.markdown(examplesPath, results)
     const have = results.map(result => result.filePath)
     assert.deepEqual(have, ["1.md", "3.md", "two/2a.md", "two/2b.md"])
   })
 
-  const tests = {
-    "foo.png": true,
-    "foo.jpg": true,
-    "foo.jpeg": true,
-    "foo.gif": true,
-    "foo.tif": true,
-    "foo.tiff": true,
-    "foo.md": false,
-    "foo.text": false
-  }
   test(`isImage`, function() {
+    const tests = {
+      "foo.png": true,
+      "foo.jpg": true,
+      "foo.jpeg": true,
+      "foo.gif": true,
+      "foo.tif": true,
+      "foo.tiff": true,
+      "foo.md": false,
+      "foo.text": false
+    }
     for (const [give, want] of Object.entries(tests)) {
       assert.equal(files.isImage(give), want)
     }
   })
+
   test("images", async function() {
     const have: string[] = []
     await files.images(path.join(__dirname, "..", "..", "examples"), have)
