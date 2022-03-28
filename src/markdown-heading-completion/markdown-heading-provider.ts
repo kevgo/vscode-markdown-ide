@@ -1,20 +1,15 @@
 import * as vscode from "vscode"
 
-import { Configuration } from "../configuration"
 import * as files from "../helpers/files"
 import * as headings from "../helpers/headings"
 
 /** Completion provider for MarkdownLinks */
-export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
+export function markdownHeadingProvider(debug: vscode.OutputChannel, wsRoot: string): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems() {
       const time = new Date().getTime()
-      const workspacePath = new Configuration().workspacePath()
-      if (!workspacePath) {
-        return
-      }
       const mdFiles: files.FileResult[] = []
-      await files.markdownFast(workspacePath, mdFiles)
+      await files.markdownFast(wsRoot, mdFiles)
       debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${mdFiles.length}`)
       const unique: Set<string> = new Set()
       for await (const mdFile of mdFiles) {

@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // autocomplete headings by typing `#`
   const headingsProvider = vscode.languages.registerCompletionItemProvider(
     "markdown",
-    markdownHeadingProvider(debug),
+    markdownHeadingProvider(debug, workspacePath),
     "#"
   )
   context.subscriptions.push(headingsProvider)

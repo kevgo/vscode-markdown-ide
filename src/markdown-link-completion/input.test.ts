@@ -8,13 +8,13 @@ suite("analyzeInput", function() {
       "Check out [the and here is another [one](one.md)",
       14
     )
-    const want = { searchTerm: "the", linkType: input.LinkType.MD }
+    const want = input.LinkType.MD
     assert.deepEqual(have, want)
   })
 
   test("starting a Markdown link", function() {
     const have = input.analyze("[", 1)
-    const want = { searchTerm: "", linkType: input.LinkType.MD }
+    const want = input.LinkType.MD
     assert.deepEqual(have, want)
   })
 
@@ -23,13 +23,13 @@ suite("analyzeInput", function() {
       "Check out ![the and here is another [one](one.md)",
       15
     )
-    const want = { searchTerm: "the", linkType: input.LinkType.IMG }
+    const want = input.LinkType.IMG
     assert.deepEqual(have, want)
   })
 
   test("starting an image link", function() {
     const have = input.analyze("![", 2)
-    const want = { searchTerm: "", linkType: input.LinkType.IMG }
+    const want = input.LinkType.IMG
     assert.deepEqual(have, want)
   })
 })
