@@ -2,7 +2,7 @@
 export function inFile(text: string, headings: Set<string>) {
   const matches = text.matchAll(headingRE)
   for (const match of matches || []) {
-    headings.add(match[0])
+    headings.add(match[1])
   }
 }
-const headingRE = /(##+ .+)/g
+const headingRE = /\n(##+ [^\n]+)/g
