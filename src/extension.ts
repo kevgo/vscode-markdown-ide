@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // autocomplete links by typing `[`
   const linksProvider = vscode.languages.registerCompletionItemProvider(
     "markdown",
-    markdownLinkCompletionProvider(debug),
+    markdownLinkCompletionProvider(debug, workspacePath),
     "["
   )
   context.subscriptions.push(linksProvider)

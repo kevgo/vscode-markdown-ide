@@ -1,4 +1,3 @@
-import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
@@ -8,24 +7,25 @@ import * as links from "../helpers/links"
 import * as input from "./input"
 
 /** Completion provider for MarkdownLinks */
-export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
+export function markdownLinkCompletionProvider(
+  debug: vscode.OutputChannel,
+  workspacePath: string
+): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const time = new Date().getTime()
       const config = new Configuration()
-      const workspacePath = config.workspacePath()
-      if (!workspacePath) {
-        return
-      }
       const { searchTerm, linkType } = input.analyze(document.lineAt(position).text, position.character)
       debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       let links: string[]
+      const documentDir = path.dirname(document.fileName)
+      debug.appendLine(`documentDir: ${documentDir}`)
       if (linkType === input.LinkType.MD) {
         const mdFiles: files.FileResult[] = []
         await files.markdownFast(workspacePath, mdFiles)
         links = await makeMdLinks({
           wsRoot: workspacePath,
-          document: document.fileName,
+          documentDir,
           mdFiles,
           time,
           titleRE: config.titleRegExp(),
@@ -38,7 +38,7 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
       } else {
         throw new Error(`Unknown link type: ${linkType}`)
       }
-      debug.appendLine(`${new Date().getTime() - time}ms:  links created`)
+      debug.appendLine(`${new Date().getTime() - time}ms:  ${links.length} links created`)
       const result: vscode.CompletionItem[] = []
       for (const link of links) {
         result.push(
@@ -55,22 +55,20 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
 
 export async function makeMdLinks(args: {
   debug: vscode.OutputChannel
-  document: string
+  documentDir: string
   mdFiles: files.FileResult[]
   time: number
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<string[]> {
-  // NOTE: for performance reasons, we start loading all file contents concurrently first
-  // and then assemble the result as the individual file contents become available.
-  const filePromises: Array<{ content: Promise<string>; fullPath: string }> = []
-  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  file promises created`)
-  const documentDir = path.dirname(args.document)
   const result = []
-  for (const file of filePromises) {
+  for (const mdFile of args.mdFiles) {
+    const relPath = args.documentDir !== args.wsRoot
+      ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
+      : mdFile.filePath
     result.push(links.markdown({
-      fileName: path.relative(documentDir, file.fullPath),
-      fileContent: await file.content,
+      fileName: relPath,
+      fileContent: await mdFile.content,
       debug: args.debug,
       titleRE: args.titleRE
     }))
@@ -81,9 +79,7 @@ export async function makeMdLinks(args: {
 export function makeImgLinks(args: { filenames: string[]; searchTerm: string }): string[] {
   const result: string[] = []
   for (const filename of args.filenames) {
-    if (filename.startsWith(args.searchTerm)) {
-      result.push(links.image(filename))
-    }
+    result.push(links.image(filename))
   }
   return result
 }
