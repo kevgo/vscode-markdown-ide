@@ -1,5 +1,3 @@
-import { promises as fs } from "fs"
-import * as path from "path"
 import * as vscode from "vscode"
 
 import { Configuration } from "../configuration"
@@ -15,17 +13,12 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.Com
       if (!workspacePath) {
         return
       }
-      const mdFiles = await files.markdown()
-      debug.appendLine(`${new Date().getTime() - time}ms:  found all files: ${mdFiles.length}`)
-      const filePromises: Array<Promise<string>> = []
-      for (const fileName of mdFiles) {
-        const fullPath = path.join(workspacePath, fileName)
-        filePromises.push(fs.readFile(fullPath, "utf-8"))
-      }
-      debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${filePromises.length}`)
+      const mdFiles: files.FileResult[] = []
+      await files.markdownFast(workspacePath, mdFiles)
+      debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${mdFiles.length}`)
       const unique: Set<string> = new Set()
-      for (const filePromise of filePromises) {
-        headings.inFile(await filePromise, unique)
+      for await (const mdFile of mdFiles) {
+        headings.inFile(await mdFile.content, unique)
       }
       debug.appendLine(`${new Date().getTime() - time}ms  parsed headings`)
       const result: vscode.CompletionItem[] = []

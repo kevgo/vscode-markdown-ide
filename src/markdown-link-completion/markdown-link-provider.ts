@@ -25,7 +25,7 @@ export function markdownLinkCompletionProvider(debug: vscode.OutputChannel): vsc
           links = await makeMdLinks({
             wsRoot: workspacePath,
             document: document.fileName,
-            relativeFilePaths: await files.markdown(),
+            relativeFilePaths: await files.markdownFast(),
             time,
             titleRE: config.titleRegExp(),
             debug
