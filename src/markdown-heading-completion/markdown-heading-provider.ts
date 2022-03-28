@@ -9,18 +9,20 @@ import * as headings from "../helpers/headings"
 /** Completion provider for MarkdownLinks */
 export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
   return {
-    async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-      debug.appendLine("completing heading")
+    async provideCompletionItems() {
+      const start = new Date().getTime()
       const config = new Configuration()
       const workspacePath = config.workspacePath()
-      debug.appendLine(`wsPath: ${workspacePath}`)
+      let time = new Date().getTime() - start
       if (!workspacePath) {
         return
       }
       const mdFiles = await files.markdown()
-      debug.appendLine(`files: ${mdFiles.length}`)
-      const headings = await getAllHeadings(mdFiles, workspacePath, debug)
-      debug.appendLine(`headings: ${headings}`)
+      time = new Date().getTime() - start
+      debug.appendLine(`${time}ms:  loaded files: ${mdFiles.length}`)
+      const headings = await getAllHeadings(mdFiles, workspacePath)
+      time = new Date().getTime() - start
+      debug.appendLine(`${time}ms  headings`)
       const result: vscode.CompletionItem[] = []
       for (const heading of headings) {
         result.push(
@@ -37,8 +39,7 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.Com
 
 export async function getAllHeadings(
   fileNames: string[],
-  wsRoot: string,
-  debug: vscode.OutputChannel
+  wsRoot: string
 ): Promise<Iterable<string>> {
   // NOTE: for performance reasons, we start loading all file contents concurrently first
   // and then assemble the result as the individual file contents become available.
@@ -50,7 +51,6 @@ export async function getAllHeadings(
       content: fs.readFile(fullPath, "utf-8")
     })
   }
-  debug.appendLine(`filePromises: ${filePromises.length}`)
   const result: Set<string> = new Set()
   for (const file of filePromises) {
     headings.inFile(await file.content, result)
