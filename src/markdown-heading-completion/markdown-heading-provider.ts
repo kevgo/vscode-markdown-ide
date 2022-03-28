@@ -25,7 +25,7 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.Com
       for (const heading of headings) {
         result.push(
           new vscode.CompletionItem(
-            heading,
+            heading.substring(1),
             vscode.CompletionItemKind.Text
           )
         )
