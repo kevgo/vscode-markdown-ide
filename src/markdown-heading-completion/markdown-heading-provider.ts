@@ -10,29 +10,24 @@ import * as headings from "../helpers/headings"
 export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems() {
-      const start = new Date().getTime()
-      const config = new Configuration()
-      const workspacePath = config.workspacePath()
-      let time = new Date().getTime() - start
+      const time = new Date().getTime()
+      const workspacePath = new Configuration().workspacePath()
       if (!workspacePath) {
         return
       }
       const mdFiles = await files.markdown()
-      time = new Date().getTime() - start
-      debug.appendLine(`${time}ms:  found all files: ${mdFiles.length}`)
+      debug.appendLine(`${new Date().getTime() - time}ms:  found all files: ${mdFiles.length}`)
       const filePromises: Array<Promise<string>> = []
       for (const fileName of mdFiles) {
         const fullPath = path.join(workspacePath, fileName)
         filePromises.push(fs.readFile(fullPath, "utf-8"))
       }
-      time = new Date().getTime() - start
-      debug.appendLine(`${time}ms:  created all file load promises: ${mdFiles.length}`)
+      debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${filePromises.length}`)
       const unique: Set<string> = new Set()
       for (const filePromise of filePromises) {
         headings.inFile(await filePromise, unique)
       }
-      time = new Date().getTime() - start
-      debug.appendLine(`${time}ms  have headings`)
+      debug.appendLine(`${new Date().getTime() - time}ms  parsed headings`)
       const result: vscode.CompletionItem[] = []
       for (const heading of unique) {
         result.push(
