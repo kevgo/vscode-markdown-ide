@@ -7,9 +7,8 @@ import * as tikibase from "./tikibase"
 export function createCallback(args: { debug: vscode.OutputChannel; workspacePath: string }): () => void {
   const collection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
-    const tikiMessages = await tikibase.check(args.workspacePath, args.debug)
     collection.clear()
-    for (const [file, messages] of groupByFile(tikiMessages)) {
+    for (const [file, messages] of groupByFile(await tikibase.check(args.workspacePath, args.debug))) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         diagnostics.push({
