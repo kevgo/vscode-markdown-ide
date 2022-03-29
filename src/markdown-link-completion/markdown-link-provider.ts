@@ -44,11 +44,11 @@ async function mdCompletionItems(args: {
   await files.markdown(args.wsRoot, mdFilesAcc)
   const result = []
   for (const mdFile of mdFilesAcc) {
-    const fileName = args.documentDir !== args.wsRoot
+    const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
     const link = links.markdown({
-      fileName,
+      filePath,
       fileContent: await mdFile.content,
       debug: args.debug,
       titleRE: args.titleRE
@@ -75,10 +75,10 @@ async function imgCompletionItems(args: {
   await files.images(args.wsRoot, filenamesAcc)
   const result: vscode.CompletionItem[] = []
   for (const filename of filenamesAcc) {
-    const relPath = args.documentDir !== args.wsRoot
+    const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, filename))
       : filename
-    const image = links.image(relPath)
+    const image = links.image(filePath)
     result.push(
       new vscode.CompletionItem(
         image.substring(1),
