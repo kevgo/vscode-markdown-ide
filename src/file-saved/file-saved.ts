@@ -23,7 +23,7 @@ export function createCallback(args: { debug: vscode.OutputChannel; workspacePat
   }
 }
 
-/** organizes the given Tikibase messages by filename, i.e. in the structure VSCode needs */
+/** organizes the given Tikibase messages in the structure VSCode needs */
 export function groupByFile(messages: tiki.Message[]): Map<string, tiki.Message[]> {
   const result: Map<string, tiki.Message[]> = new Map()
   for (const message of messages) {
