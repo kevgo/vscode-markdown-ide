@@ -13,20 +13,20 @@ export function markdownLinkCompletionProvider(
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-      const time = new Date().getTime()
+      const startTime = new Date().getTime()
       const config = new Configuration()
       const documentDir = path.dirname(document.fileName)
       switch (input.analyze(document.lineAt(position).text, position.character)) {
         case input.LinkType.MD:
           return mdCompletionItems({
-            wsRoot: workspacePath,
+            debug,
             documentDir,
-            time,
+            startTime,
             titleRE: config.titleRegExp(),
-            debug
+            wsRoot: workspacePath
           })
         case input.LinkType.IMG:
-          return imgCompletionItems({ debug, time, wsRoot: workspacePath, documentDir })
+          return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
@@ -36,7 +36,7 @@ export function markdownLinkCompletionProvider(
 async function mdCompletionItems(args: {
   debug: vscode.OutputChannel
   documentDir: string
-  time: number
+  startTime: number
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
@@ -60,7 +60,7 @@ async function mdCompletionItems(args: {
       )
     )
   }
-  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  ${result.length} links created`)
+  args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
 }
 
@@ -68,7 +68,7 @@ async function mdCompletionItems(args: {
 async function imgCompletionItems(args: {
   debug: vscode.OutputChannel
   documentDir: string
-  time: number
+  startTime: number
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
   const filenamesAcc: string[] = []
@@ -86,6 +86,6 @@ async function imgCompletionItems(args: {
       )
     )
   }
-  args.debug.appendLine(`${new Date().getTime() - args.time}ms:  ${result.length} links created`)
+  args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
 }
