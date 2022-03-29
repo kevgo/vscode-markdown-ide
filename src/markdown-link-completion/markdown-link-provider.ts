@@ -27,8 +27,6 @@ export function markdownLinkCompletionProvider(
           })
         case input.LinkType.IMG:
           return imgCompletionItems({ debug, time, wsRoot: workspacePath, documentDir })
-        default:
-          throw new Error(`Unknown link type`)
       }
     }
   }
