@@ -32,6 +32,7 @@ export function markdownLinkCompletionProvider(
   }
 }
 
+/** provides the Completion items for Markdown links */
 async function mdCompletionItems(args: {
   debug: vscode.OutputChannel
   documentDir: string
@@ -63,6 +64,7 @@ async function mdCompletionItems(args: {
   return result
 }
 
+/** provides the CompletionItems for image links */
 async function imgCompletionItems(args: {
   debug: vscode.OutputChannel
   documentDir: string
