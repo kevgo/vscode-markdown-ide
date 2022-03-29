@@ -15,8 +15,7 @@ export async function fix(dir: string, debug: vscode.OutputChannel): Promise<voi
 function exec(
   args: { argv: string[]; debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
 ): Promise<string> {
-  // NOTE: need to do manual promises here because TypeScript
-  // doesn't properly translate types when using util.promisify
+  // NOTE: using manual promises here for correct types
   return new Promise((resolve, reject) => {
     childProcess.execFile("tikibase", args.argv, args.execOpts, function(error, stdout, stderr) {
       if (error?.code === "ENOENT") {
