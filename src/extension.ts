@@ -17,20 +17,18 @@ export function activate(context: vscode.ExtensionContext): void {
   const debug = vscode.window.createOutputChannel("Markdown IDE")
 
   // autocomplete links by typing `[`
-  const linksProvider = vscode.languages.registerCompletionItemProvider(
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
     markdownLinkCompletionProvider(debug, workspacePath),
     "["
-  )
-  context.subscriptions.push(linksProvider)
+  ))
 
   // autocomplete headings by typing `#`
-  const headingsProvider = vscode.languages.registerCompletionItemProvider(
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
     markdownHeadingProvider(debug, workspacePath),
     "#"
-  )
-  context.subscriptions.push(headingsProvider)
+  ))
 
   // file renamed --> update links to this file
   vscode.workspace.onDidRenameFiles(filesRenamed)
@@ -38,11 +36,12 @@ export function activate(context: vscode.ExtensionContext): void {
   // file deleted --> remove links to this file
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
-  // save file --> run Tikibase linter
-  const fileSaveCb = fileSaved.createCallback({ debug, workspacePath })
-  vscode.workspace.onDidSaveTextDocument(fileSaveCb)
-  // run the linter now to show Markdown document issues on VSCode startup
-  fileSaveCb()
+  // save file --> run "tikibase check"
+  const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
+  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
+
+  // startup --> run "tikibase check"
+  runTikibaseCheck()
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
