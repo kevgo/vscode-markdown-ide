@@ -44,10 +44,10 @@ async function mdCompletionItems(args: {
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
-  const mdFiles: files.FileResult[] = []
-  await files.markdown(args.wsRoot, mdFiles)
+  const mdFilesAcc: files.FileResult[] = []
+  await files.markdown(args.wsRoot, mdFilesAcc)
   const result = []
-  for (const mdFile of mdFiles) {
+  for (const mdFile of mdFilesAcc) {
     const relPath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
@@ -74,10 +74,10 @@ async function imgCompletionItems(args: {
   time: number
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
-  const filenames: string[] = []
-  await files.images(args.wsRoot, filenames)
+  const filenamesAcc: string[] = []
+  await files.images(args.wsRoot, filenamesAcc)
   const result: vscode.CompletionItem[] = []
-  for (const filename of filenames) {
+  for (const filename of filenamesAcc) {
     const relPath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, filename))
       : filename
