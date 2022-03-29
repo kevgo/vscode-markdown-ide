@@ -9,16 +9,17 @@ export enum LinkType {
  * into the given line at the given position.
  */
 export function analyze(line: string, pos: number): LinkType {
-  for (let i = pos - 1; i > 0; i--) {
-    if (line[i] !== "[") {
-      continue
+  let i
+  for (i = pos - 1; i > 0; i--) {
+    if (line[i] === "[") {
+      break
     }
-    const modifier = i === 0 ? "" : line[i - 1]
-    if (modifier === "!") {
-      return LinkType.IMG
-    } else {
-      return LinkType.MD
-    }
+  }
+  if (i === 0) {
+    return LinkType.MD
+  }
+  if (line[i - 1] === "!") {
+    return LinkType.IMG
   }
   return LinkType.MD
 }
