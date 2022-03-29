@@ -78,10 +78,9 @@ async function imgCompletionItems(args: {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, filename))
       : filename
-    const image = links.image(filePath)
     result.push(
       new vscode.CompletionItem(
-        image.substring(1),
+        links.image(filePath).substring(1),
         vscode.CompletionItemKind.Text
       )
     )
