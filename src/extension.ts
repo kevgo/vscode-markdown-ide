@@ -46,4 +46,6 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
+
+  // "tikibase fix" code action
 }
