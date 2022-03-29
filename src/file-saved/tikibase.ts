@@ -4,7 +4,7 @@ import * as vscode from "vscode"
 /** executes "tikibase check" and provides the identified issues */
 export async function check(dir: string, debug: vscode.OutputChannel): Promise<TikiMessage[]> {
   const output = await exec({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
-  return parseOutput({ output })
+  return parseOutput(output, debug)
 }
 
 export async function fix(dir: string, debug: vscode.OutputChannel): Promise<void> {
@@ -31,14 +31,12 @@ function exec(
 }
 
 /** parses the given Tikibase output into TS structures */
-function parseOutput(
-  args: { debug?: vscode.OutputChannel; output: string }
-): TikiMessage[] {
+function parseOutput(output: string, debug?: vscode.OutputChannel): TikiMessage[] {
   try {
-    return JSON.parse(args.output) as TikiMessage[]
+    return JSON.parse(output) as TikiMessage[]
   } catch (e) {
-    args.debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
-    args.debug?.show()
+    debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
+    debug?.show()
     return []
   }
 }
