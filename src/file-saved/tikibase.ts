@@ -1,19 +1,14 @@
 import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
-export async function check(dir: string, debug: vscode.OutputChannel): Promise<Message[]> {
-  return run({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
+/** executes "tikibase check" and provides the identified issues */
+export async function check(dir: string, debug: vscode.OutputChannel): Promise<TikiMessage[]> {
+  const output = await exec({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
+  return parseOutput({ output })
 }
 
 export async function fix(dir: string, debug: vscode.OutputChannel): Promise<void> {
   await exec({ argv: ["fix"], execOpts: { cwd: dir }, debug })
-}
-
-/** runs the Tikibase binary and provides its output in a typesafe way */
-async function run(
-  args: { argv: string[]; debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
-): Promise<Message[]> {
-  return parseOutput({ output: await exec(args), debug: args.debug })
 }
 
 /** runs the Tikibase binary and provides the output */
@@ -38,9 +33,9 @@ function exec(
 /** parses the given Tikibase output into TS structures */
 function parseOutput(
   args: { debug?: vscode.OutputChannel; output: string }
-): Message[] {
+): TikiMessage[] {
   try {
-    return JSON.parse(args.output) as Message[]
+    return JSON.parse(args.output) as TikiMessage[]
   } catch (e) {
     args.debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
     args.debug?.show()
@@ -49,7 +44,7 @@ function parseOutput(
 }
 
 /** structure of how Tikibase describes issues */
-export interface Message {
+export interface TikiMessage {
   readonly end: number
   readonly file: string
   readonly line: number
