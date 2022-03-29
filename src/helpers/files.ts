@@ -8,7 +8,7 @@ const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".tif", ".tiff"]
  * Populates the accumulator argument with all Markdown files (filenames and promise of content) in the given root directory.
  *
  * This function is performance optimized because it affects the user-visible latency of the auto-complete popup.
- * The `result` argument exists to avoid creating and merging temporary arrays.
+ * The `accumulator` argument exists to avoid creating and merging temporary arrays.
  */
 export async function markdown(root: string, accumulator: FileResult[], subdir = ""): Promise<void> {
   const fullRoot = path.join(root, subdir)
@@ -39,7 +39,7 @@ export interface FileResult {
  * Populates the accumulator argument with all image filenames in the given root directory.
  *
  * This function is performance optimized because it affects the user-visible latency of the auto-complete popup.
- * The `result` argument exists to avoid creating and merging temporary arrays.
+ * The `accumulator` argument exists to avoid creating and merging temporary arrays.
  */
 export async function images(root: string, accumulator: string[], subdir = ""): Promise<void> {
   const fullRoot = path.join(root, subdir)
