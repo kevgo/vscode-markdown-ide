@@ -1,11 +1,11 @@
 import { strict as assert } from "assert"
 
 import { groupByFile } from "./file-saved"
-import { TikiMessage } from "./tikibase"
+import * as tiki from "./tikibase"
 
 suite("groupByFile", function() {
   test("works", function() {
-    const give: TikiMessage[] = [{
+    const give: tiki.Message[] = [{
       file: "1.md",
       text: "issue 1",
       line: 2,

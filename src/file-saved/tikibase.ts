@@ -2,7 +2,7 @@ import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
 /** executes "tikibase check" and provides the identified issues */
-export async function check(dir: string, debug: vscode.OutputChannel): Promise<TikiMessage[]> {
+export async function check(dir: string, debug: vscode.OutputChannel): Promise<Message[]> {
   const output = await exec({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
   return parseOutput(output, debug)
 }
@@ -30,9 +30,9 @@ function exec(
 }
 
 /** parses the given Tikibase output into TS structures */
-function parseOutput(output: string, debug?: vscode.OutputChannel): TikiMessage[] {
+function parseOutput(output: string, debug?: vscode.OutputChannel): Message[] {
   try {
-    return JSON.parse(output) as TikiMessage[]
+    return JSON.parse(output) as Message[]
   } catch (e) {
     debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
     debug?.show()
@@ -41,7 +41,7 @@ function parseOutput(output: string, debug?: vscode.OutputChannel): TikiMessage[
 }
 
 /** structure of how Tikibase describes issues */
-export interface TikiMessage {
+export interface Message {
   readonly end: number
   readonly file: string
   readonly line: number
