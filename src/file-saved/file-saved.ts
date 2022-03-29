@@ -8,7 +8,8 @@ export function createCallback(args: { debug: vscode.OutputChannel; workspacePat
   const collection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
     collection.clear()
-    for (const [file, messages] of groupByFile(await tiki.check(args.workspacePath, args.debug))) {
+    const output = await tiki.check(args.workspacePath, args.debug)
+    for (const [file, messages] of groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         diagnostics.push({
