@@ -47,4 +47,44 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
 
   // "tikibase fix" code action
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider("markdown", new TikibaseActionProvider(), {
+      providedCodeActionKinds: TikibaseActionProvider.providedCodeActionKinds
+    })
+  )
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "vscode-markdown-ide.command",
+      () => vscode.window.showErrorMessage("HELLO!")
+    )
+  )
+}
+
+export class TikibaseActionProvider implements vscode.CodeActionProvider {
+  public static readonly providedCodeActionKinds = [
+    vscode.CodeActionKind.QuickFix
+  ]
+
+  provideCodeActions(
+    document: vscode.TextDocument,
+    range: vscode.Range | vscode.Selection,
+    context: vscode.CodeActionContext
+  ): vscode.CodeAction[] {
+    const result: vscode.CodeAction[] = []
+    for (const diagnostic of context.diagnostics) {
+      if (diagnostic.code !== "tikibase.fixable") {
+        continue
+      }
+      const action = new vscode.CodeAction("Fix via Tikibase", vscode.CodeActionKind.QuickFix)
+      action.command = {
+        command: "vscode-markdown-ide.command",
+        title: "Let Tikibase fix all these problems",
+        tooltip: "Runs \"tikibase fix\""
+      }
+      action.diagnostics = [diagnostic]
+      action.isPreferred = true
+      result.push(action)
+    }
+    return result
+  }
 }

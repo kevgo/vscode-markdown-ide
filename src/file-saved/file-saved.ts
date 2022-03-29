@@ -15,7 +15,8 @@ export function createCallback(args: { debug: vscode.OutputChannel; workspacePat
         return {
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
-          severity: vscode.DiagnosticSeverity.Error
+          severity: vscode.DiagnosticSeverity.Error,
+          code: "tikibase.fixable" // TODO: apply only for fixable issues
         }
       })
       collection.set(uri, diagnostics)
