@@ -16,7 +16,7 @@ export function createCallback(args: { debug: vscode.OutputChannel; workspacePat
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
           severity: vscode.DiagnosticSeverity.Error,
-          code: "tikibase.fixable" // TODO: apply only for fixable issues
+          code: `tikibase.${fixability(message.fixable)}`
         })
       }
       collection.set(vscode.Uri.file(path.join(args.workspacePath, file)), diagnostics)
@@ -36,4 +36,12 @@ export function groupByFile(messages: tiki.Message[]): Map<string, tiki.Message[
     }
   }
   return result
+}
+
+export function fixability(fixable: boolean): string {
+  if (fixable) {
+    return "fixable"
+  } else {
+    return "unfixable"
+  }
 }

@@ -44,6 +44,7 @@ function parseOutput(output: string, debug?: vscode.OutputChannel): Message[] {
 export interface Message {
   readonly end: number
   readonly file: string
+  readonly fixable: boolean
   readonly line: number
   readonly start: number
   readonly text: string
