@@ -2,27 +2,18 @@ import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
 export async function check(dir: string, debug: vscode.OutputChannel): Promise<Message[]> {
-  return run({
-    argv: ["--format=json", "check"],
-    execOpts: { cwd: dir },
-    debug
-  })
+  return run({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
 }
 
 export async function fix(dir: string, debug: vscode.OutputChannel): Promise<void> {
-  await exec({
-    argv: ["fix"],
-    execOpts: { cwd: dir },
-    debug
-  })
+  await exec({ argv: ["fix"], execOpts: { cwd: dir }, debug })
 }
 
 /** runs the Tikibase binary and provides its output in a typesafe way */
 async function run(
   args: { argv: string[]; debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
 ): Promise<Message[]> {
-  const output = await exec(args)
-  return parseOutput({ output, debug: args.debug })
+  return parseOutput({ output: await exec(args), debug: args.debug })
 }
 
 /** runs the Tikibase binary and provides the output */
