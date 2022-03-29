@@ -14,12 +14,12 @@ export function markdown(args: {
   /** vscode debug channel to print user guidance if the titleRE is wrong */
   debug?: vscode.OutputChannel | null
   fileContent: string
-  fileName: string
+  filePath: string
   /** the regex to extract parts of the title */
   titleRE?: RegExp | null
 }): string {
   const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
-  const result = `[${titleLine}](${args.fileName})`
+  const result = `[${titleLine}](${args.filePath})`
   if (!args.titleRE) {
     return result
   }
@@ -41,7 +41,7 @@ export function markdown(args: {
     args.debug?.show()
     return result
   }
-  return `[${match[1]}](${args.fileName})`
+  return `[${match[1]}](${args.filePath})`
 }
 
 /** removes all links in the given Markdown text*/

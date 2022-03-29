@@ -1,29 +1,69 @@
+import { promises as fs } from "fs"
 import * as path from "path"
-import * as vscode from "vscode"
 
-const ignoreGlob = "{.git,node_modules,vendor}"
+const ignoreDirs = [".git", "node_modules", "vendor"]
+const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".tif", ".tiff"]
 
-/** provides the relative filenames of all images in the current workspace */
-export async function images(): Promise<string[]> {
-  return makeRelative(await vscode.workspace.findFiles("**/*.{jpg,jpeg,png,gif,bmp,tif,tiff}", ignoreGlob))
+/**
+ * Populates the accumulator argument with all Markdown files (filenames and promise of content) in the given root directory.
+ *
+ * This function is performance optimized because it affects the user-visible latency of the auto-complete popup.
+ * The `accumulator` argument exists to avoid creating and merging temporary arrays.
+ */
+export async function markdown(root: string, accumulator: FileResult[], subdir = ""): Promise<void> {
+  const fullRoot = path.join(root, subdir)
+  for (const entry of await fs.readdir(fullRoot, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (ignoreDirs.includes(entry.name)) {
+        continue
+      }
+      await markdown(root, accumulator, path.join(subdir, entry.name))
+    } else {
+      if (!entry.name.endsWith(".md")) {
+        continue
+      }
+      accumulator.push({
+        filePath: path.join(subdir, entry.name),
+        content: fs.readFile(path.join(fullRoot, entry.name), "utf8")
+      })
+    }
+  }
 }
 
-/** provides the relative path of all Markdown files in the current workspace */
-export async function markdown(): Promise<string[]> {
-  return makeRelative(await vscode.workspace.findFiles("**/*.md", ignoreGlob))
+export interface FileResult {
+  content: Promise<string>
+  filePath: string
 }
 
-/** converts the given list of VSCode URIs into file paths relative to the workspace root */
-function makeRelative(files: vscode.Uri[]): string[] {
-  const root = vscode.workspace.workspaceFolders?.[0].uri.fsPath
-  if (root == undefined) {
-    return []
+/**
+ * Populates the accumulator argument with all image filenames in the given root directory.
+ *
+ * This function is performance optimized because it affects the user-visible latency of the auto-complete popup.
+ * The `accumulator` argument exists to avoid creating and merging temporary arrays.
+ */
+export async function images(root: string, accumulator: string[], subdir = ""): Promise<void> {
+  const fullRoot = path.join(root, subdir)
+  for (const entry of await fs.readdir(fullRoot, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (ignoreDirs.includes(entry.name)) {
+        continue
+      }
+      await images(root, accumulator, path.join(subdir, entry.name))
+    } else {
+      if (!isImage(entry.name)) {
+        continue
+      }
+      accumulator.push(path.join(subdir, entry.name))
+    }
   }
-  // NOTE: Using a for loop here because it is faster than map operations
-  //       and we could be iterating many thousands of entries here.
-  const result = []
-  for (const file of files) {
-    result.push(path.relative(root, file.fsPath))
+}
+
+/** indicates whether the given filename belongs to an image */
+export function isImage(filename: string): boolean {
+  for (const imageExt of imageExtensions) {
+    if (filename.endsWith(imageExt)) {
+      return true
+    }
   }
-  return result
+  return false
 }

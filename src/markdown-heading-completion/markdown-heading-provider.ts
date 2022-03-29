@@ -1,35 +1,23 @@
-import { promises as fs } from "fs"
-import * as path from "path"
 import * as vscode from "vscode"
 
-import { Configuration } from "../configuration"
 import * as files from "../helpers/files"
 import * as headings from "../helpers/headings"
 
 /** Completion provider for MarkdownLinks */
-export function markdownHeadingProvider(debug: vscode.OutputChannel): vscode.CompletionItemProvider {
+export function markdownHeadingProvider(debug: vscode.OutputChannel, wsRoot: string): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems() {
       const time = new Date().getTime()
-      const workspacePath = new Configuration().workspacePath()
-      if (!workspacePath) {
-        return
+      const mdFilesAcc: files.FileResult[] = []
+      await files.markdown(wsRoot, mdFilesAcc)
+      debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${mdFilesAcc.length}`)
+      const headingsAcc: Set<string> = new Set()
+      for (const mdFile of mdFilesAcc) {
+        headings.inFile(await mdFile.content, headingsAcc)
       }
-      const mdFiles = await files.markdown()
-      debug.appendLine(`${new Date().getTime() - time}ms:  found all files: ${mdFiles.length}`)
-      const filePromises: Array<Promise<string>> = []
-      for (const fileName of mdFiles) {
-        const fullPath = path.join(workspacePath, fileName)
-        filePromises.push(fs.readFile(fullPath, "utf-8"))
-      }
-      debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${filePromises.length}`)
-      const unique: Set<string> = new Set()
-      for (const filePromise of filePromises) {
-        headings.inFile(await filePromise, unique)
-      }
-      debug.appendLine(`${new Date().getTime() - time}ms  parsed headings`)
+      debug.appendLine(`${new Date().getTime() - time}ms  loaded and parsed headings`)
       const result: vscode.CompletionItem[] = []
-      for (const heading of unique) {
+      for (const heading of headingsAcc) {
         result.push(
           new vscode.CompletionItem(
             heading.substring(1),
