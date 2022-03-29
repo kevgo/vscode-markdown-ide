@@ -15,11 +15,10 @@ export function markdownLinkCompletionProvider(
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const time = new Date().getTime()
       const config = new Configuration()
-      const linkType = input.analyze(document.lineAt(position).text, position.character)
       debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       const documentDir = path.dirname(document.fileName)
       debug.appendLine(`documentDir: ${documentDir}`)
-      switch (linkType) {
+      switch (input.analyze(document.lineAt(position).text, position.character)) {
         case input.LinkType.MD:
           return mdCompletionItems({
             wsRoot: workspacePath,
@@ -31,7 +30,7 @@ export function markdownLinkCompletionProvider(
         case input.LinkType.IMG:
           return imgCompletionItems({ debug, time, wsRoot: workspacePath, documentDir })
         default:
-          throw new Error(`Unknown link type: ${linkType}`)
+          throw new Error(`Unknown link type`)
       }
     }
   }
