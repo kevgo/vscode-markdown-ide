@@ -11,13 +11,13 @@ export function markdownHeadingProvider(debug: vscode.OutputChannel, wsRoot: str
       const mdFilesAcc: files.FileResult[] = []
       await files.markdown(wsRoot, mdFilesAcc)
       debug.appendLine(`${new Date().getTime() - time}ms:  created all file load promises: ${mdFilesAcc.length}`)
-      const unique: Set<string> = new Set()
+      const headingsAcc: Set<string> = new Set()
       for (const mdFile of mdFilesAcc) {
-        headings.inFile(await mdFile.content, unique)
+        headings.inFile(await mdFile.content, headingsAcc)
       }
       debug.appendLine(`${new Date().getTime() - time}ms  loaded and parsed headings`)
       const result: vscode.CompletionItem[] = []
-      for (const heading of unique) {
+      for (const heading of headingsAcc) {
         result.push(
           new vscode.CompletionItem(
             heading.substring(1),
