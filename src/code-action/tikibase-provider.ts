@@ -1,6 +1,7 @@
 import * as vscode from "vscode"
 
 export class TikibaseProvider implements vscode.CodeActionProvider {
+  /** name of the code action that this provider implements */
   public static readonly command = "vscode-markdown-ide.command"
 
   provideCodeActions(
