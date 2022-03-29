@@ -15,9 +15,7 @@ export function markdownLinkCompletionProvider(
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const time = new Date().getTime()
       const config = new Configuration()
-      debug.appendLine(`${new Date().getTime() - time}ms:  input analyzed`)
       const documentDir = path.dirname(document.fileName)
-      debug.appendLine(`documentDir: ${documentDir}`)
       switch (input.analyze(document.lineAt(position).text, position.character)) {
         case input.LinkType.MD:
           return mdCompletionItems({
