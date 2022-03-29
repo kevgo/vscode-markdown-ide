@@ -44,11 +44,11 @@ async function mdCompletionItems(args: {
   await files.markdown(args.wsRoot, mdFilesAcc)
   const result = []
   for (const mdFile of mdFilesAcc) {
-    const relPath = args.documentDir !== args.wsRoot
+    const fileName = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
     const link = links.markdown({
-      fileName: relPath,
+      fileName,
       fileContent: await mdFile.content,
       debug: args.debug,
       titleRE: args.titleRE
