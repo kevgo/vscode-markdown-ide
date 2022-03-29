@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-export class TikibaseActionProvider implements vscode.CodeActionProvider {
+export class TikibaseProvider implements vscode.CodeActionProvider {
   public static readonly command = "vscode-markdown-ide.command"
 
   provideCodeActions(
@@ -15,7 +15,7 @@ export class TikibaseActionProvider implements vscode.CodeActionProvider {
       }
       const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
-        command: TikibaseActionProvider.command,
+        command: TikibaseProvider.command,
         title: "let Tikibase fix all these problems",
         tooltip: "runs \"tikibase fix\""
       }
