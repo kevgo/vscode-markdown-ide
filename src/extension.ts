@@ -1,7 +1,9 @@
 import * as vscode from "vscode"
 
+import { TikibaseProvider } from "./code-action/tikibase-provider"
 import { Configuration } from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
+import * as tikibase from "./file-saved/tikibase"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
@@ -45,4 +47,19 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
+
+  // "tikibase fix" code action
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      "markdown",
+      new TikibaseProvider(),
+      { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
+    )
+  )
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      TikibaseProvider.command,
+      () => tikibase.fix(workspacePath, debug)
+    )
+  )
 }
