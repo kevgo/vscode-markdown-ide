@@ -75,11 +75,11 @@ export class TikibaseActionProvider implements vscode.CodeActionProvider {
       if (diagnostic.code !== "tikibase.fixable") {
         continue
       }
-      const action = new vscode.CodeAction("Fix via Tikibase", vscode.CodeActionKind.QuickFix)
+      const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
         command: "vscode-markdown-ide.command",
-        title: "Let Tikibase fix all these problems",
-        tooltip: "Runs \"tikibase fix\""
+        title: "let Tikibase fix all these problems",
+        tooltip: "runs \"tikibase fix\""
       }
       action.diagnostics = [diagnostic]
       action.isPreferred = true
