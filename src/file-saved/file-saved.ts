@@ -7,23 +7,20 @@ import * as tikibase from "./tikibase"
 export function createCallback(args: { debug: vscode.OutputChannel; workspacePath: string }): () => void {
   const collection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
-    const errorMessages = await tikibase.check({
-      debug: args.debug,
-      execOpts: { cwd: args.workspacePath }
-    })
+    const tikiMessages = await tikibase.check(args.workspacePath, args.debug)
     collection.clear()
-    groupByFile(errorMessages).forEach((messagesForFile, file) => {
-      const uri = vscode.Uri.file(path.join(args.workspacePath, file))
-      const diagnostics: vscode.Diagnostic[] = messagesForFile.map((message: tikibase.Message) => {
-        return {
+    for (const [file, messages] of groupByFile(tikiMessages)) {
+      const diagnostics: vscode.Diagnostic[] = []
+      for (const message of messages) {
+        diagnostics.push({
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
           severity: vscode.DiagnosticSeverity.Error,
           code: "tikibase.fixable" // TODO: apply only for fixable issues
-        }
-      })
-      collection.set(uri, diagnostics)
-    })
+        })
+      }
+      collection.set(vscode.Uri.file(path.join(args.workspacePath, file)), diagnostics)
+    }
   }
 }
 

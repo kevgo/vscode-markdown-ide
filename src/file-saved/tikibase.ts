@@ -1,21 +1,19 @@
 import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
-export async function check(
-  args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
-): Promise<Message[]> {
+export async function check(dir: string, debug: vscode.OutputChannel): Promise<Message[]> {
   return run({
     argv: ["--format=json", "check"],
-    ...args
+    execOpts: { cwd: dir },
+    debug
   })
 }
 
-export async function fix(
-  args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
-): Promise<void> {
+export async function fix(dir: string, debug: vscode.OutputChannel): Promise<void> {
   await exec({
     argv: ["fix"],
-    ...args
+    execOpts: { cwd: dir },
+    debug
   })
 }
 

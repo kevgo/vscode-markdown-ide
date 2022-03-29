@@ -59,7 +59,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       TikibaseProvider.command,
-      () => tikibase.fix({ debug, execOpts: { cwd: workspacePath } })
+      () => tikibase.fix(workspacePath, debug)
     )
   )
 }
