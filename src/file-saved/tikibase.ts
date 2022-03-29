@@ -1,20 +1,40 @@
 import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
-/** runs the Tikibase binary and provides its output in a typesafe way */
-export async function run(
+export async function check(
   args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
+): Promise<Message[]> {
+  return run({
+    argv: ["--format=json", "check"],
+    ...args
+  })
+}
+
+export async function fix(
+  args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
+): Promise<void> {
+  await exec({
+    argv: ["fix"],
+    ...args
+  })
+}
+
+/** runs the Tikibase binary and provides its output in a typesafe way */
+async function run(
+  args: { argv: string[]; debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
 ): Promise<Message[]> {
   const output = await exec(args)
   return parseOutput({ output, debug: args.debug })
 }
 
 /** runs the Tikibase binary and provides the output */
-function exec(args: { debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }): Promise<string> {
+function exec(
+  args: { argv: string[]; debug?: vscode.OutputChannel; execOpts: childProcess.ExecFileOptions }
+): Promise<string> {
   // NOTE: need to do manual promises here because TypeScript
   // doesn't properly translate types when using util.promisify
   return new Promise((resolve, reject) => {
-    childProcess.execFile("tikibase", ["--format=json", "check"], args.execOpts, function(error, stdout, stderr) {
+    childProcess.execFile("tikibase", args.argv, args.execOpts, function(error, stdout, stderr) {
       if (error?.code === "ENOENT") {
         args.debug?.appendLine("Error: Tikibase is enabled but the tikibase binary is not in the path.")
         args.debug?.show()

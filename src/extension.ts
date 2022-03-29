@@ -3,6 +3,7 @@ import * as vscode from "vscode"
 import { TikibaseActionProvider } from "./code-action/tikibase-provider"
 import { Configuration } from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
+import * as tikibase from "./file-saved/tikibase"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
@@ -56,7 +57,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       TikibaseActionProvider.command,
-      () => vscode.window.showErrorMessage("HELLO!")
+      () => tikibase.fix({ debug, execOpts: { cwd: workspacePath } })
     )
   )
 }
