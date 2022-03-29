@@ -50,9 +50,11 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // "tikibase fix" code action
   context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider("markdown", new TikibaseProvider(), {
-      providedCodeActionKinds: [vscode.CodeActionKind.QuickFix]
-    })
+    vscode.languages.registerCodeActionsProvider(
+      "markdown",
+      new TikibaseProvider(),
+      { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
+    )
   )
   context.subscriptions.push(
     vscode.commands.registerCommand(
