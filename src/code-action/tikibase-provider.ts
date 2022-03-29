@@ -17,8 +17,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
       const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
         command: TikibaseProvider.command,
-        title: "let Tikibase fix all these problems",
-        tooltip: "runs \"tikibase fix\""
+        title: "let Tikibase fix all these problems"
       }
       action.diagnostics = [diagnostic]
       action.isPreferred = true
