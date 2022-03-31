@@ -32,29 +32,29 @@ export async function followLink(wsRoot: string, debug: vscode.OutputChannel): P
 
 /** finds the Markdown link around the given cursor position in the given text */
 export function extractLinkTarget(lineText: string, cursorColumn: number): string {
-  // go left until you find `(`
+  // go left until we find `(`
   let start = cursorColumn
-  console.log(`START:`, start)
   while (start >= 0 && lineText[start] !== "(") {
     start--
-    console.log(`START in left loop:`, start)
   }
-  console.log(`START AFTER GOING LEFT:`, start)
   // if we didn't find it, go right until we find `(`
   if (start === -1) {
     start = cursorColumn
     while (start <= lineText.length && lineText[start] !== "(") {
       start++
-      console.log(`START in right loop:`, start)
     }
   }
-  console.log(`START AFTER GOING RIGHT:`, start)
+  // go right until we find `)`
   let end = cursorColumn
   while (end <= lineText.length && lineText[end] !== ")") {
     end++
   }
-  console.log(`END:`, end)
-
-  // go right until you find `)`
+  // if we didn't find it, search left
+  if (end === lineText.length + 1) {
+    end = cursorColumn
+    while (end >= start && lineText[end] !== ")") {
+      end--
+    }
+  }
   return lineText.substring(start + 1, end)
 }
