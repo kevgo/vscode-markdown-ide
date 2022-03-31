@@ -23,15 +23,23 @@ export async function followLink(wsRoot: string, debug: vscode.OutputChannel): P
 
   // get link text
   const linkTarget = extractLinkTarget(line.text, cursor.character)
+  if (!linkTarget) {
+    debug.appendLine("no link found")
+    return
+  }
 
   // open linked page
+  if (isWebLink(linkTarget)) {
+    //
+  }
+
   // find the first link to the referring filename
   // select that link
   await vscode.window.showInformationMessage("HELLO")
 }
 
-/** finds the Markdown link around the given cursor position in the given text */
-export function extractLinkTarget(lineText: string, cursorColumn: number): string {
+/** provides the target of the Markdown link around the given cursor position in the given text */
+export function extractLinkTarget(lineText: string, cursorColumn: number): string | undefined {
   // go left until we find `(`
   let start = cursorColumn
   while (start >= 0 && lineText[start] !== "(") {
@@ -44,17 +52,23 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
       start++
     }
   }
+  if (start === lineText.length + 1) {
+    // start token not found in entire string
+    return undefined
+  }
   // go right until we find `)`
-  let end = cursorColumn
+  let end = start
   while (end <= lineText.length && lineText[end] !== ")") {
     end++
   }
-  // if we didn't find it, search left
   if (end === lineText.length + 1) {
-    end = cursorColumn
-    while (end >= start && lineText[end] !== ")") {
-      end--
-    }
+    // end token not found in entire string
+    return undefined
   }
   return lineText.substring(start + 1, end)
+}
+
+/** indicates whether the given */
+export function isWebLink(text: string): boolean {
+  return true
 }
