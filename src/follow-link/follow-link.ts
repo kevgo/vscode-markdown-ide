@@ -70,5 +70,5 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
 
 /** indicates whether the given */
 export function isWebLink(text: string): boolean {
-  return true
+  return text.startsWith("https://") || text.startsWith("http://")
 }
