@@ -1,41 +1,59 @@
+import { text } from "stream/consumers"
 import * as vscode from "vscode"
 
 export async function followLink(wsRoot: string, debug: vscode.OutputChannel): Promise<void> {
-  // get current document
-  const document = vscode.window.activeTextEditor?.document
-  if (!document) {
+  const oldDocument = vscode.window.activeTextEditor?.document
+  if (!oldDocument) {
     debug.appendLine("no active document found")
     return
   }
-
-  // get current filename
-  const filename = document.fileName
-
-  // get current cursor position
-  const cursor = vscode.window.activeTextEditor?.selection.start
-  if (!cursor) {
+  const oldFilename = oldDocument.fileName
+  const oldCursor = vscode.window.activeTextEditor?.selection.start
+  if (!oldCursor) {
     debug.appendLine("no active cursor found")
     return
   }
-
-  // get text at current line
-  const line = document.lineAt(cursor.line)
-
-  // get link text
-  const linkTarget = extractLinkTarget(line.text, cursor.character)
+  const cursorLine = oldDocument.lineAt(oldCursor.line)
+  const linkTarget = extractLinkTarget(cursorLine.text, oldCursor.character)
   if (!linkTarget) {
     debug.appendLine("no link found")
     return
   }
-
-  // open linked page
   if (isWebLink(linkTarget)) {
-    //
+    await openWebLink(linkTarget)
+    return
   }
+  const newFileContent = await openFileLink(linkTarget)
+  if (!newFileContent) {
+    return
+  }
+  const newCursor = locatePhraseInText({ phrase: oldFilename, text: newFileContent })
+  if (!newCursor) {
+    return
+  }
+  vscode.window.activeTextEditor?.revealRange(newCursor)
+}
 
-  // find the first link to the referring filename
-  // select that link
-  await vscode.window.showInformationMessage("HELLO")
+/** provides the range where the given phrase occurs in the given text */
+export function locatePhraseInText(args: { phrase: string; text: string }): vscode.Range | undefined {
+  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
+    const pos = line.indexOf(args.phrase)
+    if (pos > -1) {
+      return new vscode.Range(i, pos, i, pos + args.phrase.length)
+    }
+  }
+}
+
+/** opens the given link in the default web browser */
+async function openWebLink(link: string) {
+  await vscode.env.openExternal(vscode.Uri.parse(link))
+}
+
+/** opens a new tab with the given document */
+async function openFileLink(link: string): Promise<string | null> {
+  const doc = await vscode.workspace.openTextDocument(vscode.Uri.file(link))
+  await vscode.window.showTextDocument(doc)
+  return document.textContent
 }
 
 /** provides the target of the Markdown link around the given cursor position in the given text */
