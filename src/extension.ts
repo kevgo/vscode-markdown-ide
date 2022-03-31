@@ -5,6 +5,7 @@ import { Configuration } from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
+import { followLink } from "./follow-link/follow-link"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
 import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
 import { renameTitle } from "./rename-title"
@@ -51,6 +52,11 @@ export function activate(context: vscode.ExtensionContext): void {
   // "tikibase fix" command
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
     await tikibase.fix(workspacePath, debug)
+  }))
+
+  // "follow link" command
+  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.followLink", async function() {
+    await followLink(workspacePath, debug)
   }))
 
   // "tikibase fix" code action
