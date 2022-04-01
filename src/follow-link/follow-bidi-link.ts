@@ -1,5 +1,30 @@
+import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
+
+export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
+  async provideDefinition(
+    document: vscode.TextDocument,
+    position: vscode.Position
+  ): Promise<vscode.Definition | vscode.DefinitionLink[]> {
+    const oldFilePath = document.fileName
+    const linkTarget = extractLinkTarget(document.lineAt(position.line).text, position.character)
+    if (!linkTarget) {
+      throw new Error()
+    }
+    if (isWebLink(linkTarget)) {
+      return new vscode.Location(vscode.Uri.parse(linkTarget), new vscode.Range(0, 0, 0, 0))
+    }
+    const oldFileName = path.basename(oldFilePath)
+    const newFilePath = path.resolve(path.dirname(oldFilePath), linkTarget)
+    const newFileContent = await fs.readFile(newFilePath, "utf-8")
+    const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
+    if (!newCursor) {
+      throw new Error()
+    }
+    return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(newCursor.line, newCursor.character))
+  }
+}
 
 export async function followBiDiLink(): Promise<void> {
   const oldEditor = vscode.window.activeTextEditor
