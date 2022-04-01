@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-export async function followLink(debug: vscode.OutputChannel): Promise<void> {
+export async function followBiDiLink(): Promise<void> {
   const oldDocument = vscode.window.activeTextEditor?.document
   if (!oldDocument) {
     return

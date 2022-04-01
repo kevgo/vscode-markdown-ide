@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, isWebLink, locateLinkWithTarget } from "./follow-link"
+import { extractLinkTarget, isWebLink, locateLinkWithTarget } from "./follow-bidi-link"
 
 suite("followLinks", function() {
   test("extractLinkTarget", function() {

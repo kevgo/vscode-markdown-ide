@@ -5,7 +5,7 @@ import { Configuration } from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
-import { followLink } from "./follow-link/follow-link"
+import { followBiDiLink } from "./follow-link/follow-bidi-link"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
 import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
 import { renameTitle } from "./rename-title"
@@ -55,9 +55,7 @@ export function activate(context: vscode.ExtensionContext): void {
   }))
 
   // "follow link" command
-  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.followBiDiLink", async function() {
-    await followLink(debug)
-  }))
+  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.followBiDiLink", followBiDiLink))
 
   // "tikibase fix" code action
   context.subscriptions.push(
