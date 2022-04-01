@@ -4,20 +4,16 @@ import * as vscode from "vscode"
 export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   const oldDocument = vscode.window.activeTextEditor?.document
   if (!oldDocument) {
-    debug.appendLine("no active document found")
     return
   }
   const oldFilePath = oldDocument.fileName
   const oldCursor = vscode.window.activeTextEditor?.selection.start
   if (!oldCursor) {
-    debug.appendLine("no active cursor found")
     return
   }
   const cursorLine = oldDocument.lineAt(oldCursor.line)
   const linkTarget = extractLinkTarget(cursorLine.text, oldCursor.character)
-  debug.appendLine(`linkTarget: ${linkTarget}`)
   if (!linkTarget) {
-    debug.appendLine("no link found")
     return
   }
   if (isWebLink(linkTarget)) {
@@ -26,13 +22,11 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   }
   const oldFileName = path.basename(oldFilePath)
   const newPath = path.resolve(path.dirname(oldFilePath), linkTarget)
-  debug.appendLine(`newPath: ${newPath}`)
   const newFileContent = await openFileLink(newPath)
   if (!newFileContent) {
     return
   }
-  const newCursor = locatePhraseInText({ phrase: oldFileName, text: newFileContent, debug })
-  debug.appendLine(`newCursor: ${newCursor?.start} - ${newCursor?.end}`)
+  const newCursor = locatePhraseInText({ phrase: oldFileName, text: newFileContent })
   if (!newCursor) {
     return
   }
@@ -46,12 +40,10 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
 
 /** provides the range where the given phrase occurs in the given text */
 export function locatePhraseInText(
-  args: { debug?: vscode.OutputChannel; phrase: string; text: string }
+  args: { phrase: string; text: string }
 ): vscode.Range | undefined {
-  args.debug?.appendLine(`LOOKING FOR ${args.phrase}`)
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
     const pos = line.indexOf(args.phrase)
-    args.debug?.appendLine(`${i} - ${pos} - ${line}`)
     if (pos > -1) {
       return new vscode.Range(i, pos, i, pos + args.phrase.length)
     }
