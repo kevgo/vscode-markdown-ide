@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, isWebLink, locatePhraseInText } from "./follow-link"
+import { extractLinkTarget, isWebLink, locateLinkWithTarget } from "./follow-link"
 
 suite("followLinks", function() {
   test("extractLinkTarget", function() {
@@ -33,8 +33,8 @@ suite("followLinks", function() {
 text
 one [link](target.md) two
 three`
-    const want = new vscode.Range(2, 11, 2, 20)
-    const have = locatePhraseInText({ phrase: "target.md", text: give })
+    const want = new vscode.Range(2, 4, 2, 21)
+    const have = locateLinkWithTarget({ target: "target.md", text: give })
     assert.deepEqual(have, want)
   })
 })

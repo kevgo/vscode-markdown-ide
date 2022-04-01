@@ -26,7 +26,7 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   if (!newFileContent) {
     return
   }
-  const newCursor = locatePhraseInText({ phrase: oldFileName, text: newFileContent })
+  const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
   if (!newCursor) {
     return
   }
@@ -38,15 +38,17 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   vscode.window.activeTextEditor?.revealRange(editor.selection)
 }
 
-/** provides the range where the given phrase occurs in the given text */
-export function locatePhraseInText(
-  args: { phrase: string; text: string }
+/** provides the range where the first link with the given target occurs in the given text */
+export function locateLinkWithTarget(
+  args: { target: string; text: string }
 ): vscode.Range | undefined {
+  const re = new RegExp(`\\[.*?\\]\\(${args.target}\\)`)
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
-    const pos = line.indexOf(args.phrase)
-    if (pos > -1) {
-      return new vscode.Range(i, pos, i, pos + args.phrase.length)
+    const match = re.exec(line)
+    if (!match) {
+      continue
     }
+    return new vscode.Range(i, match.index, i, match.index + match[0].length)
   }
 }
 
