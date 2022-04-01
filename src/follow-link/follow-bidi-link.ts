@@ -26,7 +26,8 @@ export async function followBiDiLink(): Promise<void> {
     }
     const oldFileName = path.basename(oldFilePath);
     const newFilePath = path.resolve(path.dirname(oldFilePath), linkTarget);
-    const newFileContent = await openFileLink(newFilePath);
+    const newDocument = await openFileLink(newFilePath);
+    const newFileContent = newDocument.getText();
     if (!newFileContent) {
         return;
     }
@@ -62,10 +63,10 @@ async function openWebLink(link: string) {
 }
 
 /** opens a new tab with the given document */
-async function openFileLink(link: string): Promise<string | null> {
+async function openFileLink(link: string): Promise<vscode.TextDocument> {
     const doc = await vscode.workspace.openTextDocument(vscode.Uri.file(link));
     await vscode.window.showTextDocument(doc);
-    return doc.getText();
+    return doc;
 }
 
 /** provides the target of the Markdown link around the given cursor position in the given text */
