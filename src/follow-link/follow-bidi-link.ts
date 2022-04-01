@@ -25,8 +25,8 @@ export async function followBiDiLink(): Promise<void> {
         return;
     }
     const oldFileName = path.basename(oldFilePath);
-    const newPath = path.resolve(path.dirname(oldFilePath), linkTarget);
-    const newFileContent = await openFileLink(newPath);
+    const newFilePath = path.resolve(path.dirname(oldFilePath), linkTarget);
+    const newFileContent = await openFileLink(newFilePath);
     if (!newFileContent) {
         return;
     }
