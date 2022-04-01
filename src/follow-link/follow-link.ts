@@ -41,7 +41,7 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
     return
   }
   editor.selection = new vscode.Selection(newCursor.start, newCursor.end)
-  vscode.window.activeTextEditor?.revealRange(newCursor)
+  vscode.window.activeTextEditor?.revealRange(editor.selection)
 }
 
 /** provides the range where the given phrase occurs in the given text */
