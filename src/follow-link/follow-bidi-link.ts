@@ -2,12 +2,16 @@ import * as path from "path";
 import * as vscode from "vscode";
 
 export async function followBiDiLink(): Promise<void> {
-    const oldDocument = vscode.window.activeTextEditor?.document;
+    const oldEditor = vscode.window.activeTextEditor;
+    if (!oldEditor) {
+        return;
+    }
+    const oldDocument = oldEditor.document;
     if (!oldDocument) {
         return;
     }
     const oldFilePath = oldDocument.fileName;
-    const oldCursor = vscode.window.activeTextEditor?.selection.start;
+    const oldCursor = oldEditor.selection.start;
     if (!oldCursor) {
         return;
     }
@@ -30,12 +34,12 @@ export async function followBiDiLink(): Promise<void> {
     if (!newCursor) {
         return;
     }
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
+    const newEditor = vscode.window.activeTextEditor;
+    if (!newEditor) {
         return;
     }
-    editor.selection = new vscode.Selection(newCursor, newCursor);
-    vscode.window.activeTextEditor?.revealRange(editor.selection);
+    newEditor.selection = new vscode.Selection(newCursor, newCursor);
+    newEditor.revealRange(newEditor.selection);
 }
 
 /** provides the range where the first link with the given target occurs in the given text */

@@ -40,11 +40,11 @@ document.
 
 #### following bi-directional links
 
-To help navigate documents that use bi-directional links to encode semantic
-relationships, Markdown IDE provides a `markdownIDE.followBiDiLink` command that
-works similar to the built-in `editor.action.openLink` command except that when
-following links to other Markdown files, it moves the cursor to the first
-backreference to the file you came from.
+Markdown IDE provides a `markdownIDE.followBiDiLink` command that works similar
+to the built-in `editor.action.openLink` command except that when following
+links to other Markdown files, it moves the cursor to the first backreference to
+the file you came from. This helps navigate documents that use bi-directional
+links to encode semantic relationships.
 
 #### configuration
 
