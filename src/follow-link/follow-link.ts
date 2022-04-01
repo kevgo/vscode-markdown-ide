@@ -1,13 +1,13 @@
-import { text } from "stream/consumers"
+import * as path from "path"
 import * as vscode from "vscode"
 
-export async function followLink(wsRoot: string, debug: vscode.OutputChannel): Promise<void> {
+export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   const oldDocument = vscode.window.activeTextEditor?.document
   if (!oldDocument) {
     debug.appendLine("no active document found")
     return
   }
-  const oldFilename = oldDocument.fileName
+  const oldFilePath = oldDocument.fileName
   const oldCursor = vscode.window.activeTextEditor?.selection.start
   if (!oldCursor) {
     debug.appendLine("no active cursor found")
@@ -15,6 +15,7 @@ export async function followLink(wsRoot: string, debug: vscode.OutputChannel): P
   }
   const cursorLine = oldDocument.lineAt(oldCursor.line)
   const linkTarget = extractLinkTarget(cursorLine.text, oldCursor.character)
+  debug.appendLine(`linkTarget: ${linkTarget}`)
   if (!linkTarget) {
     debug.appendLine("no link found")
     return
@@ -23,21 +24,34 @@ export async function followLink(wsRoot: string, debug: vscode.OutputChannel): P
     await openWebLink(linkTarget)
     return
   }
-  const newFileContent = await openFileLink(linkTarget)
+  const oldFileName = path.basename(oldFilePath)
+  const newPath = path.resolve(path.dirname(oldFilePath), linkTarget)
+  debug.appendLine(`newPath: ${newPath}`)
+  const newFileContent = await openFileLink(newPath)
   if (!newFileContent) {
     return
   }
-  const newCursor = locatePhraseInText({ phrase: oldFilename, text: newFileContent })
+  const newCursor = locatePhraseInText({ phrase: oldFileName, text: newFileContent, debug })
+  debug.appendLine(`newCursor: ${newCursor?.start} - ${newCursor?.end}`)
   if (!newCursor) {
     return
   }
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    return
+  }
+  editor.selection = new vscode.Selection(newCursor.start, newCursor.end)
   vscode.window.activeTextEditor?.revealRange(newCursor)
 }
 
 /** provides the range where the given phrase occurs in the given text */
-export function locatePhraseInText(args: { phrase: string; text: string }): vscode.Range | undefined {
+export function locatePhraseInText(
+  args: { debug?: vscode.OutputChannel; phrase: string; text: string }
+): vscode.Range | undefined {
+  args.debug?.appendLine(`LOOKING FOR ${args.phrase}`)
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
     const pos = line.indexOf(args.phrase)
+    args.debug?.appendLine(`${i} - ${pos} - ${line}`)
     if (pos > -1) {
       return new vscode.Range(i, pos, i, pos + args.phrase.length)
     }
@@ -53,7 +67,7 @@ async function openWebLink(link: string) {
 async function openFileLink(link: string): Promise<string | null> {
   const doc = await vscode.workspace.openTextDocument(vscode.Uri.file(link))
   await vscode.window.showTextDocument(doc)
-  return document.textContent
+  return doc.getText()
 }
 
 /** provides the target of the Markdown link around the given cursor position in the given text */
