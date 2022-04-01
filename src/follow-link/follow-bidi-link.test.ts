@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 
 import { extractLinkTarget, isWebLink, locateLinkWithTarget } from "./follow-bidi-link";
 
-suite("followBiDiLinks", function() {
+suite("followBiDiLink", function() {
     test("extractLinkTarget", function() {
         const give = "one [title1](target1.md) two [title2](target2.md) three";
         for (let i = 0; i < 29; i++) {
