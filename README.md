@@ -43,7 +43,7 @@ Run the "Markdown IDE: Rename document title" command to change the primary
 heading of a document. Markdown IDE updates the title of matching links to that
 document.
 
-#### go to definition for links in Markdown
+#### "go to definition" for links
 
 Markdown IDE provides
 [go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
