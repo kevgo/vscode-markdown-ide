@@ -54,7 +54,7 @@ export function activate(context: vscode.ExtensionContext): void {
     await tikibase.fix(workspacePath, debug)
   }))
 
-  // "follow link" command
+  // "follow bidi link" command
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.followBiDiLink", followBiDiLink))
 
   // "tikibase fix" code action
