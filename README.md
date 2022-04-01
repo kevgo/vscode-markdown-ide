@@ -38,6 +38,14 @@ Run the "Markdown IDE: Rename document title" command to change the primary
 heading of a document. Markdown IDE updates the title of matching links to that
 document.
 
+#### following bi-directional links
+
+To help navigate documents that use bi-directional links to encode semantic
+relationships, Markdown IDE provides a `markdownIDE.followBiDiLink` command that
+works similar to the built-in `editor.action.openLink` command except that when
+following links to other Markdown files, it moves the cursor to the first
+backreference to the file you came from.
+
 #### configuration
 
 You can configure this extension via settings in the VSCode Preferences pane.
