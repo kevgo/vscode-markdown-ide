@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, isWebLink, locateLinkWithTarget } from "./follow-bidi-link"
+import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget } from "./follow-bidi-link"
 
 suite("followBiDiLink", function() {
   test("extractLinkTarget", function() {
@@ -14,6 +14,21 @@ suite("followBiDiLink", function() {
     for (let i = link2start; i < give.length; i++) {
       const have = extractLinkTarget(give, i)
       assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
+    }
+  })
+  test("e", function() {
+    //
+  })
+  test("extractUrl", function() {
+    const give = "one http://one.com two https://two.com three"
+    const link2start = 23
+    for (let i = 0; i < link2start; i++) {
+      const have = extractUrl(give, i)
+      assert.equal(have, "http://one.com", `pos ${i} -> ${have}`)
+    }
+    for (let i = link2start; i < give.length; i++) {
+      const have = extractUrl(give, i)
+      assert.equal(have, "https://two.com", `pos ${i} -> ${have}`)
     }
   })
   test("isWebLink", function() {

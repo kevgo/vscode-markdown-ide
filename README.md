@@ -21,30 +21,44 @@ Typing `[` triggers autocompletion for links to Markdown files.
 
 Typing `![` triggers autocompletion for links to image files.
 
-#### rename file ⇒ update incoming links
+### autocomplete headings
+
+Typing `#` triggers autocompletion with existing headings in all Markdown files
+of the current workspace.
+
+#### rename file ⇒ update links to this file
 
 When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
-#### delete file ⇒ remove incoming links
+#### delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
-#### rename Markdown file title ⇒ update incoming links
+#### rename Markdown file title ⇒ update links containing this title
 
 Run the "Markdown IDE: Rename document title" command to change the primary
 heading of a document. Markdown IDE updates the title of matching links to that
 document.
 
-#### following bi-directional links
+#### go to definition for links in Markdown
 
-Markdown IDE provides a `markdownIDE.followBiDiLink` command that works similar
-to the built-in `editor.action.openLink` command except that when following
-links to other Markdown files, it moves the cursor to the first backreference to
-the file you came from. This helps navigate documents that use bi-directional
-links to encode semantic relationships.
+Markdown IDE provides
+[go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
+for Markdown files. It follows uni and bi-directional links to other Markdown
+files as well as external URLs. This works out of the box with the built-in ways
+to go to definition like `ctrl+mouseclick` or`F12`.
+
+It moves the cursor to the first backreference to the file you came from. This
+helps navigate documents that use bi-directional links to encode semantic
+relationships (see Tikibase support).
+
+### Tikibase support
+
+[Tikibase](https://github.com/kevgo/tikibase) is a linter for wikis and
+knowledge bases implemented as a collection of Markdown files. Markdown IDE can
 
 #### configuration
 
