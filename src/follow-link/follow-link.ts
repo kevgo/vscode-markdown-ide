@@ -34,21 +34,21 @@ export async function followLink(debug: vscode.OutputChannel): Promise<void> {
   if (!editor) {
     return
   }
-  editor.selection = new vscode.Selection(newCursor.start, newCursor.end)
+  editor.selection = new vscode.Selection(newCursor, newCursor)
   vscode.window.activeTextEditor?.revealRange(editor.selection)
 }
 
 /** provides the range where the first link with the given target occurs in the given text */
 export function locateLinkWithTarget(
   args: { target: string; text: string }
-): vscode.Range | undefined {
-  const re = new RegExp(`\\[.*?\\]\\(${args.target}\\)`)
+): vscode.Position | undefined {
+  const re = new RegExp(`\\[[^\\]]*\\]\\(${args.target}\\)`)
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
     const match = re.exec(line)
     if (!match) {
       continue
     }
-    return new vscode.Range(i, match.index, i, match.index + match[0].length)
+    return new vscode.Position(i, match.index)
   }
 }
 
