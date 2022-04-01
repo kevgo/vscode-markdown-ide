@@ -49,10 +49,9 @@ export function locateLinkWithTarget(
   const re = new RegExp(`\\[[^\\]]*\\]\\(${args.target}\\)`)
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
     const match = re.exec(line)
-    if (!match) {
-      continue
+    if (match) {
+      return new vscode.Position(i, match.index)
     }
-    return new vscode.Position(i, match.index)
   }
 }
 
