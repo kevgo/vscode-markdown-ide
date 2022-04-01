@@ -5,6 +5,7 @@ import { Configuration } from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
+import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
 import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
 import { renameTitle } from "./rename-title"
@@ -52,6 +53,9 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
     await tikibase.fix(workspacePath, debug)
   }))
+
+  // "go to definition" for links in Markdown documents
+  vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
 
   // "tikibase fix" code action
   context.subscriptions.push(
