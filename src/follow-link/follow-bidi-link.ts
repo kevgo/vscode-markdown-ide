@@ -13,20 +13,19 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       const url = extractUrl(document.lineAt(position.line).text, position.character)
       if (url) {
         await vscode.env.openExternal(vscode.Uri.parse(url))
-        throw new Error()
       }
-      throw new Error()
+      return []
     }
     if (isWebLink(linkTarget)) {
       await vscode.env.openExternal(vscode.Uri.parse(linkTarget))
-      throw new Error()
+      return []
     }
     const oldFileName = path.basename(oldFilePath)
     const newFilePath = path.resolve(path.dirname(oldFilePath), linkTarget)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
     if (!newCursor) {
-      throw new Error()
+      return []
     }
     return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(newCursor.line, newCursor.character))
   }
