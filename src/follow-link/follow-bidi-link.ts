@@ -42,7 +42,7 @@ export async function followBiDiLink(): Promise<void> {
   newEditor.revealRange(newEditor.selection)
 }
 
-/** provides the range where the first link with the given target occurs in the given text */
+/** provides the position where the first link with the given target occurs in the given text */
 export function locateLinkWithTarget(
   args: { target: string; text: string }
 ): vscode.Position | undefined {
