@@ -57,9 +57,11 @@ relationships (see Tikibase support).
 
 ### Tikibase support
 
-[Tikibase](https://github.com/kevgo/tikibase) is a linter for wikis and
-knowledge bases implemented as a collection of Markdown files. Markdown IDE can
-run Tikibase for you and highlight its findings inside VSCode.
+[Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
+wikis and knowledge bases. Markdown IDE can run Tikibase for you, highlight
+issues it identifies in VSCode, and apply auto-fixes via
+[code actions](https://code.visualstudio.com/docs/editor/refactoring) or
+[commands](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
 
 #### configuration
 
