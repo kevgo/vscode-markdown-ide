@@ -47,13 +47,9 @@ document.
 
 Markdown IDE provides
 [go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
-for Markdown files. It follows uni and bi-directional links to other Markdown
-files as well as external URLs. This works out of the box with the built-in ways
-to go to definition like `ctrl+mouseclick` or`F12`.
-
-It moves the cursor to the first backreference to the file you came from. This
-helps navigate documents that use bi-directional links to encode semantic
-relationships (see Tikibase support).
+for Markdown files. This works out of the box with the built-in ways to go to
+definition like `ctrl+mouseclick` or`F12`. Following a link to another Markdown
+document moves the cursor to the first backreference to the file you came from.
 
 ### Tikibase support
 
