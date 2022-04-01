@@ -46,13 +46,13 @@ export function locateLinkWithTarget(
 
 /** provides the target of the Markdown link around the given cursor position in the given text */
 export function extractLinkTarget(lineText: string, cursorColumn: number): string | undefined {
-  // go left until we find `[`
+  // go left from the cursor until we find the beginning of the Markdown link
   let start = cursorColumn
   while (start >= 0 && lineText[start] !== "[") {
     start--
   }
-  // if we didn't find it, go right until we find `[`
   if (start === -1) {
+    // didn't find the link beginning on the left of the cursor --> search to the right
     start = cursorColumn
     while (start <= lineText.length && lineText[start] !== "[") {
       start++
@@ -62,7 +62,7 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
     void vscode.window.showErrorMessage("No link found")
     return
   }
-  // go right until we find `(`
+  // keep going right until we find the start of the URL segment of the Markdown link
   while (start <= lineText.length && lineText[start] !== "(") {
     start++
   }
@@ -70,7 +70,7 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
     void vscode.window.showErrorMessage("No link found")
     return
   }
-  // go right until we find `)`
+  // keep going right until we find the end of the URL segment of the Markdown link
   let end = start
   while (end <= lineText.length && lineText[end] !== ")") {
     end++
@@ -84,11 +84,13 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
 
 /** provides the URL at the given cursor position in the given text */
 export function extractUrl(lineText: string, cursorColumn: number): string | undefined {
+  // go left from the cursor until we find the beginning of the URL
   let start = cursorColumn
   while (start >= 0 && lineText.substring(start, start + 4) !== "http") {
     start--
   }
   if (start === -1) {
+    // didn't find the URL beginning to the left --> search to the right
     start = cursorColumn
     while (start < lineText.length && lineText.substring(start, start + 4) !== "http") {
       start++
@@ -97,14 +99,15 @@ export function extractUrl(lineText: string, cursorColumn: number): string | und
       return
     }
   }
+  // find the end of the URL
   let end = start
-  /** characters that mark the end of a URL */
-  const urlEnd = [" ", "\n"]
-  while (end < lineText.length && !urlEnd.includes(lineText[end])) {
+  while (end < lineText.length && !urlEnds.includes(lineText[end])) {
     end++
   }
   return lineText.substring(start, end)
 }
+/** characters that mark the end of a URL */
+const urlEnds = [" ", "\n"]
 
 /** indicates whether the given */
 export function isWebLink(text: string): boolean {
