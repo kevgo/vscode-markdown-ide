@@ -59,6 +59,7 @@ relationships (see Tikibase support).
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for wikis and
 knowledge bases implemented as a collection of Markdown files. Markdown IDE can
+run Tikibase for you and highlight its findings inside VSCode.
 
 #### configuration
 
