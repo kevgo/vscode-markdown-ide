@@ -13,13 +13,13 @@ files in the `.git`, `node_modules`, and `vendor` folders.
 
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
-#### autocomplete links to Markdown documents
+### autocomplete links to Markdown documents
 
 Typing `[` triggers autocompletion for links to Markdown files.
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete.gif)
 
-#### autocomplete links to image files
+### autocomplete links to image files
 
 Typing `![` triggers autocompletion for links to image files.
 
