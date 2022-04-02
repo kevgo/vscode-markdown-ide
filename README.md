@@ -2,8 +2,6 @@
 <img src="documentation/logo_800.png" align="center">
 </center>
 
-![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
-
 This plugin for [VSCode](https://code.visualstudio.com) and
 [compatible editors](https://open-vsx.org) provides a bit of IDE-grade editing
 and refactoring support for Markdown files. This is most useful for large
@@ -12,6 +10,8 @@ collections of Markdown documents containing lots of links between them.
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
 files in the `.git`, `node_modules`, and `vendor` folders.
+
+![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 #### autocomplete links to Markdown documents
 
