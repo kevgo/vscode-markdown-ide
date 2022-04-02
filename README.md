@@ -17,7 +17,8 @@ feedback or requests, please
 
 ### autocomplete links to Markdown documents
 
-Typing `[` triggers autocompletion for links to Markdown files.
+Typing `[` triggers autocompletion for links to Markdown files. The link title
+is the first heading in the linked file.
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete.gif)
 
