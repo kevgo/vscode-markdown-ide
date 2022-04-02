@@ -1,5 +1,5 @@
 <center>
-<img src="documentation/logo_400.png" align="center">
+<img src="documentation/logo_600.png" align="center">
 </center>
 
 # VSCode Markdown IDE
