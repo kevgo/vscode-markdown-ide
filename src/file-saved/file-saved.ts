@@ -18,9 +18,8 @@ export function createCallback(
     // so that we can clear and re-populate the collection as quickly as possible
     // and avoid flickering on screen
     const output = await tiki.check(args.workspacePath, args.debug)
-    const groups = groupByFile(output)
     const files_diagnostics: Map<vscode.Uri, vscode.Diagnostic[]> = new Map()
-    for (const [file, messages] of groups) {
+    for (const [file, messages] of groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         diagnostics.push({
