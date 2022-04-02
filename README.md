@@ -9,7 +9,9 @@ collections of Markdown documents containing lots of links between them.
 
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
-files in the `.git`, `node_modules`, and `vendor` folders.
+files in the `.git`, `node_modules`, and `vendor` folders. If you have any
+feedback or requests, please
+[open a ticket](https://github.com/kevgo/vscode-markdown-ide/issues).
 
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
