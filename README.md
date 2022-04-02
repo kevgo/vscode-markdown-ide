@@ -1,3 +1,5 @@
+<img src="documentation/logo_800.png">
+
 # VSCode Markdown IDE
 
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
