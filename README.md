@@ -2,8 +2,6 @@
 <img src="documentation/logo_800.png" align="center">
 </center>
 
-# VSCode Markdown IDE
-
 ![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
 This plugin for [VSCode](https://code.visualstudio.com) and
