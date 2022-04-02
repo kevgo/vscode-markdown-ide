@@ -2,7 +2,7 @@
 <img src="documentation/logo_800.png" width="800" height="175">
 </center>
 
-This plugin for [VSCode](https://code.visualstudio.com) and
+This extension for [VSCode](https://code.visualstudio.com) and
 [compatible editors](https://open-vsx.org) provides a bit of IDE-grade editing
 and refactoring support for Markdown files. This is most useful for large
 collections of Markdown documents containing lots of links between them.
