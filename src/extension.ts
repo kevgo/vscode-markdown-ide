@@ -46,31 +46,29 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
 
   // save file --> run "tikibase check"
-  if (config.tikibaseEnabled()) {
-    const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
-    vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
+  const runTikibaseCheck = fileSaved.createCallback({ config, debug, workspacePath })
+  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
-    // startup --> run "tikibase check"
-    runTikibaseCheck()
+  // startup --> run "tikibase check"
+  runTikibaseCheck()
 
-    // "tikibase fix" command
-    context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
-      await tikibase.fix(workspacePath, debug)
-    }))
+  // "tikibase fix" command
+  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
+    await tikibase.fix(workspacePath, debug)
+  }))
 
-    // "tikibase fix" code action
-    context.subscriptions.push(
-      vscode.languages.registerCodeActionsProvider(
-        "markdown",
-        new TikibaseProvider(),
-        { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
-      )
+  // "tikibase fix" code action
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      "markdown",
+      new TikibaseProvider(),
+      { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
     )
-    context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.command,
-        () => tikibase.fix(workspacePath, debug)
-      )
+  )
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      TikibaseProvider.command,
+      () => tikibase.fix(workspacePath, debug)
     )
-  }
+  )
 }

@@ -34,6 +34,7 @@
         },
         "markdownIDE.tikibase.enabled": {
           "type": "boolean",
+          "default": false,
           "description": "Tikibase is a linter for Markdown-based knowledge bases."
         }
       }
