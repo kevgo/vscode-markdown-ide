@@ -39,36 +39,38 @@ export function activate(context: vscode.ExtensionContext): void {
   // file deleted --> remove links to this file
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
-  // save file --> run "tikibase check"
-  const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
-  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
-
-  // startup --> run "tikibase check"
-  runTikibaseCheck()
-
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
-
-  // "tikibase fix" command
-  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
-    await tikibase.fix(workspacePath, debug)
-  }))
 
   // "go to definition" for links in Markdown documents
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
 
-  // "tikibase fix" code action
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider(
-      "markdown",
-      new TikibaseProvider(),
-      { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
+  // save file --> run "tikibase check"
+  const runTikibaseCheck = fileSaved.createCallback({ config, debug, workspacePath })
+  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
+
+  if (config.tikibaseEnabled()) {
+    // startup --> run "tikibase check"
+    runTikibaseCheck()
+
+    // "tikibase fix" command
+    context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
+      await tikibase.fix(workspacePath, debug)
+    }))
+
+    // "tikibase fix" code action
+    context.subscriptions.push(
+      vscode.languages.registerCodeActionsProvider(
+        "markdown",
+        new TikibaseProvider(),
+        { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
+      )
     )
-  )
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.command,
-      () => tikibase.fix(workspacePath, debug)
+    context.subscriptions.push(
+      vscode.commands.registerCommand(
+        TikibaseProvider.command,
+        () => tikibase.fix(workspacePath, debug)
+      )
     )
-  )
+  }
 }

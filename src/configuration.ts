@@ -2,19 +2,18 @@ import * as vscode from "vscode"
 
 /** type-safe access to VSCode configuration */
 export class Configuration {
-  config: vscode.WorkspaceConfiguration
-
-  constructor() {
-    this.config = vscode.workspace.getConfiguration("markdownIDE")
+  /** provides the Tikibase configuration entries */
+  private tikiConfig(): vscode.WorkspaceConfiguration {
+    return vscode.workspace.getConfiguration("markdownIDE")
   }
 
   tikibaseEnabled(): boolean {
-    return this.config.get<boolean>("tikibase.enabled") ?? false
+    return this.tikiConfig().get<boolean>("tikibase.enabled") ?? false
   }
 
   /** provides the titleRegex setting */
   titleRegExp(): RegExp | undefined {
-    const setting = this.config.get<string>("autocomplete.titleRegex")
+    const setting = this.tikiConfig().get<string>("autocomplete.titleRegex")
     if (setting && setting.length > 0) {
       return new RegExp(setting)
     }

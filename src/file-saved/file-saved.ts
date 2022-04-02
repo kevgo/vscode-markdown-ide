@@ -1,14 +1,24 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
+import { Configuration } from "../configuration"
 import * as tiki from "../tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
-export function createCallback(args: { debug: vscode.OutputChannel; workspacePath: string }): () => void {
-  const collection = vscode.languages.createDiagnosticCollection("Markdown IDE")
+export function createCallback(
+  args: { config: Configuration; debug: vscode.OutputChannel; workspacePath: string }
+): () => void {
+  const diagnosticsCollection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
-    collection.clear()
+    if (!args.config.tikibaseEnabled()) {
+      diagnosticsCollection.clear()
+      return
+    }
+    // Note: running all lengthy operations upfront
+    // so that we can clear and re-populate the collection as quickly as possible
+    // and avoid flickering on screen
     const output = await tiki.check(args.workspacePath, args.debug)
+    const files_diagnostics: Map<vscode.Uri, vscode.Diagnostic[]> = new Map()
     for (const [file, messages] of groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
@@ -19,7 +29,11 @@ export function createCallback(args: { debug: vscode.OutputChannel; workspacePat
           code: `tikibase.${fixability(message.fixable)}`
         })
       }
-      collection.set(vscode.Uri.file(path.join(args.workspacePath, file)), diagnostics)
+      files_diagnostics.set(vscode.Uri.file(path.join(args.workspacePath, file)), diagnostics)
+    }
+    diagnosticsCollection.clear()
+    for (const [uri, diag] of files_diagnostics.entries()) {
+      diagnosticsCollection.set(uri, diag)
     }
   }
 }
