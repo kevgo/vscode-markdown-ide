@@ -2,6 +2,7 @@ import * as vscode from "vscode"
 
 /** type-safe access to VSCode configuration */
 export class Configuration {
+  /** provides the Tikibase configuration entries */
   private tikiConfig(): vscode.WorkspaceConfiguration {
     return vscode.workspace.getConfiguration("markdownIDE")
   }
