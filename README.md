@@ -1,23 +1,28 @@
-# VSCode Markdown IDE
+<center>
+<img src="documentation/logo_800.png" width="800" height="175">
+</center>
 
-![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
-
-This plugin for [VSCode](https://code.visualstudio.com) and
-[compatible editors](https://open-vsx.org) provides a bit of IDE-grade editing
-and refactoring support for Markdown files. This is most useful for large
+This extension for [VSCode](https://code.visualstudio.com) and
+[compatible editors](https://open-vsx.org) provides IDE-grade editing and
+refactoring support for Markdown files. This is most useful for large
 collections of Markdown documents containing lots of links between them.
 
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
-files in the `.git`, `node_modules`, and `vendor` folders.
+files in the `.git`, `node_modules`, and `vendor` folders. If you have any
+feedback or requests, please
+[open a ticket](https://github.com/kevgo/vscode-markdown-ide/issues).
 
-#### autocomplete links to Markdown documents
+![CI badge](https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg)
 
-Typing `[` triggers autocompletion for links to Markdown files.
+### autocomplete links to Markdown documents
+
+Typing `[` triggers autocompletion for links to Markdown files. The link title
+is the first heading in the linked file.
 
 ![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete.gif)
 
-#### autocomplete links to image files
+### autocomplete links to image files
 
 Typing `![` triggers autocompletion for links to image files.
 
@@ -26,24 +31,24 @@ Typing `![` triggers autocompletion for links to image files.
 Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
 
-#### rename file ⇒ update links to this file
+### rename file ⇒ update links to this file
 
 When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
-#### delete file ⇒ remove links to this file
+### delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
-#### rename Markdown file title ⇒ update links containing this title
+### rename Markdown file title ⇒ update links containing this title
 
 Run the "Markdown IDE: Rename document title" command to change the primary
 heading of a document. Markdown IDE updates the title of matching links to that
 document.
 
-#### "go to definition" for links
+### "go to definition" for links
 
 Markdown IDE provides
 [go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
@@ -59,7 +64,7 @@ highlight issues it identifies in VSCode, and apply auto-fixes via
 [code actions](https://code.visualstudio.com/docs/editor/refactoring) or the
 [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
 
-#### configuration
+### configuration
 
 You can configure this extension via settings in the VSCode Preferences pane.
 
