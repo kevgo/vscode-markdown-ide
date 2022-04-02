@@ -1,5 +1,5 @@
 <center>
-<img src="documentation/logo_800.png" align="center">
+<img src="documentation/logo_800_compressed.png" align="center">
 </center>
 
 This plugin for [VSCode](https://code.visualstudio.com) and
