@@ -1,4 +1,4 @@
-<img src="documentation/logo_400.png">
+<img src="documentation/logo_400.png" align="center">
 
 # VSCode Markdown IDE
 
