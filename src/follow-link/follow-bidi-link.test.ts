@@ -16,9 +16,6 @@ suite("followBiDiLink", function() {
       assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
     }
   })
-  test("e", function() {
-    //
-  })
   test("extractUrl", function() {
     const give = "one http://one.com two https://two.com three"
     const link2start = 23
