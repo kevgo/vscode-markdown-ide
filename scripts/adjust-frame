@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+convert $1 \( -clone 1 -set delay 50 \) -swap 1,-1 +delete $1
+
+# convert $1 ( -clone 0 -set delay 100 ) -swap 0 +delete ( +clone -set delay 300 ) +swap +delete test2.gif
