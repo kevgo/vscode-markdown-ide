@@ -4,6 +4,8 @@
 *
 .*/
 documentation/
+examples/
+!LICENSE.txt
 out/**/*.test.js
 out/test/*
 src/
