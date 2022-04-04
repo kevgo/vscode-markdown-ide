@@ -20,13 +20,13 @@ feedback or requests, please
 Typing `[` triggers autocompletion for links to Markdown files. The link title
 is the first heading in the linked file.
 
-![demo of the "autocomplete links" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_link.gif)
+![demo of the "autocomplete links" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link.gif)
 
 ## autocomplete image tags
 
 Typing `![` triggers autocompletion for image tags.
 
-![demo of the "autocomplete image tag" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_image_link.gif)
+![demo of the "autocomplete image tag" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-image-link.gif)
 
 ## autocomplete headings
 
