@@ -33,6 +33,8 @@ Typing `![` triggers autocompletion for links to image files.
 Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
 
+![autocompletion demo](documentation/autocomplete-heading.gif)
+
 ### rename file ⇒ update links to this file
 
 When you rename a file, all links to this file in other Markdown files would be
