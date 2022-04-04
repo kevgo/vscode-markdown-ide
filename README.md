@@ -41,6 +41,8 @@ When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
+![rename file demo](documentation/rename-file.gif)
+
 ### delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
