@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# this script adjusts the delay of a frame within an animated gif.
+# unfortunately, this increases the file size.
+convert documentation/autocomplete-headings.gif \( -clone 1 -set delay 50 \) -swap 1,-1 +delete documentation/autocomplete-headings-new.gif

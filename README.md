@@ -20,18 +20,20 @@ feedback or requests, please
 Typing `[` triggers autocompletion for links to Markdown files. The link title
 is the first heading in the linked file.
 
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_link.gif)
+![demo of the "autocomplete links" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_link.gif)
 
-### autocomplete links to image files
+### autocomplete image tags
 
-Typing `![` triggers autocompletion for links to image files.
+Typing `![` triggers autocompletion for image tags.
 
-![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_image_link.gif)
+![demo of the "autocomplete image tag" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete_image_link.gif)
 
 ### autocomplete headings
 
 Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
+
+![demo of the "autocomplete headings" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-heading.gif)
 
 ### rename file ⇒ update links to this file
 
@@ -39,10 +41,14 @@ When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
+![demo of the "rename file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
+
 ### delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
+
+![demo of the "delete file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file.gif)
 
 ### rename Markdown file title ⇒ update links containing this title
 
@@ -57,6 +63,8 @@ Markdown IDE provides
 for Markdown files. This works out of the box with the built-in ways to go to
 definition like `ctrl+mouseclick` or`F12`. Following a link to another Markdown
 document moves the cursor to the first backreference to the file you came from.
+
+![demo of the "go to definition" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition.gif)
 
 ### Tikibase support
 

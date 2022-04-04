@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+if [ -z "$1" ]; then
+  echo "Displays relevant information for an animated GIF file"
+	echo
+	echo "Usage: $0 <filename>"
+	echo
+	exit 1
+fi
+
+identify -format 'frame %s: %T0 ms, %k colors\n' "$1"
