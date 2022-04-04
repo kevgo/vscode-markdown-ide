@@ -4,6 +4,7 @@
 *
 .*/
 documentation/
+!documentation/logo.png
 examples/
 !LICENSE.txt
 out/**/*.test.js
