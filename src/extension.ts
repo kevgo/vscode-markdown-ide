@@ -51,7 +51,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
   if (config.tikibaseEnabled()) {
     // startup --> run "tikibase check"
-    runTikibaseCheck()
+    void runTikibaseCheck()
 
     // "tikibase fix" command
     context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {

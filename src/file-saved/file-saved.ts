@@ -7,7 +7,7 @@ import * as tiki from "../tikibase"
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(
   args: { config: Configuration; debug: vscode.OutputChannel; workspacePath: string }
-): () => void {
+): () => Promise<void> {
   const diagnosticsCollection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
     if (!args.config.tikibaseEnabled()) {
