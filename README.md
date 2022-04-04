@@ -33,7 +33,7 @@ Typing `![` triggers autocompletion for links to image files.
 Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
 
-![autocompletion demo](documentation/autocomplete-heading.gif)
+![autocompletion demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-heading.gif)
 
 ### rename file ⇒ update links to this file
 
@@ -41,12 +41,14 @@ When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
-![rename file demo](documentation/rename-file.gif)
+![rename file demo](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
 
 ### delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
+
+![delete file demo](documentation/delete-file.gif)
 
 ### rename Markdown file title ⇒ update links containing this title
 
