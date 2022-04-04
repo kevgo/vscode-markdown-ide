@@ -48,7 +48,7 @@ filename.
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
-![demo of the "delete file" feature](documentation/delete-file.gif)
+![demo of the "delete file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file.gif)
 
 ### rename Markdown file title ⇒ update links containing this title
 
