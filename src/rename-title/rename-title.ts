@@ -40,16 +40,18 @@ export async function renameTitle(): Promise<void> {
   await vscode.window.withProgress(
     { location: vscode.ProgressLocation.Window, title: "updating link titles", cancellable: false },
     async () => {
+      const edit = new vscode.WorkspaceEdit() // change the title of the current document
+
+      // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
       if (!doc) {
         return
       }
-      const edit = new vscode.WorkspaceEdit() // change the title of the current document
       const newText = changeTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
       const range = new vscode.Range(0, 0, doc.lineCount, 0)
       edit.replace(doc.uri, range, newText)
 
-      // replace the old title in all documents in the current workspace
+      // update the title of all affected links in all documents
       for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
         const oldContent = await fs.readFile(file.fsPath, "utf8")
