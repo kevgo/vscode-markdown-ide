@@ -1,7 +1,8 @@
-import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+import * as configuration from "./configuration"
+import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
@@ -9,6 +10,10 @@ export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promis
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
+  const wsRoot = configuration.workspacePath()
+  if (!wsRoot) {
+    return
+  }
   const progressOpts: vscode.ProgressOptions = {
     location: vscode.ProgressLocation.Window,
     title: "updating link targets",
@@ -16,24 +21,25 @@ export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promis
   }
   await vscode.window.withProgress(progressOpts, async () => {
     const edit = new vscode.WorkspaceEdit()
-    for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
-      const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
+    const mdFiles: files.FileResult[] = []
+    await files.markdown(wsRoot, mdFiles)
+    for (const mdFile of mdFiles) {
+      const oldContent = await mdFile.content
       let newContent = oldContent
+      const fullPath = path.join(wsRoot, mdFile.filePath)
+      const fullDir = path.dirname(fullPath)
       for (const renamedFile of renamedEvent.files) {
         newContent = links.replaceTarget({
           text: newContent,
-          oldTarget: path.relative(path.dirname(wsFile.fsPath), renamedFile.oldUri.fsPath),
-          newTarget: path.relative(path.dirname(wsFile.fsPath), renamedFile.newUri.fsPath)
+          oldTarget: path.relative(fullDir, renamedFile.oldUri.fsPath),
+          newTarget: path.relative(fullDir, renamedFile.newUri.fsPath)
         })
       }
       if (newContent === oldContent) {
         continue
       }
-      const range = new vscode.Range(
-        new vscode.Position(0, 0),
-        new vscode.Position(line.count(oldContent), 0)
-      )
-      edit.replace(wsFile, range, newContent)
+      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+      edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit)
   })
