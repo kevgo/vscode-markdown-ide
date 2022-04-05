@@ -59,11 +59,7 @@ export async function renameTitle(): Promise<void> {
         if (newContent === oldContent) {
           continue
         }
-        // TODO: change to other constructor
-        const range = new vscode.Range(
-          new vscode.Position(0, 0),
-          new vscode.Position(line.count(oldContent), 0)
-        )
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
         edit.replace(file, range, newContent)
       }
       await vscode.workspace.applyEdit(edit)
