@@ -12,7 +12,7 @@ import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
 export function activate(context: vscode.ExtensionContext): void {
-  const config = new configuration.MarkdownIDE()
+  const config = new configuration.Settings()
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
