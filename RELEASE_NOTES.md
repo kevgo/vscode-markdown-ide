@@ -1,5 +1,61 @@
 # Markdown IDE Release Notes
 
+## 0.3.1
+
+- fix bug when renaming document titles
+  ([#80](https://github.com/kevgo/vscode-markdown-ide/pull/80))
+- more performance optimizations
+  ([#81](https://github.com/kevgo/vscode-markdown-ide/pull/81),
+  [#82](https://github.com/kevgo/vscode-markdown-ide/pull/82))
+
+## 0.3
+
+A major release with tons of new features and improvements!
+
+More auto-completions:
+
+- Markdown headings
+  ([#66](https://github.com/kevgo/vscode-markdown-ide/pull/66))
+
+More refactorings:
+
+- rename document titles
+  ([#45](https://github.com/kevgo/vscode-markdown-ide/pull/45))
+
+Better navigation within Markdown documents:
+
+- "go to definition" for Markdown links
+  ([#72](https://github.com/kevgo/vscode-markdown-ide/pull/72))
+
+More linting and auto-fixes:
+
+- optional integration of the [Tikibase](https://github.com/kevgo/tikibase)
+  linter for advanced linting features
+  - display linter errors in VSCode UI
+    ([#62](https://github.com/kevgo/vscode-markdown-ide/pull/62))
+  - run "tikibase fix" via a code action or the command palette
+    ([#69](https://github.com/kevgo/vscode-markdown-ide/pull/69),
+    [#70](https://github.com/kevgo/vscode-markdown-ide/pull/70),
+    [#71](https://github.com/kevgo/vscode-markdown-ide/pull/71))
+
+Nicer UI:
+
+- new logo ([#73](https://github.com/kevgo/vscode-markdown-ide/pull/73))
+- videos visualizing how features work
+  ([#75](https://github.com/kevgo/vscode-markdown-ide/pull/75),
+  [#77](https://github.com/kevgo/vscode-markdown-ide/pull/77))
+
+Faster performance:
+
+- performance optimizations for faster, more concurrent filesystem operations
+  ([#57](https://github.com/kevgo/vscode-markdown-ide/pull/57),
+  [#68](https://github.com/kevgo/vscode-markdown-ide/pull/68),
+  [#57](https://github.com/kevgo/vscode-markdown-ide/pull/57))
+
+## 0.2.1
+
+- [fix bug on Windows](https://github.com/kevgo/vscode-markdown-ide/pull/43)
+
 ## 0.2
 
 - [treat filesystem entries that end in `.md` automatically as Markdown files](https://github.com/kevgo/vscode-markdown-ide/commit/2ed81ac0f4ec580d6aa67ef48084cbcf290cfce9):
