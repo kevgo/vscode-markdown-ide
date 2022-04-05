@@ -45,13 +45,8 @@ export async function renameTitle(): Promise<void> {
         return
       }
       const edit = new vscode.WorkspaceEdit() // change the title of the current document
-      const [newText, rows] = changeTitle({
-        eol: doc.eol.toLocaleString() || "\n",
-        newTitle,
-        oldTitle,
-        text: doc.getText()
-      })
-      const range = new vscode.Range(0, 0, rows, 0)
+      const newText = changeTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
+      const range = new vscode.Range(0, 0, doc.lineCount, 0)
       edit.replace(doc.uri, range, newText)
 
       // replace the old title in all documents in the current workspace
@@ -74,15 +69,15 @@ export async function renameTitle(): Promise<void> {
   )
 }
 
-export function changeTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): [string, number] {
+export function changeTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
   const lines = args.text.split(args.eol)
   for (let i = 0; i < lines.length; i++) {
-    if (lines[i] === `# ${args.oldTitle}`) {
+    if (lines[i].startsWith(`# ${args.oldTitle}`)) {
       lines[i] = `# ${args.newTitle}`
       break
     }
   }
-  return [lines.join(args.eol), lines.length]
+  return lines.join(args.eol)
 }
 
 /** lets the user enter the new document title via a text input dialog */
@@ -92,4 +87,15 @@ async function enterTitle(oldTitle: string): Promise<string | undefined> {
     value: oldTitle,
     valueSelection: [oldTitle.length, oldTitle.length]
   })
+}
+
+function eol2string(eol: vscode.EndOfLine): string {
+  switch (eol) {
+    case vscode.EndOfLine.LF:
+      return "\n"
+    case vscode.EndOfLine.CRLF:
+      return "\r\n"
+    default:
+      throw new Error(`Unknown EndOfLine: ${eol}`)
+  }
 }
