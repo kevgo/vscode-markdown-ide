@@ -1,7 +1,8 @@
-import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+import * as configuration from "./configuration"
+import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 
@@ -9,6 +10,10 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
+  const wsRoot = configuration.workspacePath()
+  if (!wsRoot) {
+    return
+  }
   const progressOpts: vscode.ProgressOptions = {
     location: vscode.ProgressLocation.Window,
     title: "removing links",
@@ -16,13 +21,16 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
   }
   await vscode.window.withProgress(progressOpts, async () => {
     const edit = new vscode.WorkspaceEdit()
-    for (const wsFile of await vscode.workspace.findFiles("**/*.md")) {
-      const oldContent = await fs.readFile(wsFile.fsPath, "utf8")
+    const mdFiles: files.FileResult[] = []
+    await files.markdown(wsRoot, mdFiles)
+    for (const mdFile of mdFiles) {
+      const oldContent = await mdFile.content
       let newContent = oldContent
+      const fullPath = path.join(wsRoot, mdFile.filePath)
       for (const deletedFile of deletedEvent.files) {
         newContent = links.removeWithTarget({
           text: newContent,
-          target: path.relative(path.dirname(wsFile.fsPath), deletedFile.fsPath)
+          target: path.relative(path.dirname(fullPath), deletedFile.fsPath)
         })
       }
       if (newContent === oldContent) {
@@ -32,7 +40,7 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
         new vscode.Position(0, 0),
         new vscode.Position(line.count(oldContent), 0)
       )
-      edit.replace(wsFile, range, newContent)
+      edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit)
   })
