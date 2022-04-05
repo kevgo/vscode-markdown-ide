@@ -1,12 +1,12 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { Configuration } from "../configuration"
+import { MarkdownIDE } from "../configuration"
 import * as tiki from "../tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(
-  args: { config: Configuration; debug: vscode.OutputChannel; workspacePath: string }
+  args: { config: MarkdownIDE; debug: vscode.OutputChannel; workspacePath: string }
 ): () => Promise<void> {
   const diagnosticsCollection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {

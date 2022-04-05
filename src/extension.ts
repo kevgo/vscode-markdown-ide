@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 import { TikibaseProvider } from "./code-action/tikibase-provider"
-import { Configuration } from "./configuration"
+import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
@@ -12,8 +12,8 @@ import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
 export function activate(context: vscode.ExtensionContext): void {
-  const config = new Configuration()
-  const workspacePath = config.workspacePath()
+  const config = new configuration.MarkdownIDE()
+  const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
   }

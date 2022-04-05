@@ -1,11 +1,17 @@
-import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+import * as configuration from "../configuration"
+import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
 
 export async function renameTitle(): Promise<void> {
+  const wsRoot = configuration.workspacePath()
+  if (!wsRoot) {
+    return
+  }
+
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
@@ -52,15 +58,21 @@ export async function renameTitle(): Promise<void> {
       edit.replace(doc.uri, range, newText)
 
       // update the title of all affected links in all documents
-      for (const file of await vscode.workspace.findFiles("**/*.md")) {
-        const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
-        const oldContent = await fs.readFile(file.fsPath, "utf8")
+      const workspacePath = configuration.workspacePath()
+      if (!workspacePath) {
+        return
+      }
+      const mdFiles: files.FileResult[] = []
+      await files.markdown(wsRoot, mdFiles)
+      for (const file of mdFiles) {
+        const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
+        const oldContent = await file.content
         const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
         if (newContent === oldContent) {
           continue
         }
         const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-        edit.replace(file, range, newContent)
+        edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
       }
       await vscode.workspace.applyEdit(edit)
     }
