@@ -8,7 +8,7 @@ import { filesRenamed } from "./files-renamed"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
 import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
-import { renameTitle } from "./rename-title"
+import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
 export function activate(context: vscode.ExtensionContext): void {

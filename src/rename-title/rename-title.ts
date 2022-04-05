@@ -2,20 +2,20 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as line from "./helpers/line"
-import * as links from "./helpers/links"
+import * as line from "../helpers/line"
+import * as links from "../helpers/links"
 
 export async function renameTitle(): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
   const editor = vscode.window.activeTextEditor
-  if (editor === undefined) {
+  if (!editor) {
     // no open editor
     return
   }
   const activeFilePath = editor.document.fileName
-  if (activeFilePath === undefined) {
+  if (!activeFilePath) {
     // active file has no name
     return
   }
@@ -28,7 +28,7 @@ export async function renameTitle(): Promise<void> {
   }
   const oldTitle = line.removeLeadingPounds(titleLine.text)
   const newTitle = await enterTitle(oldTitle)
-  if (newTitle === undefined) {
+  if (!newTitle) {
     // user aborted the dialog
     return
   }
@@ -40,8 +40,21 @@ export async function renameTitle(): Promise<void> {
   await vscode.window.withProgress(
     { location: vscode.ProgressLocation.Window, title: "updating link titles", cancellable: false },
     async () => {
+      const doc = vscode.window.activeTextEditor?.document
+      if (!doc) {
+        return
+      }
+      const edit = new vscode.WorkspaceEdit() // change the title of the current document
+      const [newText, rows] = changeTitle({
+        eol: doc.eol.toLocaleString() || "\n",
+        newTitle,
+        oldTitle,
+        text: doc.getText()
+      })
+      const range = new vscode.Range(0, 0, rows, 0)
+      edit.replace(doc.uri, range, newText)
+
       // replace the old title in all documents in the current workspace
-      const edit = new vscode.WorkspaceEdit()
       for (const file of await vscode.workspace.findFiles("**/*.md")) {
         const pathToActive = path.relative(path.dirname(file.fsPath), activeFilePath)
         const oldContent = await fs.readFile(file.fsPath, "utf8")
@@ -49,6 +62,7 @@ export async function renameTitle(): Promise<void> {
         if (newContent === oldContent) {
           continue
         }
+        // TODO: change to other constructor
         const range = new vscode.Range(
           new vscode.Position(0, 0),
           new vscode.Position(line.count(oldContent), 0)
@@ -58,6 +72,17 @@ export async function renameTitle(): Promise<void> {
       await vscode.workspace.applyEdit(edit)
     }
   )
+}
+
+export function changeTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): [string, number] {
+  const lines = args.text.split(args.eol)
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i] === `# ${args.oldTitle}`) {
+      lines[i] = `# ${args.newTitle}`
+      break
+    }
+  }
+  return [lines.join(args.eol), lines.length]
 }
 
 /** lets the user enter the new document title via a text input dialog */
