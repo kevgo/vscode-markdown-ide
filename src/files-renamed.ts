@@ -1,4 +1,3 @@
-import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
@@ -24,10 +23,10 @@ export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promis
     const edit = new vscode.WorkspaceEdit()
     const mdFiles: files.FileResult[] = []
     await files.markdown(wsRoot, mdFiles)
-    for (const wsFile of mdFiles) {
-      const oldContent = await wsFile.content
+    for (const mdFile of mdFiles) {
+      const oldContent = await mdFile.content
       let newContent = oldContent
-      const fullPath = path.join(wsRoot, wsFile.filePath)
+      const fullPath = path.join(wsRoot, mdFile.filePath)
       const fullDir = path.dirname(fullPath)
       for (const renamedFile of renamedEvent.files) {
         newContent = links.replaceTarget({
