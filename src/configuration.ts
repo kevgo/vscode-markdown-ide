@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
-/** type-safe access to VSCode configuration */
-export class Configuration {
+/** type-safe access to the VSCode configuration of MarkdownIDE */
+export class Settings {
   /** provides the Tikibase configuration entries */
   private tikiConfig(): vscode.WorkspaceConfiguration {
     return vscode.workspace.getConfiguration("markdownIDE")
@@ -18,18 +18,18 @@ export class Configuration {
       return new RegExp(setting)
     }
   }
+}
 
-  /** provides the active VSCode workspace path */
-  workspacePath(): string | undefined {
-    const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
-    if (!currentFilePath) {
-      return
-    }
-    for (const wsFolder of vscode.workspace.workspaceFolders || []) {
-      const wsPath = wsFolder.uri.fsPath
-      if (currentFilePath.startsWith(wsPath)) {
-        return wsPath
-      }
+/** provides the active VSCode workspace path */
+export function workspacePath(): string | undefined {
+  const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
+  if (!currentFilePath) {
+    return
+  }
+  for (const wsFolder of vscode.workspace.workspaceFolders || []) {
+    const wsPath = wsFolder.uri.fsPath
+    if (currentFilePath.startsWith(wsPath)) {
+      return wsPath
     }
   }
 }
