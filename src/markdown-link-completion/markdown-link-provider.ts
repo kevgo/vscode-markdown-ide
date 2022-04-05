@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { Settings } from "../configuration"
+import * as configuration from "../configuration"
 import * as files from "../helpers/files"
 import * as links from "../helpers/links"
 import * as input from "./input"
@@ -14,7 +14,7 @@ export function markdownLinkCompletionProvider(
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const startTime = new Date().getTime()
-      const config = new Settings()
+      const config = new configuration.Settings()
       const documentDir = path.dirname(document.fileName)
       switch (input.analyze(document.lineAt(position).text, position.character)) {
         case input.LinkType.MD:
