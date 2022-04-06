@@ -34,7 +34,7 @@ function parseOutput(output: string, debug?: vscode.OutputChannel): Message[] {
   try {
     return JSON.parse(output) as Message[]
   } catch (e) {
-    debug?.appendLine(`Cannot parse Tikibase output: ${e}`)
+    debug?.appendLine(`Cannot parse Tikibase output: ${e}\n${output}`)
     debug?.show()
     return []
   }
