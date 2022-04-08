@@ -29,7 +29,11 @@ export async function tikibase(wsRoot: string): Promise<Tikibase | undefined> {
   } catch (e) {
     return
   }
-  return JSON.parse(text) as Tikibase
+  try {
+    return JSON.parse(text) as Tikibase
+  } catch (e) {
+    await vscode.window.showErrorMessage(`file tikibase.json contains invalid JSON: ${e}`)
+  }
 }
 
 /** provides the active VSCode workspace path */
