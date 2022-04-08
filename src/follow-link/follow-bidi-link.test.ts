@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget } from "./follow-bidi-link"
+import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget, removeAnchor } from "./follow-bidi-link"
 
 suite("followBiDiLink", function() {
   test("extractLinkTarget", function() {
@@ -16,6 +16,7 @@ suite("followBiDiLink", function() {
       assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
     }
   })
+
   test("extractUrl", function() {
     const give = "one http://one.com two https://two.com three"
     const link2start = 23
@@ -28,6 +29,7 @@ suite("followBiDiLink", function() {
       assert.equal(have, "https://two.com", `pos ${i} -> ${have}`)
     }
   })
+
   test("isWebLink", function() {
     const tests = {
       "http://acme.com": true,
@@ -41,6 +43,7 @@ suite("followBiDiLink", function() {
       assert.equal(have, want, `${give} --> ${have}`)
     }
   })
+
   test("locateLinkWithTarget", function() {
     const give = `# title
 text
@@ -49,5 +52,17 @@ three`
     const want = new vscode.Position(2, 4)
     const have = locateLinkWithTarget({ target: "target.md", text: give })
     assert.deepEqual(have, want)
+  })
+
+  test("removeAnchor", function() {
+    const tests = {
+      "file.md": "file.md",
+      "file.md#": "file.md",
+      "file.md#anchor": "file.md"
+    }
+    for (const [give, want] of Object.entries(tests)) {
+      const have = removeAnchor(give)
+      assert.equal(have, want, `${give} --> ${have}`)
+    }
   })
 })
