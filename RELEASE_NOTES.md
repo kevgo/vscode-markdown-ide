@@ -1,5 +1,10 @@
 # Markdown IDE Release Notes
 
+## 0.3.3
+
+- enable bidi jumps to files without backlinks
+- bug fixes
+
 ## 0.3.2
 
 - automatically enable Tikibase mode when tikibase.json is present
