@@ -1,22 +1,38 @@
+import { promises as fs } from "fs"
+import * as path from "path"
 import * as vscode from "vscode"
 
-/** type-safe access to the VSCode configuration of MarkdownIDE */
-export class Settings {
-  /** provides the Tikibase configuration entries */
-  private tikiConfig(): vscode.WorkspaceConfiguration {
-    return vscode.workspace.getConfiguration("markdownIDE")
+export interface TikibaseConfig {
+  titleRegEx?: string
+}
+
+export class Tikibase {
+  private config: TikibaseConfig
+
+  constructor(config: TikibaseConfig) {
+    this.config = config
   }
 
-  tikibaseEnabled(): boolean {
-    return this.tikiConfig().get<boolean>("tikibase.enabled") ?? false
-  }
-
-  /** provides the titleRegex setting */
-  titleRegExp(): RegExp | undefined {
-    const setting = this.tikiConfig().get<string>("autocomplete.titleRegex")
-    if (setting && setting.length > 0) {
-      return new RegExp(setting)
+  /** provides the titleRegEx setting as a proper regular expression */
+  titleRegex(): RegExp | undefined {
+    if (this.config.titleRegEx) {
+      return new RegExp(this.config.titleRegEx)
     }
+  }
+}
+
+/** provides the Tikibase configuration */
+export async function tikibase(wsRoot: string): Promise<Tikibase | undefined> {
+  let text = ""
+  try {
+    text = await fs.readFile(path.join(wsRoot, "tikibase.json"), "utf8")
+  } catch (e) {
+    return
+  }
+  try {
+    return JSON.parse(text) as Tikibase
+  } catch (e) {
+    await vscode.window.showErrorMessage(`file tikibase.json contains invalid JSON: ${e}`)
   }
 }
 

@@ -11,18 +11,18 @@ import { markdownLinkCompletionProvider } from "./markdown-link-completion/markd
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
-export function activate(context: vscode.ExtensionContext): void {
-  const config = new configuration.Settings()
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
   }
   const debug = vscode.window.createOutputChannel("Markdown IDE")
+  const tikiConfig = await configuration.tikibase(workspacePath)
 
   // autocomplete links by typing `[`
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
-    markdownLinkCompletionProvider(debug, workspacePath),
+    markdownLinkCompletionProvider(debug, workspacePath, tikiConfig),
     "["
   ))
 
@@ -46,10 +46,11 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
 
   // save file --> run "tikibase check"
-  const runTikibaseCheck = fileSaved.createCallback({ config, debug, workspacePath })
-  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
+  if (tikiConfig) {
+    vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
+    const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
+    vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
-  if (config.tikibaseEnabled()) {
     // startup --> run "tikibase check"
     void runTikibaseCheck()
 

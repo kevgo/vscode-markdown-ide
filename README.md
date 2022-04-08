@@ -18,7 +18,9 @@ feedback or requests, please
 ## autocomplete links to Markdown documents
 
 Typing `[` triggers autocompletion for links to Markdown files. The link title
-is the first heading in the linked file.
+is the first heading in the linked file. If present, Markdown IDE uses the
+`titleRegEx` setting in `tikibase.json` to abbreviate the titles of
+auto-completed links.
 
 ![demo of the "autocomplete links" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link.gif)
 
@@ -71,31 +73,13 @@ document moves the cursor to the first backreference to the file you came from.
 ## Tikibase support
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
-wikis and knowledge bases. Markdown IDE can run the Tikibase binary for you,
-highlight issues it identifies in VSCode, and apply auto-fixes via
+wikis and knowledge bases. If you have a `tikibase.json` file in your document
+repo and the Tikibase linter installed, Markdown IDE runs it for you, highlights
+the identified issues in VSCode, and applies auto-fixes via
 [code actions](https://code.visualstudio.com/docs/editor/refactoring) or the
 [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
 
 ## configuration
 
-You can configure this extension via settings in the VSCode Preferences pane.
-
-![VSCode settings example](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/settings.gif)
-
-<a type="configurationOptions">
-
-- **markdownIDE.autocomplete.titleRegex:** By default, the auto-completion
-  feature of this extension creates links with the full title of the linked
-  document. You can provide a regular expression with one capture group to use
-  only parts of the document title. As an example, let's say you want to link to
-  a document with the filename `cpu.md` whose first line is
-  `# Central Processing Unit (CPU)`. By default, auto-completed links to this
-  file look like `[Central Processing Unit (CPU)](cpu.md)`. If you set this
-  configuration option to `/\(([A-Z0-9]+)\)$/`, auto-completed links to this
-  file are `[CPU](cpu.md)`.
-
-- **markdownIDE.tikibase.enabled:**
-  [Tikibase](https://github.com/kevgo/tikibase) is an advanced linter for
-  Markdown-based knowledge bases.
-
-</a>
+If present, Markdown IDE uses the `titleRegEx` setting in `tikibase.json` to
+abbreviate auto-completed links.

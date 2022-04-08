@@ -1,19 +1,14 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as configuration from "../configuration"
 import * as tiki from "../tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(
-  args: { config: configuration.Settings; debug: vscode.OutputChannel; workspacePath: string }
+  args: { debug: vscode.OutputChannel; workspacePath: string }
 ): () => Promise<void> {
   const diagnosticsCollection = vscode.languages.createDiagnosticCollection("Markdown IDE")
   return async function() {
-    if (!args.config.tikibaseEnabled()) {
-      diagnosticsCollection.clear()
-      return
-    }
     // Note: running all lengthy operations upfront
     // so that we can clear and re-populate the collection as quickly as possible
     // and avoid flickering on screen
