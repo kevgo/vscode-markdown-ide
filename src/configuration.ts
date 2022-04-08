@@ -8,10 +8,12 @@ export interface TikibaseConfig {
 
 export class Tikibase {
   private config: TikibaseConfig
+
   constructor(config: TikibaseConfig) {
     this.config = config
   }
 
+  /** provides the titleRegEx setting as a proper regular expression */
   titleRegex(): RegExp | undefined {
     if (this.config.titleRegEx) {
       return new RegExp(this.config.titleRegEx)
