@@ -24,20 +24,6 @@
           "when": "editorLangId == markdown"
         }
       ]
-    },
-    "configuration": {
-      "title": "Markdown IDE",
-      "properties": {
-        "markdownIDE.autocomplete.titleRegex": {
-          "type": "string",
-          "description": "A regular expression that captures the part of linked document titles to use as the link title."
-        },
-        "markdownIDE.tikibase.enabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "Tikibase is a linter for Markdown-based knowledge bases."
-        }
-      }
     }
   },
   "repository": {

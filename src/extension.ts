@@ -11,8 +11,8 @@ import { markdownLinkCompletionProvider } from "./markdown-link-completion/markd
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
-export function activate(context: vscode.ExtensionContext): void {
-  const config = new configuration.Settings()
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+  const tikiConfig = await configuration.tikibase()
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
@@ -46,10 +46,10 @@ export function activate(context: vscode.ExtensionContext): void {
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
 
   // save file --> run "tikibase check"
-  const runTikibaseCheck = fileSaved.createCallback({ config, debug, workspacePath })
-  vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
+  if (tikiConfig) {
+    const runTikibaseCheck = fileSaved.createCallback({ tikiConfig, debug, workspacePath })
+    vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
-  if (config.tikibaseEnabled()) {
     // startup --> run "tikibase check"
     void runTikibaseCheck()
 
