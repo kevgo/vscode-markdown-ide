@@ -1,5 +1,11 @@
 # Markdown IDE Release Notes
 
+## 0.3.2
+
+- automatically enable Tikibase mode when tikibase.json is present
+  ([#86](https://github.com/kevgo/vscode-markdown-ide/pull/86))
+- compatibility with Tikibase 0.4.1
+
 ## 0.3.1
 
 - fix bug when renaming document titles
