@@ -16,7 +16,11 @@ export class Tikibase {
   /** provides the titleRegEx setting as a proper regular expression */
   titleRegex(): RegExp | undefined {
     if (this.config.titleRegEx) {
-      return new RegExp(this.config.titleRegEx)
+      try {
+        return new RegExp(this.config.titleRegEx)
+      } catch (e) {
+        void vscode.window.showErrorMessage(`error parsing the regex "${this.config.titleRegEx}": ${e}`)
+      }
     }
   }
 }
@@ -30,7 +34,7 @@ export async function tikibase(wsRoot: string): Promise<Tikibase | undefined> {
     return
   }
   try {
-    return JSON.parse(text) as Tikibase
+    return new Tikibase(JSON.parse(text) as TikibaseConfig)
   } catch (e) {
     await vscode.window.showErrorMessage(`file tikibase.json contains invalid JSON: ${e}`)
   }

@@ -16,7 +16,7 @@ export function markdown(args: {
   fileContent: string
   filePath: string
   /** the regex to extract parts of the title */
-  titleRE?: RegExp | null
+  titleRE?: RegExp | undefined
 }): string {
   const titleLine = remove(line.removeLeadingPounds(line.first(args.fileContent)))
   const result = `[${titleLine}](${args.filePath})`

@@ -6,7 +6,7 @@ import * as files from "../helpers/files"
 import * as links from "../helpers/links"
 import * as input from "./input"
 
-/** Completion provider for MarkdownLinks */
+/** completion provider for MarkdownLinks */
 export function markdownLinkCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
