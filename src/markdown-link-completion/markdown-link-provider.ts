@@ -9,12 +9,12 @@ import * as input from "./input"
 /** Completion provider for MarkdownLinks */
 export function markdownLinkCompletionProvider(
   debug: vscode.OutputChannel,
-  workspacePath: string
+  workspacePath: string,
+  tikiConfig: configuration.Tikibase | undefined
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const startTime = new Date().getTime()
-      const config = new configuration.Settings()
       const documentDir = path.dirname(document.fileName)
       switch (input.analyze(document.lineAt(position).text, position.character)) {
         case input.LinkType.MD:
@@ -22,7 +22,7 @@ export function markdownLinkCompletionProvider(
             debug,
             documentDir,
             startTime,
-            titleRE: config.titleRegExp(),
+            titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
         case input.LinkType.IMG:

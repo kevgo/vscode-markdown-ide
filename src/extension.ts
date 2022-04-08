@@ -12,17 +12,17 @@ import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const tikiConfig = await configuration.tikibase()
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
   }
   const debug = vscode.window.createOutputChannel("Markdown IDE")
+  const tikiConfig = await configuration.tikibase(workspacePath)
 
   // autocomplete links by typing `[`
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
-    markdownLinkCompletionProvider(debug, workspacePath),
+    markdownLinkCompletionProvider(debug, workspacePath, tikiConfig),
     "["
   ))
 
