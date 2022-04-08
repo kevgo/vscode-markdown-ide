@@ -25,7 +25,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
     if (!newCursor) {
-      return []
+      return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(0, 0))
     }
     return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(newCursor.line, newCursor.character))
   }
