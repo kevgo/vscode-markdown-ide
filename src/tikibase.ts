@@ -42,10 +42,10 @@ function parseOutput(output: string, debug?: vscode.OutputChannel): Message[] {
 
 /** structure of how Tikibase describes issues */
 export interface Message {
-  readonly end: number
+  readonly end: number | undefined
   readonly file: string
   readonly fixable: boolean
-  readonly line: number
-  readonly start: number
+  readonly line: number | undefined
+  readonly start: number | undefined
   readonly text: string
 }

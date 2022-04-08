@@ -22,6 +22,10 @@ export function createCallback(
     for (const [file, messages] of groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
+        if (message.line === undefined || message.start === undefined || message.end === undefined) {
+          await vscode.window.showErrorMessage(`${message.file}: ${message.text}`)
+          continue
+        }
         diagnostics.push({
           range: new vscode.Range(message.line, message.start, message.line, message.end),
           message: message.text,
