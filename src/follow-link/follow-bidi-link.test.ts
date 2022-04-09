@@ -60,8 +60,8 @@ text
 text
 ### anchor 3
 text`
-    const want = new vscode.Position(4, 0)
     const have = locateAnchor({ anchor: "anchor 2", text: give })
+    const want = new vscode.Position(4, 4)
     assert.deepEqual(have, want)
   })
 
