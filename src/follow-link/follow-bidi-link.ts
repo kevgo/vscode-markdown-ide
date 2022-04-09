@@ -29,7 +29,8 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
-    const newFilePath = path.resolve(path.dirname(oldFilePath), removeAnchor(linkTarget))
+    const [newFileName, anchor] = splitAnchor(linkTarget)
+    const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
     if (!newCursor) {
@@ -122,11 +123,11 @@ export function isWebLink(text: string): boolean {
   return text.startsWith("https://") || text.startsWith("http://")
 }
 
-/** removes the link anchor from the given link */
-export function removeAnchor(link: string): string {
+/** splits off the anchor portion from the given link */
+export function splitAnchor(link: string): [string, string] {
   const pos = link.indexOf("#")
   if (pos === -1) {
-    return link
+    return [link, ""]
   }
-  return link.substring(0, pos)
+  return [link.substring(0, pos), link.substring(pos + 1, link.length)]
 }

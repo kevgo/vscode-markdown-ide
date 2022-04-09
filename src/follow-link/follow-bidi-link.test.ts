@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget, removeAnchor } from "./follow-bidi-link"
+import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget, splitAnchor } from "./follow-bidi-link"
 
 suite("followBiDiLink", function() {
   test("extractLinkTarget", function() {
@@ -54,15 +54,15 @@ three`
     assert.deepEqual(have, want)
   })
 
-  test("removeAnchor", function() {
+  test("splitAnchor", function() {
     const tests = {
-      "file.md": "file.md",
-      "file.md#": "file.md",
-      "file.md#anchor": "file.md"
+      "file.md": ["file.md", ""],
+      "file.md#": ["file.md", ""],
+      "file.md#anchor": ["file.md", "anchor"]
     }
     for (const [give, want] of Object.entries(tests)) {
-      const have = removeAnchor(give)
-      assert.equal(have, want, `${give} --> ${have}`)
+      const have = splitAnchor(give)
+      assert.deepEqual(have, want, `${give} --> ${have}`)
     }
   })
 })
