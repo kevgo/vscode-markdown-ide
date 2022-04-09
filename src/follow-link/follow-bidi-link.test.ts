@@ -51,7 +51,7 @@ suite("followBiDiLink", function() {
     }
   })
 
-  test("isHeadingMatchingAnchor", function() {
+  suite("isHeadingMatchingAnchor", function() {
     const tests = {
       "# heading 2": true,
       "### heading 2": true,
@@ -60,8 +60,10 @@ suite("followBiDiLink", function() {
       "heading 2": false
     }
     for (const [give, want] of Object.entries(tests)) {
-      const have = isHeadingMatchingTarget({ line: give, target: "heading_2" })
-      assert.equal(have, want, `${give} --> ${have}`)
+      test(`${give} --> ${want}`, function() {
+        const have = isHeadingMatchingTarget({ line: give, target: "heading-2" })
+        assert.equal(have, want)
+      })
     }
   })
 
@@ -75,15 +77,17 @@ three`
     assert.deepEqual(have, want)
   })
 
-  test("splitAnchor", function() {
+  suite("splitAnchor", function() {
     const tests = {
       "file.md": ["file.md", ""],
       "file.md#": ["file.md", ""],
       "file.md#anchor": ["file.md", "anchor"]
     }
     for (const [give, want] of Object.entries(tests)) {
-      const have = splitAnchor(give)
-      assert.deepEqual(have, want, `${give} --> ${have}`)
+      test(`${give} --> ${want}`, function() {
+        const have = splitAnchor(give)
+        assert.deepEqual(have, want)
+      })
     }
   })
 })

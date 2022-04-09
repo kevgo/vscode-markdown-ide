@@ -61,9 +61,8 @@ export function isHeadingMatchingTarget(args: { line: string; target: string }):
   if (!args.line.startsWith("#")) {
     return false
   }
-  const lineContent = line.removeLeadingPounds(args.line).trim()
-  const slug = slugify(args.line)
-  return lineContent == slug
+  const slug = slugify(line.removeLeadingPounds(args.line).trim())
+  return slug === args.target
 }
 
 /** provides the position where the first link with the given target occurs in the given text */
