@@ -1,7 +1,14 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget, splitAnchor } from "./follow-bidi-link"
+import {
+  extractLinkTarget,
+  extractUrl,
+  isWebLink,
+  locateAnchor,
+  locateLinkWithTarget,
+  splitAnchor
+} from "./follow-bidi-link"
 
 suite("followBiDiLink", function() {
   test("extractLinkTarget", function() {
@@ -42,6 +49,20 @@ suite("followBiDiLink", function() {
       const have = isWebLink(give)
       assert.equal(have, want, `${give} --> ${have}`)
     }
+  })
+
+  test("locateAnchor", function() {
+    const give = `# title
+text
+### anchor 1
+text
+### anchor 2
+text
+### anchor 3
+text`
+    const want = new vscode.Position(4, 0)
+    const have = locateAnchor({ anchor: "anchor 2", text: give })
+    assert.deepEqual(have, want)
   })
 
   test("locateLinkWithTarget", function() {

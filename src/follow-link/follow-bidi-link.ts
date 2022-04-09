@@ -32,11 +32,27 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
     const [newFileName, anchor] = splitAnchor(linkTarget)
     const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
-    const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
-    if (!newCursor) {
-      return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(0, 0))
+    let newCursor: vscode.Position | undefined
+    if (!this.tikiConfig?.bidiLinks() && anchor) {
+      newCursor = locateAnchor({ anchor, text: newFileContent })
     }
-    return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(newCursor.line, newCursor.character))
+    if (!newCursor) {
+      newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
+    }
+    if (!newCursor) {
+      newCursor = new vscode.Position(0, 0)
+    }
+    return new vscode.Location(vscode.Uri.file(newFilePath), newCursor)
+  }
+}
+
+export function locateAnchor(args: { anchor: string; text: string }): vscode.Position | undefined {
+  const re = new RegExp(`^#+ ${args.anchor}`)
+  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
+    const match = re.exec(line)
+    if (match) {
+      return new vscode.Position(i, match.index)
+    }
   }
 }
 

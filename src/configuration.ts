@@ -3,6 +3,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 export interface TikibaseConfig {
+  bidiLinks?: boolean
   titleRegEx?: string
 }
 
@@ -11,6 +12,10 @@ export class Tikibase {
 
   constructor(config: TikibaseConfig) {
     this.config = config
+  }
+
+  bidiLinks(): boolean {
+    return this.config.bidiLinks ?? false
   }
 
   /** provides the titleRegEx setting as a proper regular expression */
