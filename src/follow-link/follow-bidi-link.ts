@@ -2,7 +2,15 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+import { Tikibase } from "../configuration"
+
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
+  private tikiConfig: Tikibase | undefined
+
+  constructor(config: Tikibase | undefined) {
+    this.tikiConfig = config
+  }
+
   async provideDefinition(
     document: vscode.TextDocument,
     position: vscode.Position
