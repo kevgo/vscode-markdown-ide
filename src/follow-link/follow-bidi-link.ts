@@ -48,6 +48,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   }
 }
 
+/** provides the line in the given text to which the given target points */
 export function locateAnchor(args: { target: string; text: string }): vscode.Position | undefined {
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
     if (isHeadingMatchingTarget({ line, target: args.target })) {
