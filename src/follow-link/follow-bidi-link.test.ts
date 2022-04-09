@@ -4,8 +4,8 @@ import * as vscode from "vscode"
 import {
   extractLinkTarget,
   extractUrl,
+  isHeadingMatchingTarget,
   isWebLink,
-  locateAnchor,
   locateLinkWithTarget,
   splitAnchor
 } from "./follow-bidi-link"
@@ -51,18 +51,18 @@ suite("followBiDiLink", function() {
     }
   })
 
-  test("locateAnchor", function() {
-    const give = `# title
-text
-### anchor 1
-text
-### anchor 2
-text
-### anchor 3
-text`
-    const have = locateAnchor({ anchor: "anchor 2", text: give })
-    const want = new vscode.Position(4, 4)
-    assert.deepEqual(have, want)
+  test("isHeadingMatchingAnchor", function() {
+    const tests = {
+      "# heading 2": true,
+      "### heading 2": true,
+      "# heading 1": false,
+      "### heading 3": false,
+      "heading 2": false
+    }
+    for (const [give, want] of Object.entries(tests)) {
+      const have = isHeadingMatchingTarget({ line: give, target: "heading_2" })
+      assert.equal(have, want, `${give} --> ${have}`)
+    }
   })
 
   test("locateLinkWithTarget", function() {

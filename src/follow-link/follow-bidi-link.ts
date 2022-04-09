@@ -1,8 +1,10 @@
+import * as slugify from "@sindresorhus/slugify"
 import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
 import { Tikibase } from "../configuration"
+import * as line from "../helpers/line"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   private tikiConfig: Tikibase | undefined
@@ -29,12 +31,12 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
-    const [newFileName, anchor] = splitAnchor(linkTarget)
+    const [newFileName, target] = splitAnchor(linkTarget)
     const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     let newCursor: vscode.Position | undefined
-    if (!this.tikiConfig?.bidiLinks() && anchor) {
-      newCursor = locateAnchor({ anchor, text: newFileContent })
+    if (!this.tikiConfig?.bidiLinks() && target) {
+      newCursor = locateAnchor({ target, text: newFileContent })
     }
     if (!newCursor) {
       newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
@@ -46,14 +48,22 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   }
 }
 
-export function locateAnchor(args: { anchor: string; text: string }): vscode.Position | undefined {
-  const re = new RegExp(`^#+ ${args.anchor}`)
+export function locateAnchor(args: { target: string; text: string }): vscode.Position | undefined {
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
-    const match = re.exec(line)
-    if (match) {
-      return new vscode.Position(i, match.index)
+    if (isHeadingMatchingTarget({ line, target: args.target })) {
+      return new vscode.Position(i, 0)
     }
   }
+}
+
+/** indicates whether this line matches the given link target */
+export function isHeadingMatchingTarget(args: { line: string; target: string }): boolean {
+  if (!args.line.startsWith("#")) {
+    return false
+  }
+  const lineContent = line.removeLeadingPounds(args.line).trim()
+  const slug = slugify(args.line)
+  return lineContent == slug
 }
 
 /** provides the position where the first link with the given target occurs in the given text */
