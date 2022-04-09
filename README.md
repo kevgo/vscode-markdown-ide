@@ -62,11 +62,13 @@ document.
 
 ## "go to definition" for links
 
-Markdown IDE provides
+Markdown IDE supports the
 [go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
-for Markdown files. This works out of the box with the built-in ways to go to
-definition like `ctrl+mouseclick` or`F12`. Following a link to another Markdown
-document moves the cursor to the first backreference to the file you came from.
+movements (`ctrl+mouseclick` or`F12`) for links in Markdown files. If
+bi-directional links are activated, following a link to another Markdown
+document always moves the cursor to the first backreference to the file you came
+from. If bi-directional links are not activated, it jumps to the linked heading
+within the target document.
 
 ![demo of the "go to definition" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition.gif)
 

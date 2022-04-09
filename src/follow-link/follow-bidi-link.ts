@@ -1,8 +1,18 @@
+import * as slugify from "@sindresorhus/slugify"
 import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+import { Tikibase } from "../configuration"
+import * as line from "../helpers/line"
+
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
+  private tikiConfig: Tikibase | undefined
+
+  constructor(config: Tikibase | undefined) {
+    this.tikiConfig = config
+  }
+
   async provideDefinition(
     document: vscode.TextDocument,
     position: vscode.Position
@@ -21,14 +31,39 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
-    const newFilePath = path.resolve(path.dirname(oldFilePath), removeAnchor(linkTarget))
+    const [newFileName, target] = splitAnchor(linkTarget)
+    const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
-    const newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
-    if (!newCursor) {
-      return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(0, 0))
+    let newCursor: vscode.Position | undefined
+    if (!this.tikiConfig?.bidiLinks() && target) {
+      newCursor = locateAnchor({ target, text: newFileContent })
     }
-    return new vscode.Location(vscode.Uri.file(newFilePath), new vscode.Position(newCursor.line, newCursor.character))
+    if (!newCursor) {
+      newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
+    }
+    if (!newCursor) {
+      newCursor = new vscode.Position(0, 0)
+    }
+    return new vscode.Location(vscode.Uri.file(newFilePath), newCursor)
   }
+}
+
+/** provides the line in the given text to which the given target points */
+export function locateAnchor(args: { target: string; text: string }): vscode.Position | undefined {
+  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
+    if (isHeadingMatchingTarget({ line, target: args.target })) {
+      return new vscode.Position(i, 0)
+    }
+  }
+}
+
+/** indicates whether this line matches the given link target */
+export function isHeadingMatchingTarget(args: { line: string; target: string }): boolean {
+  if (!args.line.startsWith("#")) {
+    return false
+  }
+  const slug = slugify(line.removeLeadingPounds(args.line).trim())
+  return slug === args.target
 }
 
 /** provides the position where the first link with the given target occurs in the given text */
@@ -114,11 +149,11 @@ export function isWebLink(text: string): boolean {
   return text.startsWith("https://") || text.startsWith("http://")
 }
 
-/** removes the link anchor from the given link */
-export function removeAnchor(link: string): string {
+/** splits off the anchor portion from the given link */
+export function splitAnchor(link: string): [string, string] {
   const pos = link.indexOf("#")
   if (pos === -1) {
-    return link
+    return [link, ""]
   }
-  return link.substring(0, pos)
+  return [link.substring(0, pos), link.substring(pos + 1, link.length)]
 }

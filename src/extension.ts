@@ -43,7 +43,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
 
   // "go to definition" for links in Markdown documents
-  vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider())
+  vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider(tikiConfig))
 
   // save file --> run "tikibase check"
   if (tikiConfig) {

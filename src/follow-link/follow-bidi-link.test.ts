@@ -1,7 +1,14 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 
-import { extractLinkTarget, extractUrl, isWebLink, locateLinkWithTarget, removeAnchor } from "./follow-bidi-link"
+import {
+  extractLinkTarget,
+  extractUrl,
+  isHeadingMatchingTarget,
+  isWebLink,
+  locateLinkWithTarget,
+  splitAnchor
+} from "./follow-bidi-link"
 
 suite("followBiDiLink", function() {
   test("extractLinkTarget", function() {
@@ -44,6 +51,22 @@ suite("followBiDiLink", function() {
     }
   })
 
+  suite("isHeadingMatchingAnchor", function() {
+    const tests = {
+      "# heading 2": true,
+      "### heading 2": true,
+      "# heading 1": false,
+      "### heading 3": false,
+      "heading 2": false
+    }
+    for (const [give, want] of Object.entries(tests)) {
+      test(`${give} --> ${want}`, function() {
+        const have = isHeadingMatchingTarget({ line: give, target: "heading-2" })
+        assert.equal(have, want)
+      })
+    }
+  })
+
   test("locateLinkWithTarget", function() {
     const give = `# title
 text
@@ -54,15 +77,17 @@ three`
     assert.deepEqual(have, want)
   })
 
-  test("removeAnchor", function() {
+  suite("splitAnchor", function() {
     const tests = {
-      "file.md": "file.md",
-      "file.md#": "file.md",
-      "file.md#anchor": "file.md"
+      "file.md": ["file.md", ""],
+      "file.md#": ["file.md", ""],
+      "file.md#anchor": ["file.md", "anchor"]
     }
     for (const [give, want] of Object.entries(tests)) {
-      const have = removeAnchor(give)
-      assert.equal(have, want, `${give} --> ${have}`)
+      test(`${give} --> ${want}`, function() {
+        const have = splitAnchor(give)
+        assert.deepEqual(have, want)
+      })
     }
   })
 })
