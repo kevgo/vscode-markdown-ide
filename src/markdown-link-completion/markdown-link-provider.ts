@@ -3,6 +3,7 @@ import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
 import * as files from "../helpers/files"
+import * as headings from "../helpers/headings"
 import * as links from "../helpers/links"
 import * as input from "./input"
 
@@ -27,9 +28,41 @@ export function markdownLinkCompletionProvider(
           })
         case input.AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
+        case input.AutocompleteType.HEADING:
+          return HeadingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
+}
+
+async function HeadingCompletionItems(
+  args: {
+    debug: vscode.OutputChannel
+    documentDir: string
+    startTime: number
+    wsRoot: string
+  }
+): Promise<vscode.CompletionItem[]> {
+  const mdFilesAcc: files.FileResult[] = []
+  await files.markdown(args.wsRoot, mdFilesAcc)
+  args.debug.appendLine(
+    `${new Date().getTime() - args.startTime}ms:  created all file load promises: ${mdFilesAcc.length}`
+  )
+  const headingsAcc: Set<string> = new Set()
+  for (const mdFile of mdFilesAcc) {
+    headings.inFile(await mdFile.content, headingsAcc)
+  }
+  args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
+  const result: vscode.CompletionItem[] = []
+  for (const heading of headingsAcc) {
+    result.push(
+      new vscode.CompletionItem(
+        heading.substring(1),
+        vscode.CompletionItemKind.Text
+      )
+    )
+  }
+  return result
 }
 
 /** provides the Completion items for Markdown links */
