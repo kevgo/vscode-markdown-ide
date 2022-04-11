@@ -1,13 +1,12 @@
 import * as vscode from "vscode"
 
+import { createCompletionProvider } from "./autocomplete/provider"
 import { TikibaseProvider } from "./code-action/tikibase-provider"
 import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
-import { markdownHeadingProvider } from "./markdown-heading-completion/markdown-heading-provider"
-import { markdownLinkCompletionProvider } from "./markdown-link-completion/markdown-link-provider"
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
@@ -20,18 +19,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const tikiConfig = await configuration.tikibase(workspacePath)
 
   // autocomplete links by typing `[`
-  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    "markdown",
-    markdownLinkCompletionProvider(debug, workspacePath, tikiConfig),
-    "["
-  ))
+  const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown", completionProvider, "["))
 
   // autocomplete headings by typing `#`
-  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    "markdown",
-    markdownHeadingProvider(debug, workspacePath),
-    "#"
-  ))
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown", completionProvider, "#"))
 
   // file renamed --> update links to this file
   vscode.workspace.onDidRenameFiles(filesRenamed)
