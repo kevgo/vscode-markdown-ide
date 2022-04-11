@@ -5,24 +5,27 @@ export enum AutocompleteType {
   /** autocomplete an image tag */
   IMG,
   /** autocomplete a markdown heading */
-  HEADING
+  HEADING,
+  /** no autocompletion item found */
+  NONE
 }
 
 /** determines which autocompletion is needed */
 export function analyze(line: string, pos: number): AutocompleteType {
   let i
-  let c
   for (i = pos - 1; i > 0; i--) {
-    c = line[i]
-    if (c === "[" || c === "#") {
+    if (line[i] === "[") {
       break
     }
   }
-  if (c === "#") {
-    return AutocompleteType.HEADING
-  }
   if (i === 0) {
-    return AutocompleteType.MD_LINK
+    if (line[0] === "[") {
+      return AutocompleteType.MD_LINK
+    }
+    if (line[0] === "#") {
+      return AutocompleteType.HEADING
+    }
+    return AutocompleteType.NONE
   }
   if (line[i - 1] === "!") {
     return AutocompleteType.IMG

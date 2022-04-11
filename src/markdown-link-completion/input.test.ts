@@ -36,4 +36,21 @@ suite("analyzeInput", function() {
       assert.deepEqual(have, want)
     })
   })
+
+  suite("heading", function() {
+    test("middle of sentence", function() {
+      const have = input.analyze(
+        "Check out #the and here is another [one](one.md)",
+        14
+      )
+      const want = input.AutocompleteType.NONE
+      assert.deepEqual(have, want)
+    })
+
+    test("starting", function() {
+      const have = input.analyze("#", 1)
+      const want = input.AutocompleteType.HEADING
+      assert.deepEqual(have, want)
+    })
+  })
 })
