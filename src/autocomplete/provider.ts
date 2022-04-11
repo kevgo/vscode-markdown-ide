@@ -6,7 +6,7 @@ import * as files from "../helpers/files"
 import * as headings from "../helpers/headings"
 import * as links from "../helpers/links"
 
-export function completionProvider(
+export function createCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
   tikiConfig: configuration.Tikibase | undefined

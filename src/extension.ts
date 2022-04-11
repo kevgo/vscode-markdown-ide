@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-import { completionProvider } from "./autocomplete/provider"
+import { createCompletionProvider } from "./autocomplete/provider"
 import { TikibaseProvider } from "./code-action/tikibase-provider"
 import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
@@ -18,18 +18,18 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const debug = vscode.window.createOutputChannel("Markdown IDE")
   const tikiConfig = await configuration.tikibase(workspacePath)
 
-  const provider = completionProvider(debug, workspacePath, tikiConfig)
+  const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
   // autocomplete links by typing `[`
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
-    provider,
+    completionProvider,
     "["
   ))
 
   // autocomplete headings by typing `#`
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     "markdown",
-    provider,
+    completionProvider,
     "#"
   ))
 
