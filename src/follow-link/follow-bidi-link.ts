@@ -94,7 +94,6 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
     }
   }
   if (start === lineText.length + 1) {
-    void vscode.window.showErrorMessage("No link found")
     return
   }
   // keep going right until we find the start of the URL segment of the Markdown link
@@ -102,7 +101,6 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
     start++
   }
   if (start === lineText.length + 1) {
-    void vscode.window.showErrorMessage("No link found")
     return
   }
   // keep going right until we find the end of the URL segment of the Markdown link
@@ -111,7 +109,6 @@ export function extractLinkTarget(lineText: string, cursorColumn: number): strin
     end++
   }
   if (end === lineText.length + 1) {
-    void vscode.window.showErrorMessage("No link found")
     return
   }
   return lineText.substring(start + 1, end)
