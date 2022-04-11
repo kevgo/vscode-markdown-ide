@@ -18,20 +18,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const debug = vscode.window.createOutputChannel("Markdown IDE")
   const tikiConfig = await configuration.tikibase(workspacePath)
 
-  const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
   // autocomplete links by typing `[`
-  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    "markdown",
-    completionProvider,
-    "["
-  ))
+  const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown", completionProvider, "["))
 
   // autocomplete headings by typing `#`
-  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    "markdown",
-    completionProvider,
-    "#"
-  ))
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown", completionProvider, "#"))
 
   // file renamed --> update links to this file
   vscode.workspace.onDidRenameFiles(filesRenamed)
