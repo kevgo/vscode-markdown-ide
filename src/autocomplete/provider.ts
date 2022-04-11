@@ -5,10 +5,8 @@ import * as configuration from "../configuration"
 import * as files from "../helpers/files"
 import * as headings from "../helpers/headings"
 import * as links from "../helpers/links"
-import * as input from "./input"
 
-/** completion provider for MarkdownLinks */
-export function markdownLinkCompletionProvider(
+export function completionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
   tikiConfig: configuration.Tikibase | undefined
@@ -17,8 +15,8 @@ export function markdownLinkCompletionProvider(
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const startTime = new Date().getTime()
       const documentDir = path.dirname(document.fileName)
-      switch (input.analyze(document.lineAt(position).text, position.character)) {
-        case input.AutocompleteType.MD_LINK:
+      switch (determineType(document.lineAt(position).text, position.character)) {
+        case AutocompleteType.MD_LINK:
           return mdCompletionItems({
             debug,
             documentDir,
@@ -26,13 +24,48 @@ export function markdownLinkCompletionProvider(
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
-        case input.AutocompleteType.IMG:
+        case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
-        case input.AutocompleteType.HEADING:
+        case AutocompleteType.HEADING:
           return HeadingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
+}
+
+/** describes what type of auto-completion is needed */
+export enum AutocompleteType {
+  /** autocomplete a markdown link */
+  MD_LINK,
+  /** autocomplete an image tag */
+  IMG,
+  /** autocomplete a markdown heading */
+  HEADING,
+  /** no autocompletion item found */
+  NONE
+}
+
+/** determines which autocompletion is needed */
+export function determineType(line: string, pos: number): AutocompleteType {
+  let i
+  for (i = pos - 1; i > 0; i--) {
+    if (line[i] === "[") {
+      break
+    }
+  }
+  if (i === 0) {
+    if (line[0] === "[") {
+      return AutocompleteType.MD_LINK
+    }
+    if (line[0] === "#") {
+      return AutocompleteType.HEADING
+    }
+    return AutocompleteType.NONE
+  }
+  if (line[i - 1] === "!") {
+    return AutocompleteType.IMG
+  }
+  return AutocompleteType.MD_LINK
 }
 
 async function HeadingCompletionItems(
