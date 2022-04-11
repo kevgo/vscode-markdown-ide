@@ -17,7 +17,7 @@ export function markdownLinkCompletionProvider(
       const startTime = new Date().getTime()
       const documentDir = path.dirname(document.fileName)
       switch (input.analyze(document.lineAt(position).text, position.character)) {
-        case input.LinkType.MD:
+        case input.AutocompleteType.MD_LINK:
           return mdCompletionItems({
             debug,
             documentDir,
@@ -25,7 +25,7 @@ export function markdownLinkCompletionProvider(
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
-        case input.LinkType.IMG:
+        case input.AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }

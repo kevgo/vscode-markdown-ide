@@ -1,25 +1,31 @@
-/** the different link types */
-export enum LinkType {
-  MD,
-  IMG
+/** describes what type of auto-completion is needed */
+export enum AutocompleteType {
+  /** autocomplete a markdown link */
+  MD_LINK,
+  /** autocomplete an image tag */
+  IMG,
+  /** autocomplete a markdown heading */
+  HEADING
 }
 
-/**
- * provides the link type and search term that the user is currently entering
- * into the given line at the given position.
- */
-export function analyze(line: string, pos: number): LinkType {
+/** determines which autocompletion is needed */
+export function analyze(line: string, pos: number): AutocompleteType {
   let i
+  let c
   for (i = pos - 1; i > 0; i--) {
-    if (line[i] === "[") {
+    c = line[i]
+    if (c === "[" || c === "#") {
       break
     }
   }
+  if (c === "#") {
+    return AutocompleteType.HEADING
+  }
   if (i === 0) {
-    return LinkType.MD
+    return AutocompleteType.MD_LINK
   }
   if (line[i - 1] === "!") {
-    return LinkType.IMG
+    return AutocompleteType.IMG
   }
-  return LinkType.MD
+  return AutocompleteType.MD_LINK
 }
