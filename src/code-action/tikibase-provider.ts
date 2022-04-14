@@ -62,7 +62,6 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
 }
 
 export async function extractNoteTitle(): Promise<void> {
-  const edit = new vscode.WorkspaceEdit()
   const editor = vscode.window.activeTextEditor
   if (!editor) {
     return
@@ -71,6 +70,7 @@ export async function extractNoteTitle(): Promise<void> {
   const selectedText = editor.document.getText(range)
   const newFileName = mdFileName(selectedText)
   const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
+  const edit = new vscode.WorkspaceEdit()
   edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
   edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
