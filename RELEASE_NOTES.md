@@ -1,5 +1,12 @@
 # Markdown IDE Release Notes
 
+## 0.3.4
+
+- support uni-directional links
+  ([#88](https://github.com/kevgo/vscode-markdown-ide/pull/88))
+- go-to-definition: ignore link anchors
+  ([#87](https://github.com/kevgo/vscode-markdown-ide/pull/87))
+
 ## 0.3.3
 
 - enable bidi jumps to files without backlinks
