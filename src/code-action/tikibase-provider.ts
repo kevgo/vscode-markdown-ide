@@ -2,12 +2,11 @@ import * as slugify from "@sindresorhus/slugify"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as files from "../helpers/files"
-
 export class TikibaseProvider implements vscode.CodeActionProvider {
   /** name of the code action that this provider implements */
   public static readonly autofixCommandName = "vscode-markdown-ide.autofix"
-  public static readonly extractNoteCommandName = "vscode-markdown-ide.extractNote"
+  public static readonly extractTitleCommandName = "vscode-markdown-ide.extractTitle"
+  public static readonly extractBodyCommandName = "vscode-markdown-ide.extractBody"
 
   provideCodeActions(
     document: vscode.TextDocument,
@@ -18,13 +17,29 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
 
     // "extract note" refactor
     if (!range.isEmpty) {
-      const extractNoteAction = new vscode.CodeAction("extract note", vscode.CodeActionKind.RefactorExtract)
-      // extractNoteAction.command = {
-      //   command: TikibaseProvider.extractNoteCommandName,
-      //   title: "extract this text into a new note"
-      // }
-      extractNoteAction.edit = extractNoteEdit(document, range)
-      result.push(extractNoteAction)
+      if (range.isSingleLine) {
+        const text = document.getText(range)
+        const filename = mdFileName(text)
+        const extractTitleAction = new vscode.CodeAction(
+          `create ${filename}`,
+          vscode.CodeActionKind.RefactorExtract
+        )
+        extractTitleAction.command = {
+          command: TikibaseProvider.extractTitleCommandName,
+          title: `create a new note with the filename "${filename}"`
+        }
+        result.push(extractTitleAction)
+      } else {
+        const extractBodyAction = new vscode.CodeAction(
+          "extract note with this content",
+          vscode.CodeActionKind.RefactorExtract
+        )
+        extractBodyAction.command = {
+          command: TikibaseProvider.extractBodyCommandName,
+          title: "create a new note with the selected text as content"
+        }
+        result.push(extractBodyAction)
+      }
     }
 
     // provide autofixes for the fixable issues
@@ -46,43 +61,52 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
   }
 }
 
-export function extractNoteEdit(
-  document: vscode.TextDocument,
-  range: vscode.Range | vscode.Selection
-): vscode.WorkspaceEdit {
-  if (range.isSingleLine) {
-    return extractNoteTitleEdit(document, range)
-  } else {
-    return extractNoteBodyEdit(document, range)
-  }
-}
-
-function extractNoteTitleEdit(
-  document: vscode.TextDocument,
-  range: vscode.Range | vscode.Selection
-): vscode.WorkspaceEdit {
+export function extractNoteTitle(): vscode.WorkspaceEdit {
   const edit = new vscode.WorkspaceEdit()
-  const selectedText = document.getText(range)
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    return edit
+  }
+  const range = editor.selection
+  const selectedText = editor.document.getText(range)
   const newFileName = mdFileName(selectedText)
-  const folder = path.dirname(document.fileName)
-  const newFilePath = path.join(folder, newFileName)
-  const newFileUri = vscode.Uri.file(newFilePath)
-  const linkToNewNote = `[${selectedText}](${newFileName})`
-  edit.replace(document.uri, range, linkToNewNote)
+  const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
+  edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
   edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
   return edit
 }
 
-function extractNoteBodyEdit(
-  document: vscode.TextDocument,
-  range: vscode.Range | vscode.Selection
-): vscode.WorkspaceEdit {
+export async function extractNoteBody(): Promise<vscode.WorkspaceEdit> {
   const edit = new vscode.WorkspaceEdit()
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    return edit
+  }
+  const debug = vscode.window.createOutputChannel("XXXXXXXXXX")
+  debug.appendLine("11111111111111")
+  const range = editor.selection
+  const newTitle = await enterTitle()
+  if (!newTitle) {
+    return edit
+  }
+  debug.appendLine("222222222222222")
+  const selectedText = editor.document.getText(range)
+  const newFileName = mdFileName(newTitle)
+  const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
+  edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
+  edit.createFile(newFileUri, { overwrite: false })
+  edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
   return edit
 }
 
 /** converts the given text into a proper filename */
 export function mdFileName(text: string): string {
   return `${slugify(text)}.md`
+}
+
+async function enterTitle(): Promise<string | undefined> {
+  return vscode.window.showInputBox({
+    title: "new document title"
+  })
 }
