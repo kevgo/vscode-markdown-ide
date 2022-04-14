@@ -61,11 +61,11 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
   }
 }
 
-export function extractNoteTitle(): vscode.WorkspaceEdit {
+export async function extractNoteTitle(): Promise<void> {
   const edit = new vscode.WorkspaceEdit()
   const editor = vscode.window.activeTextEditor
   if (!editor) {
-    return edit
+    return
   }
   const range = editor.selection
   const selectedText = editor.document.getText(range)
@@ -74,43 +74,51 @@ export function extractNoteTitle(): vscode.WorkspaceEdit {
   edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
   edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
-  return edit
+  await vscode.workspace.applyEdit(edit)
 }
 
-export async function extractNoteBody(): Promise<vscode.WorkspaceEdit> {
-  const edit = new vscode.WorkspaceEdit()
+export async function extractNoteBody(): Promise<void> {
   const editor = vscode.window.activeTextEditor
   if (!editor) {
-    return edit
+    return
   }
-  const debug = vscode.window.createOutputChannel("XXXXXXXXXX")
-  debug.appendLine("11111111111111")
   const range = editor.selection
   const newTitle = await enterTitle()
   if (!newTitle) {
-    return edit
+    return
   }
-  debug.appendLine("222222222222222")
-  const selectedText = editor.document.getText(range)
+  await vscode.window.showInformationMessage(newTitle)
+  let selectedText
+  try {
+    selectedText = editor.document.getText(range)
+  } catch (e) {
+    await vscode.window.showErrorMessage(`error: ${e}`)
+    return
+  }
+  await vscode.window.showInformationMessage(selectedText)
   const newFileName = mdFileName(newTitle)
+  await vscode.window.showInformationMessage(newFileName)
   const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
+  const edit = new vscode.WorkspaceEdit()
   edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
   edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
-  return edit
+  await vscode.window.showInformationMessage("1111111111")
+  await vscode.workspace.applyEdit(edit)
+  await vscode.window.showInformationMessage("22222222222")
 }
 
-/** converts the given text into a proper filename */
-export function mdFileName(text: string): string {
-  return `${slugify(text)}.md`
-}
-
-async function enterTitle(): Promise<string | undefined> {
-  let result = await vscode.window.showInputBox({
-    title: "new document title"
-  })
-  if (result && !result.endsWith(".md")) {
+/** provides the filename for a note with the given title */
+export function mdFileName(title: string): string {
+  let result = `${slugify(title)}`
+  if (!result.endsWith(".md")) {
     result = result + ".md"
   }
   return result
+}
+
+async function enterTitle(): Promise<string | undefined> {
+  return vscode.window.showInputBox({
+    title: "new document title"
+  })
 }
