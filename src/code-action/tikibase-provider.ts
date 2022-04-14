@@ -87,7 +87,6 @@ export async function extractNoteBody(): Promise<void> {
   if (!newTitle) {
     return
   }
-  await vscode.window.showInformationMessage(newTitle)
   let selectedText
   try {
     selectedText = editor.document.getText(range)
@@ -95,17 +94,13 @@ export async function extractNoteBody(): Promise<void> {
     await vscode.window.showErrorMessage(`error: ${e}`)
     return
   }
-  await vscode.window.showInformationMessage(selectedText)
   const newFileName = mdFileName(newTitle)
-  await vscode.window.showInformationMessage(newFileName)
   const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
   const edit = new vscode.WorkspaceEdit()
-  edit.replace(editor.document.uri, range, `[${selectedText}](${newFileName})`)
+  edit.replace(editor.document.uri, range, `[${newTitle}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
-  edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
-  await vscode.window.showInformationMessage("1111111111")
+  edit.insert(newFileUri, new vscode.Position(0, 0), `# ${newTitle}\n\n${selectedText}\n`)
   await vscode.workspace.applyEdit(edit)
-  await vscode.window.showInformationMessage("22222222222")
 }
 
 /** provides the filename for a note with the given title */
