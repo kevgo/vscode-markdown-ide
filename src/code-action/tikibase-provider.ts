@@ -20,7 +20,6 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
     // "extract note" refactor
     if (!range.isEmpty) {
       if (range.isSingleLine) {
-        // "extract title" refactor
         const text = document.getText(range)
         const fileName = mdFileName(text)
         const filePath = path.join(path.dirname(document.fileName), fileName)
@@ -32,6 +31,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
           fileExists = false
         }
         if (fileExists) {
+          // "link to note" refactor
           const linkToFileAction = new vscode.CodeAction(
             `link to ${fileName}`,
             vscode.CodeActionKind.RefactorRewrite
@@ -42,6 +42,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
           }
           result.push(linkToFileAction)
         } else {
+          // "extract title" refactor
           const extractTitleAction = new vscode.CodeAction(
             `create ${fileName}`,
             vscode.CodeActionKind.RefactorExtract
