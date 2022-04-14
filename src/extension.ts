@@ -62,7 +62,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(
       vscode.commands.registerCommand(
         TikibaseProvider.command,
-        () => tikibase.fix(workspacePath, debug)
+        async () => {
+          await tikibase.fix(workspacePath, debug)
+          await runTikibaseCheck()
+        }
       )
     )
   }
