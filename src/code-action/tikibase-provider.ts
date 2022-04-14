@@ -87,13 +87,7 @@ export async function extractNoteBody(): Promise<void> {
   if (!newTitle) {
     return
   }
-  let selectedText
-  try {
-    selectedText = editor.document.getText(range)
-  } catch (e) {
-    await vscode.window.showErrorMessage(`error: ${e}`)
-    return
-  }
+  const selectedText = editor.document.getText(range)
   const newFileName = mdFileName(newTitle)
   const newFileUri = vscode.Uri.file(path.join(path.dirname(editor.document.fileName), newFileName))
   const edit = new vscode.WorkspaceEdit()
