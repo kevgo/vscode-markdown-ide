@@ -1,4 +1,5 @@
 import * as slugify from "@sindresorhus/slugify"
+import * as path from "path"
 import * as vscode from "vscode"
 
 import * as files from "../helpers/files"
@@ -63,9 +64,13 @@ function extractNoteTitleEdit(
   const edit = new vscode.WorkspaceEdit()
   const selectedText = document.getText(range)
   const newFileName = mdFileName(selectedText)
+  const folder = path.dirname(document.fileName)
+  const newFilePath = path.join(folder, newFileName)
+  const newFileUri = vscode.Uri.file(newFilePath)
   const linkToNewNote = `[${selectedText}](${newFileName})`
   edit.replace(document.uri, range, linkToNewNote)
-  void vscode.window.showInformationMessage("EDITING")
+  edit.createFile(newFileUri, { overwrite: false })
+  edit.insert(newFileUri, new vscode.Position(0, 0), `# ${selectedText}\n`)
   return edit
 }
 
