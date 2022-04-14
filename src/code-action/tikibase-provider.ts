@@ -7,6 +7,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
   public static readonly autofixCommandName = "vscode-markdown-ide.autofix"
   public static readonly extractTitleCommandName = "vscode-markdown-ide.extractTitle"
   public static readonly extractBodyCommandName = "vscode-markdown-ide.extractBody"
+  public static readonly linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
   provideCodeActions(
     document: vscode.TextDocument,
@@ -18,6 +19,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
     // "extract note" refactor
     if (!range.isEmpty) {
       if (range.isSingleLine) {
+        // "extract title" refactor
         const text = document.getText(range)
         const filename = mdFileName(text)
         const extractTitleAction = new vscode.CodeAction(
@@ -30,6 +32,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
         }
         result.push(extractTitleAction)
       } else {
+        // "extract body" refactor
         const extractBodyAction = new vscode.CodeAction(
           "extract note with this content",
           vscode.CodeActionKind.RefactorExtract
