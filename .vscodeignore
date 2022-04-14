@@ -7,7 +7,9 @@ documentation/
 !documentation/logo.png
 examples/
 !LICENSE.txt
+**/*.map
 out/**/*.test.js
 out/test/*
 src/
 text-run/
+**/tsconfig.json
