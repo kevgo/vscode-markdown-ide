@@ -72,6 +72,19 @@ within the target document.
 
 ![demo of the "go to definition" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition.gif)
 
+## extract new file with selected title
+
+When the selection highlights a single line, Markdown IDE provides an "extract
+file with this title" refactor. It creates a new file with the selected text as
+its title and replaces the selection with a link to this new file.
+
+## extract new file with selected content
+
+When the selection highlights multiple lines, Markdown IDE provides an "extract
+file with this content" refactor. It asks the user for a title, creates a new
+file with the given title and the selected text as its content, and replaces the
+selection with a link to this new file.
+
 ## Tikibase support
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
