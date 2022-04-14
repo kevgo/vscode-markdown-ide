@@ -1,4 +1,5 @@
 import * as slugify from "@sindresorhus/slugify"
+import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
@@ -9,11 +10,11 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
   public static readonly extractBodyCommandName = "vscode-markdown-ide.extractBody"
   public static readonly linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
-  provideCodeActions(
+  async provideCodeActions(
     document: vscode.TextDocument,
     range: vscode.Range | vscode.Selection,
     context: vscode.CodeActionContext
-  ): vscode.CodeAction[] {
+  ): Promise<vscode.CodeAction[]> {
     const result: vscode.CodeAction[] = []
 
     // "extract note" refactor
@@ -21,16 +22,36 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
       if (range.isSingleLine) {
         // "extract title" refactor
         const text = document.getText(range)
-        const filename = mdFileName(text)
-        const extractTitleAction = new vscode.CodeAction(
-          `create ${filename}`,
-          vscode.CodeActionKind.RefactorExtract
-        )
-        extractTitleAction.command = {
-          command: TikibaseProvider.extractTitleCommandName,
-          title: `create a new note with the filename "${filename}"`
+        const fileName = mdFileName(text)
+        const filePath = path.join(path.dirname(document.fileName), fileName)
+        let fileExists: boolean
+        try {
+          const stats = await fs.stat(filePath)
+          fileExists = stats.isFile()
+        } catch (e) {
+          fileExists = false
         }
-        result.push(extractTitleAction)
+        if (fileExists) {
+          const linkToFileAction = new vscode.CodeAction(
+            `link to ${fileName}`,
+            vscode.CodeActionKind.RefactorRewrite
+          )
+          linkToFileAction.command = {
+            command: TikibaseProvider.linkToNoteCommandName,
+            title: `replace the selection with a link to the selected file`
+          }
+          result.push(linkToFileAction)
+        } else {
+          const extractTitleAction = new vscode.CodeAction(
+            `create ${fileName}`,
+            vscode.CodeActionKind.RefactorExtract
+          )
+          extractTitleAction.command = {
+            command: TikibaseProvider.extractTitleCommandName,
+            title: `create a new note with the filename "${fileName}"`
+          }
+          result.push(extractTitleAction)
+        }
       } else {
         // "extract body" refactor
         const extractBodyAction = new vscode.CodeAction(
