@@ -106,7 +106,11 @@ export function mdFileName(text: string): string {
 }
 
 async function enterTitle(): Promise<string | undefined> {
-  return vscode.window.showInputBox({
+  let result = await vscode.window.showInputBox({
     title: "new document title"
   })
+  if (result && !result.endsWith(".md")) {
+    result = result + ".md"
+  }
+  return result
 }
