@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 import { createCompletionProvider } from "./autocomplete/provider"
-import { TikibaseProvider } from "./code-action/tikibase-provider"
+import { extractNote, TikibaseProvider } from "./code-action/tikibase-provider"
 import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
@@ -69,9 +69,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(
       vscode.commands.registerCommand(
         TikibaseProvider.extractNoteCommand,
-        async () => {
-          await vscode.window.showInformationMessage("HELLO")
-        }
+        extractNote
       )
     )
 

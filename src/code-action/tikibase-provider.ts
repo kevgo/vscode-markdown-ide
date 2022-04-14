@@ -40,3 +40,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
     return result
   }
 }
+
+export async function extractNote() {
+  await vscode.window.showInformationMessage("HELLO")
+}
