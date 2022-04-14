@@ -37,9 +37,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   // "go to definition" for links in Markdown documents
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider(tikiConfig))
 
-  // save file --> run "tikibase check"
   if (tikiConfig) {
     vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
+
+    // save file --> run "tikibase check"
     const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
     vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
