@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 
 export class TikibaseProvider implements vscode.CodeActionProvider {
   /** name of the code action that this provider implements */
-  public static readonly command = "vscode-markdown-ide.command"
+  public static readonly autofixCommand = "vscode-markdown-ide.autofix"
 
   provideCodeActions(
     document: vscode.TextDocument,
@@ -16,8 +16,8 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
       }
       const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
-        command: TikibaseProvider.command,
-        title: "let Tikibase fix all these problems"
+        command: TikibaseProvider.autofixCommand,
+        title: "let Tikibase fix this and all other problems"
       }
       action.diagnostics = [diagnostic]
       action.isPreferred = true

@@ -54,12 +54,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       vscode.languages.registerCodeActionsProvider(
         "markdown",
         new TikibaseProvider(),
-        { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] }
+        { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.RefactorExtract] }
       )
     )
     context.subscriptions.push(
       vscode.commands.registerCommand(
-        TikibaseProvider.command,
+        TikibaseProvider.autofixCommand,
         async () => {
           await tikibase.fix(workspacePath, debug)
           await runTikibaseCheck()
