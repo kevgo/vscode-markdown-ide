@@ -121,6 +121,19 @@ export async function extractNoteBody(): Promise<void> {
   await vscode.workspace.applyEdit(edit)
 }
 
+export async function linkToNote(): Promise<void> {
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    return
+  }
+  const range = editor.selection
+  const selectedText = editor.document.getText(range)
+  const fileName = mdFileName(selectedText)
+  const edit = new vscode.WorkspaceEdit()
+  edit.replace(editor.document.uri, range, `[${selectedText}](${fileName})`)
+  await vscode.workspace.applyEdit(edit)
+}
+
 /** provides the filename for a note with the given title */
 export function mdFileName(title: string): string {
   let result = `${slugify(title)}`
