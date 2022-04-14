@@ -38,7 +38,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
           )
           linkToFileAction.command = {
             command: TikibaseProvider.linkToNoteCommandName,
-            title: `replace the selection with a link to the selected file`
+            title: "replace the selection with a link to the selected file"
           }
           result.push(linkToFileAction)
         } else {

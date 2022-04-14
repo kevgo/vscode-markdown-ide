@@ -85,6 +85,12 @@ file with this content" refactor. It asks the user for a title, creates a new
 file with the given title and the selected text as its content, and replaces the
 selection with a link to this new file.
 
+## "link to note" refactor
+
+When selecting text that is also the title of an existing note, Markdown IDE
+offers a code action that replaces the selection with a link to the respective
+note.
+
 ## Tikibase support
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
