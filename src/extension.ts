@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 import { createCompletionProvider } from "./autocomplete/provider"
-import { TikibaseProvider } from "./code-action/tikibase-provider"
+import { extractNoteBody, extractNoteTitle, TikibaseProvider } from "./code-action/tikibase-provider"
 import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
@@ -59,11 +59,27 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     )
     context.subscriptions.push(
       vscode.commands.registerCommand(
-        TikibaseProvider.autofixCommand,
+        TikibaseProvider.autofixCommandName,
         async () => {
           await tikibase.fix(workspacePath, debug)
           await runTikibaseCheck()
         }
+      )
+    )
+
+    // "extract title" refactor
+    context.subscriptions.push(
+      vscode.commands.registerCommand(
+        TikibaseProvider.extractTitleCommandName,
+        extractNoteTitle
+      )
+    )
+
+    // "extract body" refactor
+    context.subscriptions.push(
+      vscode.commands.registerCommand(
+        TikibaseProvider.extractBodyCommandName,
+        extractNoteBody
       )
     )
 
