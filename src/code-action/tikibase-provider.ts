@@ -1,4 +1,5 @@
 import * as slugify from "@sindresorhus/slugify"
+import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
@@ -7,29 +8,53 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
   public static readonly autofixCommandName = "vscode-markdown-ide.autofix"
   public static readonly extractTitleCommandName = "vscode-markdown-ide.extractTitle"
   public static readonly extractBodyCommandName = "vscode-markdown-ide.extractBody"
+  public static readonly linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
-  provideCodeActions(
+  async provideCodeActions(
     document: vscode.TextDocument,
     range: vscode.Range | vscode.Selection,
     context: vscode.CodeActionContext
-  ): vscode.CodeAction[] {
+  ): Promise<vscode.CodeAction[]> {
     const result: vscode.CodeAction[] = []
 
     // "extract note" refactor
     if (!range.isEmpty) {
       if (range.isSingleLine) {
         const text = document.getText(range)
-        const filename = mdFileName(text)
-        const extractTitleAction = new vscode.CodeAction(
-          `create ${filename}`,
-          vscode.CodeActionKind.RefactorExtract
-        )
-        extractTitleAction.command = {
-          command: TikibaseProvider.extractTitleCommandName,
-          title: `create a new note with the filename "${filename}"`
+        const fileName = mdFileName(text)
+        const filePath = path.join(path.dirname(document.fileName), fileName)
+        let fileExists: boolean
+        try {
+          const stats = await fs.stat(filePath)
+          fileExists = stats.isFile()
+        } catch (e) {
+          fileExists = false
         }
-        result.push(extractTitleAction)
+        if (fileExists) {
+          // "link to note" refactor
+          const linkToFileAction = new vscode.CodeAction(
+            `link to ${fileName}`,
+            vscode.CodeActionKind.RefactorRewrite
+          )
+          linkToFileAction.command = {
+            command: TikibaseProvider.linkToNoteCommandName,
+            title: "replace the selection with a link to the selected file"
+          }
+          result.push(linkToFileAction)
+        } else {
+          // "extract title" refactor
+          const extractTitleAction = new vscode.CodeAction(
+            `create ${fileName}`,
+            vscode.CodeActionKind.RefactorExtract
+          )
+          extractTitleAction.command = {
+            command: TikibaseProvider.extractTitleCommandName,
+            title: `create a new note with the filename "${fileName}"`
+          }
+          result.push(extractTitleAction)
+        }
       } else {
+        // "extract body" refactor
         const extractBodyAction = new vscode.CodeAction(
           "extract note with this content",
           vscode.CodeActionKind.RefactorExtract
@@ -94,6 +119,19 @@ export async function extractNoteBody(): Promise<void> {
   edit.replace(editor.document.uri, range, `[${newTitle}](${newFileName})`)
   edit.createFile(newFileUri, { overwrite: false })
   edit.insert(newFileUri, new vscode.Position(0, 0), `# ${newTitle}\n\n${selectedText}\n`)
+  await vscode.workspace.applyEdit(edit)
+}
+
+export async function linkToNote(): Promise<void> {
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    return
+  }
+  const range = editor.selection
+  const selectedText = editor.document.getText(range)
+  const fileName = mdFileName(selectedText)
+  const edit = new vscode.WorkspaceEdit()
+  edit.replace(editor.document.uri, range, `[${selectedText}](${fileName})`)
   await vscode.workspace.applyEdit(edit)
 }
 
