@@ -44,9 +44,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
     vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
-    // startup --> run "tikibase check"
-    void runTikibaseCheck()
-
     // "tikibase fix" command
     context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
       await tikibase.fix(workspacePath, debug)
@@ -69,5 +66,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         }
       )
     )
+
+    // run "tikibase check" at startup
+    void runTikibaseCheck()
   }
 }
