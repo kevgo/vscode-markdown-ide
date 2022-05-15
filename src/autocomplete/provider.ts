@@ -33,6 +33,7 @@ export function createCompletionProvider(
           return headingCompletionItems({
             configuredSections: tikiConfig?.sections(),
             debug,
+            documentDir,
             startTime,
             wsRoot: workspacePath
           })
@@ -80,6 +81,7 @@ async function headingCompletionItems(
   args: {
     configuredSections: string[] | undefined
     debug: vscode.OutputChannel
+    documentDir: string
     startTime: number
     wsRoot: string
   }
