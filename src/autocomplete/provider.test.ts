@@ -53,4 +53,20 @@ suite("analyzeInput", function() {
       assert.deepEqual(have, want)
     })
   })
+
+  suite("removeFirstChars", function() {
+    test("normal", function() {
+      const give = ["### one", "### two"]
+      const want = ["## one", "## two"]
+      const have = provider.removeFirstChars(give)
+      assert.deepEqual(have, want)
+    })
+
+    test("empty", function() {
+      const give: string[] = []
+      const want: string[] = []
+      const have = provider.removeFirstChars(give)
+      assert.deepEqual(have, want)
+    })
+  })
 })

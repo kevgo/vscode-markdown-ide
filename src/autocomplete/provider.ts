@@ -30,7 +30,13 @@ export function createCompletionProvider(
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
-          return headingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
+          return headingCompletionItems({
+            configuredSections: tikiConfig?.sections(),
+            debug,
+            documentDir,
+            startTime,
+            wsRoot: workspacePath
+          })
       }
     }
   }
@@ -73,12 +79,26 @@ export function determineType(line: string, pos: number): AutocompleteType {
 
 async function headingCompletionItems(
   args: {
+    configuredSections: string[] | undefined
     debug: vscode.OutputChannel
     documentDir: string
     startTime: number
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
+  if (args.configuredSections) {
+    return completionItems(removeFirstChars(args.configuredSections))
+  } else {
+    return completionItems(await headingsInFiles(args))
+  }
+}
+
+/** provides the names of all headings in all Markdown files */
+async function headingsInFiles(args: {
+  debug: vscode.OutputChannel
+  startTime: number
+  wsRoot: string
+}): Promise<string[]> {
   const mdFilesAcc: files.FileResult[] = []
   await files.markdown(args.wsRoot, mdFilesAcc)
   args.debug.appendLine(
@@ -89,13 +109,19 @@ async function headingCompletionItems(
     headings.inFile(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
-  const result: vscode.CompletionItem[] = []
+  const result: string[] = []
   for (const heading of headingsAcc) {
+    result.push(heading.substring(1))
+  }
+  return result
+}
+
+/** provides CompletionItems with the given contents */
+function completionItems(configuredSections: string[]): vscode.CompletionItem[] {
+  const result: vscode.CompletionItem[] = []
+  for (const section of configuredSections) {
     result.push(
-      new vscode.CompletionItem(
-        heading.substring(1),
-        vscode.CompletionItemKind.Text
-      )
+      new vscode.CompletionItem(section, vscode.CompletionItemKind.Text)
     )
   }
   return result
@@ -156,4 +182,8 @@ async function imgCompletionItems(args: {
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
+}
+
+export function removeFirstChars(strings: string[]): string[] {
+  return strings.map((element) => element.substring(1))
 }
