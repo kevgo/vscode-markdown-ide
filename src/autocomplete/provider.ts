@@ -87,7 +87,13 @@ async function headingCompletionItems(
   if (args.configuredSections) {
     return completionItems(removeFirstChars(args.configuredSections))
   } else {
-    return completionItems(await headingsInFiles(args))
+    return completionItems(
+      await headingsInFiles({
+        debug: args.debug,
+        startTime: args.startTime,
+        wsRoot: args.wsRoot
+      })
+    )
   }
 }
 
