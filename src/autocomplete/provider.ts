@@ -27,7 +27,7 @@ export function createCompletionProvider(
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
-          return HeadingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
+          return headingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
@@ -68,7 +68,7 @@ export function determineType(line: string, pos: number): AutocompleteType {
   return AutocompleteType.MD_LINK
 }
 
-async function HeadingCompletionItems(
+async function headingCompletionItems(
   args: {
     debug: vscode.OutputChannel
     documentDir: string
