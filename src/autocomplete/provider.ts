@@ -14,6 +14,9 @@ export function createCompletionProvider(
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
       const startTime = new Date().getTime()
+      if (position.line === 0) {
+        return
+      }
       const documentDir = path.dirname(document.fileName)
       switch (determineType(document.lineAt(position).text, position.character)) {
         case AutocompleteType.MD_LINK:
