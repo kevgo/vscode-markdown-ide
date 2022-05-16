@@ -186,15 +186,10 @@ async function imgCompletionItems(args: {
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
   for (const dir in descendTree(documentDir)) {
-    try {
-      const config = await configuration.tikibase(dir)
-      const sections = config?.sections()
-      if (sections) {
-        return sections
-      }
-    } catch (e) {
-      // cannot read file --> stop looking for more config files
-      return
+    const config = await configuration.tikibase(dir)
+    const sections = config?.sections()
+    if (sections) {
+      return sections
     }
   }
 }
