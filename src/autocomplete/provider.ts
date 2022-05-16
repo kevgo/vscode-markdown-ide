@@ -186,11 +186,10 @@ async function imgCompletionItems(args: {
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
   for (const dir in descendTree(documentDir)) {
-    const configPath = path.join(dir, "tikibase.json")
     try {
-      const content = await fs.readFile(configPath, "utf-8")
-      const config: configuration.TikibaseConfig = JSON.parse(content)
-      if (config.sections) {
+      const config = await configuration.tikibase(dir)
+      if (config?.sections) {
+        // @ts-ignore Typescript is too stupid to understand that config.sections is not undefined here
         return config.sections
       }
     } catch (e) {
