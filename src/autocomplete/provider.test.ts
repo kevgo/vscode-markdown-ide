@@ -54,7 +54,7 @@ suite("analyzeInput", function() {
     })
   })
 
-  suite("parentDirs", function() {
+  suite("descendTree", function() {
     test("normal", function() {
       const give = "/one/two/three"
       const generator = provider.descendTree(give)
