@@ -31,12 +31,7 @@ export function createCompletionProvider(
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
-          return headingCompletionItems({
-            debug,
-            documentDir,
-            startTime,
-            wsRoot: workspacePath
-          })
+          return headingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
