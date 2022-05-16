@@ -1,3 +1,4 @@
+import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
@@ -31,7 +32,6 @@ export function createCompletionProvider(
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
           return headingCompletionItems({
-            configuredSections: tikiConfig?.sections(),
             debug,
             documentDir,
             startTime,
@@ -79,24 +79,23 @@ export function determineType(line: string, pos: number): AutocompleteType {
 
 async function headingCompletionItems(
   args: {
-    configuredSections: string[] | undefined
     debug: vscode.OutputChannel
     documentDir: string
     startTime: number
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
-  if (args.configuredSections) {
-    return completionItems(removeFirstChars(args.configuredSections))
-  } else {
-    return completionItems(
-      await headingsInFiles({
-        debug: args.debug,
-        startTime: args.startTime,
-        wsRoot: args.wsRoot
-      })
-    )
+  const configuredSections = await loadConfiguredSections(args.documentDir)
+  if (configuredSections) {
+    return completionItems(removeFirstChars(configuredSections))
   }
+  return completionItems(
+    await headingsInFiles({
+      debug: args.debug,
+      startTime: args.startTime,
+      wsRoot: args.wsRoot
+    })
+  )
 }
 
 /** provides the names of all headings in all Markdown files */
@@ -188,6 +187,31 @@ async function imgCompletionItems(args: {
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
+}
+
+async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
+  for (const dir in parentDirs(documentDir)) {
+    const configPath = path.join(dir, "tikibase.json")
+    try {
+      const content = await fs.readFile(configPath, "utf-8")
+      const config: configuration.TikibaseConfig = JSON.parse(content)
+      if (config.sections) {
+        return config.sections
+      }
+    } catch (e) {
+      // cannot read file --> stop looking for more config files
+      return
+    }
+  }
+}
+
+export function* parentDirs(dir: string): Generator<string> {
+  yield dir
+  const elements = dir.split(path.sep)
+  while (elements.length > 2) {
+    elements.pop()
+    yield elements.join(path.sep)
+  }
 }
 
 export function removeFirstChars(strings: string[]): string[] {

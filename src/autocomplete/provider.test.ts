@@ -54,6 +54,24 @@ suite("analyzeInput", function() {
     })
   })
 
+  suite("parentDirs", function() {
+    test("normal", function() {
+      const give = "/one/two/three"
+      const generator = provider.parentDirs(give)
+      let item = generator.next()
+      assert.equal(item.done, false, "first")
+      assert.equal(item.value, "/one/two/three")
+      item = generator.next()
+      assert.equal(item.done, false, "second")
+      assert.equal(item.value, "/one/two")
+      item = generator.next()
+      assert.equal(item.done, false, "third")
+      assert.equal(item.value, "/one")
+      item = generator.next()
+      assert.equal(item.done, true, "finally done")
+    })
+  })
+
   suite("removeFirstChars", function() {
     test("normal", function() {
       const give = ["### one", "### two"]
