@@ -188,9 +188,9 @@ async function loadConfiguredSections(documentDir: string): Promise<string[] | u
   for (const dir in descendTree(documentDir)) {
     try {
       const config = await configuration.tikibase(dir)
-      if (config?.sections) {
-        // @ts-ignore Typescript is too stupid to understand that config.sections is not undefined here
-        return config.sections
+      const sections = config?.sections()
+      if (sections) {
+        return sections
       }
     } catch (e) {
       // cannot read file --> stop looking for more config files
