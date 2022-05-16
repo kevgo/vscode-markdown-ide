@@ -57,7 +57,7 @@ suite("analyzeInput", function() {
   suite("parentDirs", function() {
     test("normal", function() {
       const give = "/one/two/three"
-      const generator = provider.parentDirs(give)
+      const generator = provider.descendTree(give)
       let item = generator.next()
       assert.equal(item.done, false, "first")
       assert.equal(item.value, "/one/two/three", "first")

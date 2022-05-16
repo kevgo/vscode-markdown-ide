@@ -185,7 +185,7 @@ async function imgCompletionItems(args: {
 }
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
-  for (const dir in parentDirs(documentDir)) {
+  for (const dir in descendTree(documentDir)) {
     const configPath = path.join(dir, "tikibase.json")
     try {
       const content = await fs.readFile(configPath, "utf-8")
@@ -200,7 +200,8 @@ async function loadConfiguredSections(documentDir: string): Promise<string[] | u
   }
 }
 
-export function* parentDirs(dir: string): Generator<string> {
+/** emits the given paths and all parent paths in descending order */
+export function* descendTree(dir: string): Generator<string> {
   let index = dir.length
   do {
     yield dir.substring(0, index)
