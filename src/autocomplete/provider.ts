@@ -117,11 +117,11 @@ async function headingsInFiles(args: {
 }
 
 /** provides CompletionItems with the given contents */
-function completionItems(configuredSections: string[]): vscode.CompletionItem[] {
+function completionItems(texts: string[]): vscode.CompletionItem[] {
   const result: vscode.CompletionItem[] = []
-  for (const section of configuredSections) {
+  for (const text of texts) {
     result.push(
-      new vscode.CompletionItem(section, vscode.CompletionItemKind.Text)
+      new vscode.CompletionItem(text, vscode.CompletionItemKind.Text)
     )
   }
   return result
