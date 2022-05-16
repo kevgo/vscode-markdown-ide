@@ -206,12 +206,11 @@ async function loadConfiguredSections(documentDir: string): Promise<string[] | u
 }
 
 export function* parentDirs(dir: string): Generator<string> {
-  yield dir
-  const elements = dir.split(path.sep)
-  while (elements.length > 2) {
-    elements.pop()
-    yield elements.join(path.sep)
-  }
+  let index = dir.length
+  do {
+    yield dir.substring(0, index)
+    index = dir.lastIndexOf(path.sep, index - 1)
+  } while (index > 0)
 }
 
 export function removeFirstChars(strings: string[]): string[] {
