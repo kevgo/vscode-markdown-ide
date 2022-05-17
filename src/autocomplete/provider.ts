@@ -79,17 +79,12 @@ async function headingCompletionItems(
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
-  const configuredSections = await loadConfiguredSections(args.documentDir)
-  if (configuredSections) {
-    return completionItems(removeFirstChars(configuredSections))
-  }
-  return completionItems(
-    await headingsInFiles({
-      debug: args.debug,
-      startTime: args.startTime,
-      wsRoot: args.wsRoot
-    })
-  )
+  const headings = await loadConfiguredSections(args.documentDir) ?? await headingsInFiles({
+    debug: args.debug,
+    startTime: args.startTime,
+    wsRoot: args.wsRoot
+  })
+  return completionItems(removeFirstChars(headings))
 }
 
 /** provides the names of all headings in all Markdown files */
