@@ -79,6 +79,25 @@ async function headingCompletionItems(
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
+  const configuredSections = await loadConfiguredSections(args.documentDir)
+  if (configuredSections) {
+    return completionItems(removeFirstChars(configuredSections))
+  }
+  return completionItems(
+    await headingsInFiles({
+      debug: args.debug,
+      startTime: args.startTime,
+      wsRoot: args.wsRoot
+    })
+  )
+}
+
+/** provides the names of all headings in all Markdown files */
+async function headingsInFiles(args: {
+  debug: vscode.OutputChannel
+  startTime: number
+  wsRoot: string
+}): Promise<string[]> {
   const mdFilesAcc: files.FileResult[] = []
   await files.markdown(args.wsRoot, mdFilesAcc)
   args.debug.appendLine(
@@ -89,13 +108,19 @@ async function headingCompletionItems(
     headings.inFile(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
-  const result: vscode.CompletionItem[] = []
+  const result: string[] = []
   for (const heading of headingsAcc) {
+    result.push(heading.substring(1))
+  }
+  return result
+}
+
+/** provides CompletionItems with the given contents */
+function completionItems(texts: string[]): vscode.CompletionItem[] {
+  const result: vscode.CompletionItem[] = []
+  for (const text of texts) {
     result.push(
-      new vscode.CompletionItem(
-        heading.substring(1),
-        vscode.CompletionItemKind.Text
-      )
+      new vscode.CompletionItem(text, vscode.CompletionItemKind.Text)
     )
   }
   return result
@@ -156,4 +181,27 @@ async function imgCompletionItems(args: {
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
+}
+
+async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
+  for (const dir of descendTree(documentDir)) {
+    const config = await configuration.tikibase(dir)
+    const sections = config?.sections()
+    if (sections) {
+      return sections
+    }
+  }
+}
+
+/** emits the given paths and all parent paths in descending order */
+export function* descendTree(dir: string): Generator<string> {
+  let index = dir.length
+  do {
+    yield dir.substring(0, index)
+    index = dir.lastIndexOf(path.sep, index - 1)
+  } while (index > 0)
+}
+
+export function removeFirstChars(strings: string[]): string[] {
+  return strings.map((element) => element.substring(1))
 }

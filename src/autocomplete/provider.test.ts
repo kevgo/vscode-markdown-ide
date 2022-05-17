@@ -53,4 +53,38 @@ suite("analyzeInput", function() {
       assert.deepEqual(have, want)
     })
   })
+
+  suite("descendTree", function() {
+    test("normal", function() {
+      const give = "/one/two/three"
+      const generator = provider.descendTree(give)
+      let item = generator.next()
+      assert.equal(item.done, false, "first")
+      assert.equal(item.value, "/one/two/three", "first")
+      item = generator.next()
+      assert.equal(item.done, false, "second")
+      assert.equal(item.value, "/one/two", "second")
+      item = generator.next()
+      assert.equal(item.done, false, "third")
+      assert.equal(item.value, "/one", "third")
+      item = generator.next()
+      assert.equal(item.done, true, "finally done")
+    })
+  })
+
+  suite("removeFirstChars", function() {
+    test("normal", function() {
+      const give = ["### one", "### two"]
+      const want = ["## one", "## two"]
+      const have = provider.removeFirstChars(give)
+      assert.deepEqual(have, want)
+    })
+
+    test("empty", function() {
+      const give: string[] = []
+      const want: string[] = []
+      const have = provider.removeFirstChars(give)
+      assert.deepEqual(have, want)
+    })
+  })
 })
