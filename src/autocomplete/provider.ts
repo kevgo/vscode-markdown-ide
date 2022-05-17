@@ -79,12 +79,15 @@ async function headingCompletionItems(
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
-  const headings = await loadConfiguredSections(args.documentDir) ?? await headingsInFiles({
+  const allHeadings = await loadConfiguredSections(args.documentDir) ?? await headingsInFiles({
     debug: args.debug,
     startTime: args.startTime,
     wsRoot: args.wsRoot
   })
-  return completionItems(removeFirstChars(headings))
+  const existingHeadings: Set<string> = new Set()
+  headings.inFile(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
+  const missingHeadings = allHeadings.filter((heading) => !existingHeadings.has(heading))
+  return completionItems(removeFirstChars(missingHeadings))
 }
 
 /** provides the names of all headings in all Markdown files */
