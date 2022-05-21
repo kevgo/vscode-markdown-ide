@@ -1,10 +1,20 @@
 .DEFAULT_GOAL := help
 
-build: clean  # compiles the extension
+build: compile bundle-dev  # builds the extension in dev mode
+
+build-prod: compile bundle-prod  #
+
+compile: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
 	rm -rf out
+
+bundle-dev:  # bundles all JS assets into a single JS file with debug information
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node --sourcemap
+
+bundle-prod:  # bundles and compresses all JS assets into a single JS
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node --minify
 
 doc:  # runs the documentation tests
 	${CURDIR}/node_modules/.bin/text-run --format=dot
@@ -25,10 +35,11 @@ lint:  # runs all linters
 list-shipped-files:  # lists all the files that will get shipped in the compiled extension, edit .vscodeignore to change
 	vsce ls
 
-package:  # package the extension for local installation
+package: build  # package the extension for local installation
 	vsce package
 
 publish-patch:  # publishes a new patch version
+	make --no-print-dir bundle-prod
 	vsce publish patch --no-yarn
 
 publish-minor:  # publishes a new minor version
