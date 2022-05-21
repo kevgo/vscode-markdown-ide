@@ -2,7 +2,7 @@
 
 build: compile bundle-dev  # builds the extension in dev mode
 
-build-prod: compile bundle-prod  #
+build-prod: compile bundle-prod  # builds the extension in production mode
 
 compile: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
