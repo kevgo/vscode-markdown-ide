@@ -59,7 +59,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "vscode:prepublish": "make --no-print-directory build",
-    "compile": "tsc -p ./",
+    "compile": "make --no-print-directory build-dev",
     "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
