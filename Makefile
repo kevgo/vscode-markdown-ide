@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := help
-
 build: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
@@ -56,4 +54,6 @@ unit: build  # runs the unit tests
 update:  # updates all dependencies
 	yarn upgrade --latest
 
+
+.DEFAULT_GOAL := help
 .SILENT:
