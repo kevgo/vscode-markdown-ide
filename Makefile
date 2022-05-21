@@ -35,7 +35,7 @@ lint:  # runs all linters
 list-shipped-files:  # lists all the files that will get shipped in the compiled extension, edit .vscodeignore to change
 	vsce ls
 
-package: build  # package the extension for local installation
+package: build-prod  # package the extension for local installation
 	vsce package
 
 publish-patch:  # publishes a new patch version
