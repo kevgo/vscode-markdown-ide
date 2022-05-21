@@ -16,11 +16,14 @@
 
 Debug in VSCode:
 
+- run <code type="make/command">make build-dev</code> to compile a package with
+  source maps or keep <code type="make/command">make watch</code> running
+  - debugging requires source maps to work
+  - VSCode somehow doesn't run the compiler by itself before debugging
 - set breakpoints in VSCode
-- open Debug view: VSCode menu: `View` > `Run`
-- choose `Run Extension`
-- click on the `play` icon
-- open folder > choose a different folder than the current one
+- Run > Start Debugging
+- in the VSCode instance that starts: open folder > choose a different folder
+  than the current one
 
 To print to the _debug console_ of the hosting VSCode instance: `console.log`
 

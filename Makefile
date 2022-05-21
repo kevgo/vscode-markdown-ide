@@ -1,7 +1,7 @@
-build: compile  # builds the extension in production mode
+build:  # builds the extension in production mode
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
 
-build-dev: compile  # builds the extension in dev mode
+build-dev:  # builds the extension in dev mode
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
 
 compile: clean  # compiles the extension
@@ -55,12 +55,15 @@ test:  # runs all the tests
 
 test-ci: build lint unit doc  # runs all the tests on ci
 
-unit: build  # runs the unit tests
+unit: compile  # runs the unit tests
 	echo "testing ..."
 	node out/test/main.js
 
 update:  # updates all dependencies
 	yarn upgrade --latest
+
+watch:  # continuously compiles the source code into a debuggable package
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap --watch
 
 
 .DEFAULT_GOAL := help

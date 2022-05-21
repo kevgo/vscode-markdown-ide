@@ -59,8 +59,8 @@
   "main": "./dist/main.js",
   "scripts": {
     "vscode:prepublish": "make --no-print-directory build",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "compile": "make --no-print-directory build-dev",
+    "watch": "make --no-print-directory watch"
   },
   "devDependencies": {
     "@types/mocha": "9.1.1",
