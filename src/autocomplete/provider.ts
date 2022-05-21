@@ -27,7 +27,7 @@ export function createCompletionProvider(
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
-          if (position.line !== 0) {
+          if (position.line > 0) {
             return headingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
           }
       }
