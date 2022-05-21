@@ -56,7 +56,7 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/main.js",
   "scripts": {
     "vscode:prepublish": "make --no-print-directory build",
     "compile": "tsc -p ./",
@@ -70,6 +70,7 @@
     "@typescript-eslint/parser": "5.25.0",
     "@vscode/test-electron": "2.1.3",
     "assert-no-diff": "3.0.6",
+    "esbuild": "0.14.39",
     "eslint": "8.15.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-typescript-sort-keys": "2.1.0",

@@ -8,8 +8,8 @@ documentation/
 examples/
 !LICENSE.txt
 **/*.map
-out/**/*.test.js
-out/test/*
+node_modules/
+out/
 scripts/
 src/
 text-run/
