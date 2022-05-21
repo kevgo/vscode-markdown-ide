@@ -1,20 +1,16 @@
 .DEFAULT_GOAL := help
 
 build: compile bundle-dev  # builds the extension in dev mode
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
 
 build-prod: compile bundle-prod  # builds the extension in production mode
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
 
 compile: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
 	rm -rf out dist
-
-bundle-dev:  # bundles all JS assets into a single JS file with debug information
-	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
-
-bundle-prod:  # bundles and compresses all JS assets into a single JS
-	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
 
 doc:  # runs the documentation tests
 	${CURDIR}/node_modules/.bin/text-run --format=dot
