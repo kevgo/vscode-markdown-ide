@@ -9,8 +9,6 @@ suite("mdFileName", function() {
   }
   for (const [give, want] of Object.entries(tests)) {
     test(`"${give}" --> "${want}"`, function() {
-      const give = "one two"
-      const want = "one-two.md"
       const have = mdFileName(give)
       assert.equal(have, want)
     })
