@@ -55,7 +55,7 @@ test:  # runs all the tests
 
 test-ci: build lint unit doc  # runs all the tests on ci
 
-unit:  # runs the unit tests
+unit: build  # runs the unit tests
 	echo "testing ..."
 	node out/test/main.js
 
