@@ -1,7 +1,7 @@
-build: compile bundle-prod  # builds the extension in production mode
+build: compile bundle-prod  # compiles and builds the extension in production mode
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
 
-build-dev: compile bundle-dev  # builds the extension in dev mode
+build-dev: compile bundle-dev  # compiles and builds the extension in dev mode
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
 
 compile: clean  # compiles the extension
