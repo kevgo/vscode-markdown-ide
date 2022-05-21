@@ -60,7 +60,7 @@
   "scripts": {
     "vscode:prepublish": "make --no-print-directory build",
     "compile": "make --no-print-directory build-dev",
-    "watch": "tsc -watch -p ./"
+    "watch": "make --no-print-directory watch"
   },
   "devDependencies": {
     "@types/mocha": "9.1.1",
