@@ -33,7 +33,6 @@ package: build-prod  # package the extension for local installation
 	vsce package
 
 publish-patch:  # publishes a new patch version
-	make --no-print-dir bundle-prod
 	vsce publish patch --no-yarn
 
 publish-minor:  # publishes a new minor version
