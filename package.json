@@ -58,7 +58,7 @@
   ],
   "main": "./dist/main.js",
   "scripts": {
-    "vscode:prepublish": "make --no-print-directory build-prod",
+    "vscode:prepublish": "make --no-print-directory build",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
   },

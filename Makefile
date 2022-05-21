@@ -1,10 +1,8 @@
-.DEFAULT_GOAL := help
-
-build: compile bundle-dev  # builds the extension in dev mode
-	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
-
-build-prod: compile bundle-prod  # builds the extension in production mode
+build: compile bundle-prod  # builds the extension in production mode
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
+
+build-dev: compile bundle-dev  # builds the extension in dev mode
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
 
 compile: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
@@ -63,4 +61,6 @@ unit: build  # runs the unit tests
 update:  # updates all dependencies
 	yarn upgrade --latest
 
+
+.DEFAULT_GOAL := help
 .SILENT:
