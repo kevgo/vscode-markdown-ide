@@ -30,7 +30,7 @@ export function createCompletionProvider(
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
-          return HeadingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
+          return headingCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
       }
     }
   }
@@ -71,7 +71,7 @@ export function determineType(line: string, pos: number): AutocompleteType {
   return AutocompleteType.MD_LINK
 }
 
-async function HeadingCompletionItems(
+async function headingCompletionItems(
   args: {
     debug: vscode.OutputChannel
     documentDir: string
@@ -79,6 +79,23 @@ async function HeadingCompletionItems(
     wsRoot: string
   }
 ): Promise<vscode.CompletionItem[]> {
+  const allHeadings = await loadConfiguredSections(args.documentDir) ?? await headingsInFiles({
+    debug: args.debug,
+    startTime: args.startTime,
+    wsRoot: args.wsRoot
+  })
+  const existingHeadings: Set<string> = new Set()
+  headings.inFile(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
+  const missingHeadings = allHeadings.filter((heading) => !existingHeadings.has(heading))
+  return completionItems(removeFirstChars(missingHeadings))
+}
+
+/** provides the names of all headings in all Markdown files */
+async function headingsInFiles(args: {
+  debug: vscode.OutputChannel
+  startTime: number
+  wsRoot: string
+}): Promise<string[]> {
   const mdFilesAcc: files.FileResult[] = []
   await files.markdown(args.wsRoot, mdFilesAcc)
   args.debug.appendLine(
@@ -89,13 +106,19 @@ async function HeadingCompletionItems(
     headings.inFile(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
-  const result: vscode.CompletionItem[] = []
+  const result: string[] = []
   for (const heading of headingsAcc) {
+    result.push(heading.substring(1))
+  }
+  return result
+}
+
+/** provides CompletionItems with the given contents */
+function completionItems(texts: string[]): vscode.CompletionItem[] {
+  const result: vscode.CompletionItem[] = []
+  for (const text of texts) {
     result.push(
-      new vscode.CompletionItem(
-        heading.substring(1),
-        vscode.CompletionItemKind.Text
-      )
+      new vscode.CompletionItem(text, vscode.CompletionItemKind.Text)
     )
   }
   return result
@@ -156,4 +179,27 @@ async function imgCompletionItems(args: {
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms:  ${result.length} links created`)
   return result
+}
+
+async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
+  for (const dir of descendTree(documentDir)) {
+    const config = await configuration.tikibase(dir)
+    const sections = config?.sections()
+    if (sections) {
+      return sections
+    }
+  }
+}
+
+/** emits the given paths and all parent paths in descending order */
+export function* descendTree(dir: string): Generator<string> {
+  let index = dir.length
+  do {
+    yield dir.substring(0, index)
+    index = dir.lastIndexOf(path.sep, index - 1)
+  } while (index > 0)
+}
+
+export function removeFirstChars(strings: string[]): string[] {
+  return strings.map((element) => element.substring(1))
 }

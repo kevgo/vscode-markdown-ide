@@ -4,6 +4,7 @@ import * as vscode from "vscode"
 
 export interface TikibaseConfig {
   bidiLinks?: boolean
+  sections?: string[]
   titleRegEx?: string
 }
 
@@ -16,6 +17,10 @@ export class Tikibase {
 
   bidiLinks(): boolean {
     return this.config.bidiLinks ?? false
+  }
+
+  sections(): string[] | undefined {
+    return this.config.sections
   }
 
   /** provides the titleRegEx setting as a proper regular expression */
