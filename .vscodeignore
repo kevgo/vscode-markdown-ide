@@ -8,6 +8,7 @@ documentation/
 examples/
 !LICENSE.txt
 **/*.map
+node_modules/
 out/
 scripts/
 src/

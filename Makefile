@@ -8,13 +8,13 @@ compile: clean  # compiles the extension
 	${CURDIR}/node_modules/.bin/tsc -p .
 
 clean:  # removes all build artifacts
-	rm -rf out
+	rm -rf out dist
 
 bundle-dev:  # bundles all JS assets into a single JS file with debug information
-	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node --sourcemap
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap
 
 bundle-prod:  # bundles and compresses all JS assets into a single JS
-	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node --minify
+	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify
 
 doc:  # runs the documentation tests
 	${CURDIR}/node_modules/.bin/text-run --format=dot
