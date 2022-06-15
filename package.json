@@ -3,7 +3,29 @@
   "displayName": "Markdown IDE",
   "version": "0.4.3",
   "description": "IDE-grade tooling for Markdown: refactoring and autocompletion",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "development",
+    "refactoring",
+    "autocompletion"
+  ],
+  "bugs": {
+    "url": "https://github.com/kevgo/vscode-markdown-ide/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevgo/vscode-markdown-ide"
+  },
   "publisher": "kevgo",
+  "main": "./dist/main.js",
+  "scripts": {
+    "compile": "make --no-print-directory build-dev",
+    "vscode:prepublish": "make --no-print-directory build",
+    "watch": "make --no-print-directory watch"
+  },
   "contributes": {
     "commands": [
       {
@@ -26,41 +48,11 @@
       ]
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kevgo/vscode-markdown-ide"
-  },
-  "bugs": {
-    "url": "https://github.com/kevgo/vscode-markdown-ide/issues"
-  },
-  "engines": {
-    "vscode": "^1.67.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "icon": "documentation/logo.png",
-  "keywords": [
-    "markdown",
-    "development",
-    "refactoring",
-    "autocompletion"
-  ],
-  "badges": [
-    {
-      "url": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg",
-      "href": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml",
-      "description": "build status"
-    }
-  ],
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./dist/main.js",
-  "scripts": {
-    "vscode:prepublish": "make --no-print-directory build",
-    "compile": "make --no-print-directory build-dev",
-    "watch": "make --no-print-directory watch"
+  "dependencies": {
+    "@sindresorhus/slugify": "1.1.0"
   },
   "devDependencies": {
     "@types/mocha": "9.1.1",
@@ -75,13 +67,22 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-typescript-sort-keys": "2.1.0",
     "mocha": "10.0.0",
+    "sort-package-json": "1.57.0",
     "text-runner": "5.0.1",
     "textrun-make": "0.1.1",
     "ts-node": "10.7.0",
     "typescript": "4.6.4",
     "vsce": "2.8.0"
   },
-  "dependencies": {
-    "@sindresorhus/slugify": "1.1.0"
-  }
+  "engines": {
+    "vscode": "^1.67.0"
+  },
+  "icon": "documentation/logo.png",
+  "badges": [
+    {
+      "description": "build status",
+      "url": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml/badge.svg",
+      "href": "https://github.com/kevgo/vscode-markdown-ide/actions/workflows/main.yml"
+    }
+  ]
 }
