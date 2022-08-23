@@ -17,5 +17,6 @@ jobs:
         with:
           node-version: "14"
       - uses: dprint/check@v1.5
+      - run: echo "./node_modules/.bin" >> $GITHUB_PATH
       - run: make setup
       - run: xvfb-run -a make test-ci
