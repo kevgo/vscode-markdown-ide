@@ -62,7 +62,7 @@ unit: compile  # runs the unit tests
 	node out/test/main.js
 
 update:  # updates all dependencies
-	yarn upgrade --latest
+	yarn upgrade-interactive --latest
 
 watch:  # continuously compiles the source code into a debuggable package
 	${CURDIR}/node_modules/.bin/esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap --watch
