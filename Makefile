@@ -48,14 +48,7 @@ setup:  # prepare this code base for development
 	yarn install
 	make --no-print-directory build
 
-test:  # runs all the tests
-	make --no-print-directory build & \
-	make --no-print-directory doc & \
-	make --no-print-directory lint & \
-	make --no-print-directory unit & \
-	wait
-
-test-ci: build lint unit doc  # runs all the tests on ci
+test: build lint unit doc  # runs all the tests on ci
 
 unit: compile  # runs the unit tests
 	echo "testing ..."
