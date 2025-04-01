@@ -18,4 +18,4 @@ jobs:
           node-version: "20"
       - run: echo "./node_modules/.bin" >> $GITHUB_PATH
       - run: make setup
-      - run: xvfb-run -a make test-ci
+      - run: xvfb-run -a make test
