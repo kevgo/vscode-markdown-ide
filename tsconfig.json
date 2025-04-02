@@ -9,5 +9,5 @@
     "rootDir": "src",
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", ".vscode-test", "text-run"]
+  "exclude": ["node_modules", ".vscode-test", "text-runner"]
 }

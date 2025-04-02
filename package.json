@@ -26,7 +26,7 @@
     "build-dev": "esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap",
     "clean": "rm -rf out dist",
     "compile": "tsc -p .",
-    "doc": "text-run --format=dot",
+    "doc": "text-runner --format=dot",
     "fix": "eslint --fix && dprint fmt && sort-package-json --quiet",
     "lint": "eslint && sort-package-json --check --quiet && dprint check && git diff --check",
     "list-shipped-files": "vsce ls",
