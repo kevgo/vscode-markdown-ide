@@ -1,5 +1,9 @@
 # Markdown IDE Release Notes
 
+## 0.3.5
+
+- update dependencies to remove warnings
+
 ## 0.3.4
 
 - support uni-directional links
