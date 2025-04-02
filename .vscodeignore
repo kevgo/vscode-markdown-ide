@@ -1,5 +1,5 @@
 # This file defines which files end up in the compiled .vsix file.
-# Test this configuration by running "make list-shipped-files.
+# Test this configuration by running "yarn run list-shipped-files.
 
 *
 .*/

@@ -1,13 +1,13 @@
 {
   "actions": [
     {
-      "trigger": { "command": "testAll" },
-      "run": "make test"
+      "trigger": { "command": "test-all" },
+      "run": "yarn run test"
     },
 
     {
       "trigger": {
-        "command": "testFile",
+        "command": "test-file",
         "file": "\\.ts$"
       },
       "run": "mocha {{file}}"
