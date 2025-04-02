@@ -67,7 +67,7 @@
     "onLanguage:markdown"
   ],
   "dependencies": {
-    "@sindresorhus/slugify": "2.2.1"
+    "@sindresorhus/slugify": "1.1.0"
   },
   "devDependencies": {
     "@eslint/js": "9.23.0",
