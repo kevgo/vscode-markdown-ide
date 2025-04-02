@@ -2,7 +2,7 @@
   "actions": [
     {
       "trigger": { "command": "test-all" },
-      "run": "yarn run test"
+      "run": "npm run test"
     },
 
     {

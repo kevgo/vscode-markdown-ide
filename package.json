@@ -34,10 +34,10 @@
     "publish-patch": "vsce publish patch --no-yarn",
     "publish-minor": "vsce publish minor --no-yarn",
     "publish-major": "vsce publish major --no-yarn",
-    "setup": "yarn install && yarn run build",
-    "test": "yarn run build && yarn run lint && yarn run unit && yarn run doc",
-    "vscode:prepublish": "yarn run build",
-    "watch": "yarn run watch"
+    "setup": "npm install && npm run build",
+    "test": "npm run build && npm run lint && npm run unit && npm run doc",
+    "vscode:prepublish": "npm run build",
+    "watch": "npm run watch"
   },
   "contributes": {
     "commands": [
