@@ -36,7 +36,7 @@
     "publish-patch": "vsce publish patch",
     "setup": "npm install && npm run build",
     "test": "npm run build && npm run lint && npm run unit && npm run doc",
-    "unit": "npm run build && node out/test/main.js",
+    "unit": "npm run build && npm run compile && node out/test/main.js",
     "update": "npm-check-updates -u && npm install",
     "vscode:prepublish": "npm run build",
     "watch": "npm run watch"
