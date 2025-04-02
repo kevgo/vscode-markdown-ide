@@ -12,5 +12,5 @@ node_modules/
 out/
 scripts/
 src/
-text-run/
+text-runner/
 **/tsconfig.json
