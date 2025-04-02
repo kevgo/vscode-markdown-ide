@@ -17,5 +17,5 @@ jobs:
         with:
           node-version: "20"
       - run: echo "./node_modules/.bin" >> $GITHUB_PATH
-      - run: yarn run setup
-      - run: xvfb-run -a yarn run test
+      - run: npm run setup
+      - run: xvfb-run -a npm run test

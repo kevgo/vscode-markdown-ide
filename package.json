@@ -31,13 +31,14 @@
     "lint": "eslint . --ext .ts && sort-package-json --check --quiet && dprint check && git diff --check",
     "list-shipped-files": "vsce ls",
     "package": "vsce package",
-    "publish-patch": "vsce publish patch --no-yarn",
-    "publish-minor": "vsce publish minor --no-yarn",
-    "publish-major": "vsce publish major --no-yarn",
-    "setup": "yarn install && yarn run build",
-    "test": "yarn run build && yarn run lint && yarn run unit && yarn run doc",
-    "vscode:prepublish": "yarn run build",
-    "watch": "yarn run watch"
+    "publish-patch": "vsce publish patch",
+    "publish-minor": "vsce publish minor",
+    "publish-major": "vsce publish major",
+    "setup": "npm install && npm run build",
+    "test": "npm run build && npm run lint && npm run unit && npm run doc",
+    "update": "npm-check-updates -u && npm install",
+    "vscode:prepublish": "npm run build",
+    "watch": "npm run watch"
   },
   "contributes": {
     "commands": [
@@ -80,6 +81,7 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-typescript-sort-keys": "2.1.0",
     "mocha": "11.1.0",
+    "npm-check-updates": "17.1.15",
     "sort-package-json": "1.57.0",
     "text-runner": "7.1.2",
     "textrun-npm": "0.3.1",
