@@ -36,6 +36,7 @@
     "publish-major": "vsce publish major",
     "setup": "npm install && npm run build",
     "test": "npm run build && npm run lint && npm run unit && npm run doc",
+    "update": "npm-check-updates -u && npm install",
     "vscode:prepublish": "npm run build",
     "watch": "npm run watch"
   },
@@ -80,6 +81,7 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-typescript-sort-keys": "2.1.0",
     "mocha": "10.0.0",
+    "npm-check-updates": "17.1.15",
     "sort-package-json": "1.57.0",
     "text-runner": "6.0.0",
     "textrun-npm": "0.3.0",
