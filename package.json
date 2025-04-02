@@ -22,9 +22,22 @@
   "publisher": "kevgo",
   "main": "./dist/main.js",
   "scripts": {
-    "compile": "make --no-print-directory build-dev",
-    "vscode:prepublish": "make --no-print-directory build",
-    "watch": "make --no-print-directory watch"
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify",
+    "build-dev": "esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "compile": "tsc -p .",
+    "clean": "rm -rf out dist",
+    "doc": "text-run --format=dot",
+    "fix": "eslint . --fix --ext .ts && dprint fmt && sort-package-json --quiet",
+    "lint": "eslint . --ext .ts && sort-package-json --check --quiet && dprint check && git diff --check",
+    "list-shipped-files": "vsce ls",
+    "package": "vsce package",
+    "publish-patch": "vsce publish patch --no-yarn",
+    "publish-minor": "vsce publish minor --no-yarn",
+    "publish-major": "vsce publish major --no-yarn",
+    "setup": "yarn install && yarn run build",
+    "test": "yarn run build && yarn run lint && yarn run unit && yarn run doc",
+    "vscode:prepublish": "yarn run build",
+    "watch": "yarn run watch"
   },
   "contributes": {
     "commands": [
@@ -69,7 +82,7 @@
     "mocha": "10.0.0",
     "sort-package-json": "1.57.0",
     "text-runner": "6.0.0",
-    "textrun-make": "0.2.0",
+    "textrun-npm": "0.3.0",
     "ts-node": "10.9.1",
     "typescript": "4.7.4",
     "vsce": "2.15.0"
