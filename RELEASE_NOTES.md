@@ -1,5 +1,9 @@
 # Markdown IDE Release Notes
 
+## 0.4.0
+
+- autocomplete footnotes
+
 ## 0.3.5
 
 - update dependencies to remove warnings
