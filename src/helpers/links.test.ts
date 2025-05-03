@@ -30,7 +30,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
   })
-  test("regexes", function() {
+  suite("regexes", function() {
     const regexText = "\\(([^)]+)\\)$"
     const regex = RegExp(regexText)
     test("all-caps abbreviation", function() {
