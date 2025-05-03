@@ -90,7 +90,7 @@
     "vsce": "2.15.0"
   },
   "engines": {
-    "vscode": "^1.98.0"
+    "vscode": "^1.99.0"
   },
   "icon": "documentation/logo.png",
   "badges": [
