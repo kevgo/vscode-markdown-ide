@@ -3,7 +3,8 @@ import { strict as assert } from "assert"
 import * as footnotes from "./footnotes"
 
 test("footnotes", function() {
-  const give = `# title
+  test("text with footnotes", function() {
+    const give = `# title
 text
 ### caption 1
 text
@@ -11,7 +12,19 @@ text
 [^footnote1]: https://footnotes.com/1
 [^footnote2]: https://footnotes.com/2
 `
-  const want = ["^footnote1]", "^footnote2]"]
-  const have = footnotes.inText(give)
-  assert.deepEqual(have, want)
+    const want = ["^footnote1]", "^footnote2]"]
+    const have = footnotes.inText(give)
+    assert.deepEqual(have, want)
+  })
+
+  test("text without footnotes", function() {
+    const give = `# title
+text
+### caption 1
+text
+`
+    const want: string[] = []
+    const have = footnotes.inText(give)
+    assert.deepEqual(have, want)
+  })
 })
