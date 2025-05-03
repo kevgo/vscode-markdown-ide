@@ -33,7 +33,7 @@ suite("markdown", function() {
   test("regexes", function() {
     const regexText = "\\(([^)]+)\\)$"
     const regex = RegExp(regexText)
-    test("link to heading with full-cap abbreviation regex", function() {
+    test("all-caps abbreviation", function() {
       const have = links.markdown({
         filePath: "amazon-web-services.md",
         fileContent: "# Amazon Web Services (AWS)\na cloud provider",
@@ -42,7 +42,7 @@ suite("markdown", function() {
       const want = "[AWS](amazon-web-services.md)"
       assert.equal(have, want)
     })
-    test("link to heading with mixed-cap abbreviation regex", function() {
+    test("mixed-caps abbreviation", function() {
       const have = links.markdown({
         filePath: "software-as-a-service.md",
         fileContent: "# Software-as-a-Service (SaaS)\na software distribution model",
@@ -51,7 +51,7 @@ suite("markdown", function() {
       const want = "[SaaS](software-as-a-service.md)"
       assert.equal(have, want)
     })
-    test("File with links in heading", function() {
+    test("heading contains a markdown link", function() {
       const have = links.markdown({
         filePath: "foo.md",
         fileContent: "# A [Foo](foo.md) walks into a [bar](bar.md)",
