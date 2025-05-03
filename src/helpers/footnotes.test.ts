@@ -27,4 +27,11 @@ text
     const have = footnotes.inText(give)
     assert.deepEqual(have, want)
   })
+
+  test("empty text", function() {
+    const give = ``
+    const want: string[] = []
+    const have = footnotes.inText(give)
+    assert.deepEqual(have, want)
+  })
 })
