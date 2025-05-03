@@ -1,7 +1,7 @@
 /** provides all headings in the given file content */
 export function inText(text: string): string[] {
-  const matches = text.matchAll(footnoteRE)
   let result: Set<string> = new Set()
+  const matches = text.matchAll(footnoteRE)
   if (!matches) {
     return []
   }
