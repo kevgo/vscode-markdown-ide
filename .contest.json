@@ -8,7 +8,7 @@
     {
       "type": "test-file",
       "files": "**/*.test.ts",
-      "run": "rpm exec mocha {{file}}"
+      "run": "npm exec mocha {{file}}"
     }
   ]
 }
