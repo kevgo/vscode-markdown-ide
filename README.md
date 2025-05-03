@@ -41,21 +41,6 @@ files of the current workspace.
 
 Typing `[^` triggers autocompletion for footnotes.
 
-## rename file ⇒ update links to this file
-
-When you rename a file, all links to this file in other Markdown files would be
-broken. Markdown IDE fixes this by changing the target of these links to the new
-filename.
-
-![demo of the "rename file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
-
-## delete file ⇒ remove links to this file
-
-When you delete a file, all links to this file in other Markdown files would be
-broken. Markdown IDE fixes this by removing these links.
-
-![demo of the "delete file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file.gif)
-
 ## rename Markdown file title ⇒ update links containing this title
 
 Run the "Markdown IDE: Rename document title" command to change the primary
@@ -63,6 +48,11 @@ heading of a document. Markdown IDE updates the title of matching links to that
 document.
 
 ![demo of the "rename document title" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title.gif)
+
+## update links after file was renamed or deleted
+
+This is now
+[available](vscode://settings/markdown.updateLinksOnFileMove.enabled) in VSCode.
 
 ## "go to definition" for links
 
