@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/contest-framework/server/refs/heads/main/documentation/schema.json",
+  "actions": [
+    {
+      "type": "test-all",
+      "run": "npm run test"
+    },
+    {
+      "type": "test-file",
+      "files": "**/*.test.ts",
+      "run": "mocha {{file}}"
+    }
+  ]
+}
