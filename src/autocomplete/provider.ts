@@ -3,6 +3,7 @@ import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
 import * as files from "../helpers/files"
+import * as footnotes from "../helpers/footnotes"
 import * as headings from "../helpers/headings"
 import * as links from "../helpers/links"
 
@@ -17,13 +18,14 @@ export function createCompletionProvider(
       const documentDir = path.dirname(document.fileName)
       switch (determineType(document.lineAt(position).text, position.character)) {
         case AutocompleteType.MD_LINK:
-          return mdCompletionItems({
+          const mdItems = await mdCompletionItems({
             debug,
             documentDir,
             startTime,
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
+          return mdItems.concat(await completionItems(footnotes.inText(document.getText())))
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
