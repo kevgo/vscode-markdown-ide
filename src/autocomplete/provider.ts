@@ -64,10 +64,13 @@ export function determineType(line: string, pos: number): AutocompleteType {
     }
     return AutocompleteType.NONE
   }
-  if (line[i - 1] === "!") {
+  if (line[i] === "[" && line[i - 1] === "!") {
     return AutocompleteType.IMG
   }
-  return AutocompleteType.MD_LINK
+  if (line[i] === "[") {
+    return AutocompleteType.MD_LINK
+  }
+  return AutocompleteType.NONE
 }
 
 async function headingCompletionItems(
