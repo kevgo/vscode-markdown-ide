@@ -1,6 +1,6 @@
 # Markdown IDE Release Notes
 
-## 0.4.0
+## 0.5.0
 
 - autocomplete footnotes
 
