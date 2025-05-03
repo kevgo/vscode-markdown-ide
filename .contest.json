@@ -10,5 +10,17 @@
       "files": "**/*.test.ts",
       "run": "npm exec mocha {{file}}"
     }
-  ]
+  ],
+  "options": {
+    "beforeRun": {
+      "clearScreen": true,
+      "newlines": 0
+    },
+    "afterRun": {
+      "newlines": 1,
+      "indicatorLines": 2,
+      "indicatorBackground": true,
+      "printResult": false
+    }
+  }
 }
