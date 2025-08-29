@@ -24,7 +24,7 @@ function exec(
         reject()
         return
       }
-      resolve(stdout + stderr)
+      resolve(String(stdout) + String(stderr))
     })
   })
 }
