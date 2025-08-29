@@ -19,10 +19,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   ): Promise<vscode.Definition | vscode.DefinitionLink[]> {
     const oldFilePath = document.fileName
     const linkTarget = extractLinkTarget(document.lineAt(position.line).text, position.character)
-    if (!linkTarget) {
-      return []
-    }
-    if (isWebLink(linkTarget)) {
+    if (!linkTarget || isWebLink(linkTarget)) {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
