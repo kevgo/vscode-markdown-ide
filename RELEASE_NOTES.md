@@ -1,5 +1,11 @@
 # Markdown IDE Release Notes
 
+## 0.6.0
+
+- This extension no longer opens external links when the user triggers the
+  `go to defininion` action. For details see
+  [#161](https://github.com/kevgo/vscode-markdown-ide/issues/161).
+
 ## 0.5.0
 
 - autocomplete footnotes
