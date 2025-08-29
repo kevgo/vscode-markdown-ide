@@ -29,7 +29,7 @@ To print to the _debug console_ of the hosting VSCode instance: `console.log`
 Local installation:
 
 - <code type="npm/script-call">npm run package</code>
-- run `code --install-extension tikibase-*.vsix` in terminal
+- run `code --install-extension vscode-markdown-ide-*.vsix` in terminal
 - restart VSCode
 
 ### update
