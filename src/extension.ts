@@ -10,12 +10,15 @@ import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
+export let debug: vscode.OutputChannel
+
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
   }
-  const debug = vscode.window.createOutputChannel("Markdown IDE")
+  debug = vscode.window.createOutputChannel("Markdown IDE")
+  debug.appendLine("Markdown IDE activated")
   const tikiConfig = await configuration.tikibase(workspacePath)
 
   // autocomplete links by typing `[`
