@@ -44,7 +44,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
 
     // save file --> run "tikibase check"
-    const runTikibaseCheck = fileSaved.createCallback({ debug: debug, workspacePath })
+    const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
     vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
     // "tikibase fix" command
