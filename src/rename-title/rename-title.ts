@@ -2,6 +2,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
+import { output } from "../extension"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -71,6 +72,7 @@ export async function renameTitle(): Promise<void> {
         if (newContent === oldContent) {
           continue
         }
+        output.appendLine(`updating links in ${file.filePath}`)
         const range = new vscode.Range(0, 0, line.count(oldContent), 0)
         edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
       }
