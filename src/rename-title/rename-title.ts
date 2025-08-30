@@ -66,7 +66,6 @@ export async function renameTitle(): Promise<void> {
       const mdFiles: files.FileResult[] = []
       await files.markdown(wsRoot, mdFiles)
       for (const file of mdFiles) {
-        output.append(".")
         const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
         const oldContent = await file.content
         const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
