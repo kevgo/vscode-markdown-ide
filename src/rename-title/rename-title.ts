@@ -2,7 +2,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
-import { output } from "../extension"
+import { debug } from "../extension"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -48,7 +48,7 @@ export async function renameTitle(): Promise<void> {
     { location: vscode.ProgressLocation.Window, title: "updating link titles", cancellable: false },
     async () => {
       const edit = new vscode.WorkspaceEdit() // change the title of the current document
-      output.appendLine(`replacing ${oldTitle} with ${newTitle}`)
+      debug.appendLine(`replacing ${oldTitle} with ${newTitle}`)
 
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
@@ -72,7 +72,7 @@ export async function renameTitle(): Promise<void> {
         if (newContent === oldContent) {
           continue
         }
-        output.appendLine(`updating links in ${file.filePath}`)
+        debug.appendLine(`updating links in ${file.filePath}`)
         const range = new vscode.Range(0, 0, line.count(oldContent), 0)
         edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
       }
