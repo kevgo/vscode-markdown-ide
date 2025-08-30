@@ -52,12 +52,11 @@ export async function renameTitle(): Promise<void> {
 
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
-      if (!doc) {
-        return
+      if (doc) {
+        const newText = changeTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
+        const range = new vscode.Range(0, 0, doc.lineCount, 0)
+        edit.replace(doc.uri, range, newText)
       }
-      const newText = changeTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
-      const range = new vscode.Range(0, 0, doc.lineCount, 0)
-      edit.replace(doc.uri, range, newText)
 
       // update the title of all affected links in all documents
       const workspacePath = configuration.workspacePath()
@@ -67,6 +66,7 @@ export async function renameTitle(): Promise<void> {
       const mdFiles: files.FileResult[] = []
       await files.markdown(wsRoot, mdFiles)
       for (const file of mdFiles) {
+        output.append(".")
         const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
         const oldContent = await file.content
         const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle })
