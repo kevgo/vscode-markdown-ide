@@ -10,16 +10,19 @@ import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
+export let output: vscode.OutputChannel
+
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const workspacePath = configuration.workspacePath()
   if (!workspacePath) {
     return
   }
-  const debug = vscode.window.createOutputChannel("Markdown IDE")
+  output = vscode.window.createOutputChannel("Markdown IDE")
+  output.appendLine("Markdown IDE activated")
   const tikiConfig = await configuration.tikibase(workspacePath)
 
   // autocomplete links by typing `[`
-  const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
+  const completionProvider = createCompletionProvider(output, workspacePath, tikiConfig)
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown", completionProvider, "["))
 
   // autocomplete headings by typing `#`
@@ -41,12 +44,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
 
     // save file --> run "tikibase check"
-    const runTikibaseCheck = fileSaved.createCallback({ debug, workspacePath })
+    const runTikibaseCheck = fileSaved.createCallback({ debug: output, workspacePath })
     vscode.workspace.onDidSaveTextDocument(runTikibaseCheck)
 
     // "tikibase fix" command
     context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.tikibaseFix", async function() {
-      await tikibase.fix(workspacePath, debug)
+      await tikibase.fix(workspacePath, output)
     }))
 
     // "tikibase fix" code action
@@ -61,7 +64,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       vscode.commands.registerCommand(
         TikibaseProvider.autofixCommandName,
         async () => {
-          await tikibase.fix(workspacePath, debug)
+          await tikibase.fix(workspacePath, output)
           await runTikibaseCheck()
         }
       )
