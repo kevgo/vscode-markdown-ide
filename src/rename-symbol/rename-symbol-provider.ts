@@ -1,4 +1,5 @@
 import * as vscode from "vscode"
+import { renameTitle } from "../rename-title/rename-title"
 
 export class MarkdownRenameSymbolProvider implements vscode.CodeActionProvider {
   public static readonly providedCodeActionKinds = [vscode.CodeActionKind.Refactor]
@@ -18,18 +19,18 @@ export class MarkdownRenameSymbolProvider implements vscode.CodeActionProvider {
       command: "markdownIDE.renameSymbol",
       title: "Rename heading"
     }
-    
+
     return [action]
   }
 
   private isFirstHeading(document: vscode.TextDocument, range: vscode.Range): boolean {
     const line = document.lineAt(range.start.line)
-    
+
     // Check if we're on the first line and it's a heading
     if (range.start.line !== 0) {
       return false
     }
-    
+
     // Check if the line starts with # (heading marker)
     const text = line.text.trim()
     return text.startsWith("#") && text.includes(" ")
@@ -37,5 +38,5 @@ export class MarkdownRenameSymbolProvider implements vscode.CodeActionProvider {
 }
 
 export async function renameSymbol(): Promise<void> {
-  console.log("rename heading")
+  renameTitle()
 }
