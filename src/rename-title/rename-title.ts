@@ -48,6 +48,7 @@ export async function renameTitle(): Promise<void> {
     { location: vscode.ProgressLocation.Window, title: "updating link titles", cancellable: false },
     async () => {
       const edit = new vscode.WorkspaceEdit() // change the title of the current document
+      output.appendLine(`replacing ${oldTitle} with ${newTitle}`)
 
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
