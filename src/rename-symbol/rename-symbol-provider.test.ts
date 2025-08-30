@@ -13,14 +13,14 @@ suite("MarkdownRenameSymbolProvider", () => {
     })
 
     const range = new vscode.Range(0, 0, 0, 0)
-    const context: vscode.CodeActionContext = { 
-      diagnostics: [], 
+    const context: vscode.CodeActionContext = {
+      diagnostics: [],
       triggerKind: vscode.CodeActionTriggerKind.Invoke,
       only: undefined
     }
-    
+
     const actions = provider.provideCodeActions(document, range, context, {} as vscode.CancellationToken)
-    
+
     assert.ok(Array.isArray(actions))
     assert.equal(actions.length, 1)
     const action = actions[0] as vscode.CodeAction
@@ -35,14 +35,14 @@ suite("MarkdownRenameSymbolProvider", () => {
     })
 
     const range = new vscode.Range(1, 0, 1, 0) // second line
-    const context: vscode.CodeActionContext = { 
-      diagnostics: [], 
+    const context: vscode.CodeActionContext = {
+      diagnostics: [],
       triggerKind: vscode.CodeActionTriggerKind.Invoke,
       only: undefined
     }
-    
+
     const actions = provider.provideCodeActions(document, range, context, {} as vscode.CancellationToken)
-    
+
     assert.ok(Array.isArray(actions))
     assert.equal(actions.length, 0)
   })
@@ -54,14 +54,14 @@ suite("MarkdownRenameSymbolProvider", () => {
     })
 
     const range = new vscode.Range(2, 0, 2, 0) // third line with second heading
-    const context: vscode.CodeActionContext = { 
-      diagnostics: [], 
+    const context: vscode.CodeActionContext = {
+      diagnostics: [],
       triggerKind: vscode.CodeActionTriggerKind.Invoke,
       only: undefined
     }
-    
+
     const actions = provider.provideCodeActions(document, range, context, {} as vscode.CancellationToken)
-    
+
     assert.ok(Array.isArray(actions))
     assert.equal(actions.length, 0)
   })
