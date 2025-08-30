@@ -8,6 +8,7 @@ import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { renameTitle } from "./rename-title/rename-title"
+import { MarkdownRenameSymbolProvider, renameSymbol } from "./rename-symbol/rename-symbol-provider"
 import * as tikibase from "./tikibase"
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
@@ -33,6 +34,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
+
+  // rename symbol refactor provider
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      "markdown",
+      new MarkdownRenameSymbolProvider(),
+      { providedCodeActionKinds: MarkdownRenameSymbolProvider.providedCodeActionKinds }
+    )
+  )
+  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameSymbol", renameSymbol))
 
   // "go to definition" for links in Markdown documents
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider(tikiConfig))
