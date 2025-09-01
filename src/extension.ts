@@ -7,6 +7,7 @@ import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
+import { MarkdownCodeActionProvider } from "./rename-title/code-action-provider"
 import { MarkdownRenameProvider } from "./rename-title/rename-provider"
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
@@ -42,8 +43,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
       "markdown",
-      new MarkdownRenameProvider(),
-      { providedCodeActionKinds: MarkdownRenameSymbolProvider.providedCodeActionKinds }
+      new MarkdownCodeActionProvider(),
+      { providedCodeActionKinds: MarkdownCodeActionProvider.providedCodeActionKinds }
     )
   )
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameSymbol", renameTitle))

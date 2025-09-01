@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-export class MarkdownRenameSymbolProvider implements vscode.CodeActionProvider {
+export class MarkdownCodeActionProvider implements vscode.CodeActionProvider {
   public static readonly providedCodeActionKinds = [vscode.CodeActionKind.Refactor]
 
   provideCodeActions(
