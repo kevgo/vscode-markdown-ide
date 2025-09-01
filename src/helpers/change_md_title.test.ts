@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as strings from "./helpers"
+import * as strings from "./change_md_title"
 
 suite("strings", function() {
   suite("changeMdTitle", function() {
