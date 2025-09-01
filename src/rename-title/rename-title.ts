@@ -3,7 +3,8 @@ import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
 import { debug } from "../extension"
-import * as helpers from "../helpers"
+import { changeMdTitle } from "../helpers/change_md_title"
+import { eol2string } from "../helpers/eol_to_string"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -54,12 +55,7 @@ export async function renameTitle(): Promise<void> {
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
       if (doc) {
-        const newText = helpers.changeMdTitle({
-          eol: helpers.eol2string(doc.eol),
-          newTitle,
-          oldTitle,
-          text: doc.getText()
-        })
+        const newText = changeMdTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
         const range = new vscode.Range(0, 0, doc.lineCount, 0)
         edit.replace(doc.uri, range, newText)
       }

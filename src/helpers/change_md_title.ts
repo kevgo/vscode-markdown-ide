@@ -1,5 +1,3 @@
-import * as vscode from "vscode"
-
 export function changeMdTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
   const lines = args.text.split(args.eol)
   const oldTitleLine = `# ${args.oldTitle}`
@@ -10,15 +8,4 @@ export function changeMdTitle(args: { eol: string; newTitle: string; oldTitle: s
     }
   }
   return lines.join(args.eol)
-}
-
-export function eol2string(eol: vscode.EndOfLine): string {
-  switch (eol) {
-    case vscode.EndOfLine.LF:
-      return "\n"
-    case vscode.EndOfLine.CRLF:
-      return "\r\n"
-    default:
-      throw new Error(`Unknown EndOfLine: ${eol}`)
-  }
 }
