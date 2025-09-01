@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 import * as configuration from "../configuration"
-import { output } from "../extension"
+import { debug } from "../extension"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -73,7 +73,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const endPos = new vscode.Position(0, startOffset + titleText.length)
     const titleRange = new vscode.Range(startPos, endPos)
 
-    output.appendLine(`prepare rename of ${titleText}`)
+    debug.appendLine(`prepare rename of ${titleText}`)
 
     return {
       range: titleRange,
@@ -87,7 +87,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
-    output.appendLine("determine rename edits")
+    debug.appendLine("determine rename edits")
     const wsRoot = configuration.workspacePath()
     if (!wsRoot) {
       return null
@@ -97,7 +97,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const titleLine = document.lineAt(0)
     const oldTitle = line.removeLeadingPounds(titleLine.text)
 
-    output.appendLine(`rename ${oldTitle} to ${newName}`)
+    debug.appendLine(`rename ${oldTitle} to ${newName}`)
     if (oldTitle === newName) {
       // No change needed
       return null
@@ -105,7 +105,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     const edit = new vscode.WorkspaceEdit()
 
-    output.appendLine("Update the title in the current document")
+    debug.appendLine("Update the title in the current document")
     const newText = this.changeTitle({
       eol: this.eol2string(document.eol),
       newTitle: newName,
@@ -115,7 +115,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const range = new vscode.Range(0, 0, document.lineCount, 0)
     edit.replace(document.uri, range, newText)
 
-    output.appendLine("Update the title of all affected links in all documents")
+    debug.appendLine("Update the title of all affected links in all documents")
     const mdFiles: files.FileResult[] = []
     await files.markdown(wsRoot, mdFiles)
     const activeFilePath = document.fileName
@@ -127,7 +127,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       if (newContent === oldContent) {
         continue
       }
-      output.appendLine(`replace link in file ${path}`)
+      debug.appendLine(`replace link in file ${path}`)
       const range = new vscode.Range(0, 0, line.count(oldContent), 0)
       edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
     }
