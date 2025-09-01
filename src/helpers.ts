@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-export function changeTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
+export function changeMdTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
   const lines = args.text.split(args.eol)
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].startsWith(`# ${args.oldTitle}`)) {
