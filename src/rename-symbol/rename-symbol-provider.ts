@@ -2,6 +2,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 import * as configuration from "../configuration"
 import { debug } from "../extension"
+import * as helpers from "../helpers"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -107,7 +108,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     debug.appendLine("Update the title in the current document")
     const newText = this.changeTitle({
-      eol: this.eol2string(document.eol),
+      eol: helpers.eol2string(document.eol),
       newTitle: newName,
       oldTitle,
       text: document.getText()
