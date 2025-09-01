@@ -7,11 +7,7 @@ import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
-import {
-  MarkdownRenameProvider,
-  MarkdownRenameSymbolProvider,
-  renameSymbol
-} from "./rename-symbol/rename-symbol-provider"
+import { MarkdownRenameProvider, MarkdownRenameSymbolProvider, renameSymbol } from "./rename-title/rename-provider"
 import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 

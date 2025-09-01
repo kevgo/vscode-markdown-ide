@@ -7,43 +7,7 @@ import { eol2string } from "../helpers/eol_to_string"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
-import { renameTitle } from "../rename-title/rename-title"
-
-export class MarkdownRenameSymbolProvider implements vscode.CodeActionProvider {
-  public static readonly providedCodeActionKinds = [vscode.CodeActionKind.Refactor]
-
-  provideCodeActions(
-    document: vscode.TextDocument,
-    range: vscode.Range | vscode.Selection,
-    context: vscode.CodeActionContext,
-    token: vscode.CancellationToken
-  ): vscode.ProviderResult<(vscode.CodeAction | vscode.Command)[]> {
-    if (!this.isFirstHeading(document, range)) {
-      return []
-    }
-
-    const action = new vscode.CodeAction("Rename heading", vscode.CodeActionKind.Refactor)
-    action.command = {
-      command: "markdownIDE.renameSymbol",
-      title: "Rename heading"
-    }
-
-    return [action]
-  }
-
-  private isFirstHeading(document: vscode.TextDocument, range: vscode.Range): boolean {
-    const line = document.lineAt(range.start.line)
-
-    // Check if we're on the first line and it's a heading
-    if (range.start.line !== 0) {
-      return false
-    }
-
-    // Check if the line starts with # (heading marker)
-    const text = line.text.trim()
-    return text.startsWith("#") && text.includes(" ")
-  }
-}
+import { renameTitle } from "./rename-title"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
@@ -136,8 +100,4 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     return edit
   }
-}
-
-export async function renameSymbol(): Promise<void> {
-  renameTitle()
 }

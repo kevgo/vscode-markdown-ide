@@ -1,7 +1,7 @@
 import * as assert from "assert"
 import * as vscode from "vscode"
 
-import { MarkdownRenameSymbolProvider, MarkdownRenameProvider } from "./rename-symbol-provider"
+import { MarkdownRenameProvider, MarkdownRenameSymbolProvider } from "./rename-provider"
 
 suite("MarkdownRenameSymbolProvider", () => {
   const provider = new MarkdownRenameSymbolProvider()
@@ -80,7 +80,7 @@ suite("MarkdownRenameProvider", () => {
     const result = provider.prepareRename(document, position, {} as vscode.CancellationToken)
 
     assert.ok(result)
-    if (typeof result === 'object' && 'range' in result) {
+    if (typeof result === "object" && "range" in result) {
       assert.equal(result.placeholder, "My Document Title")
       // Range should start after "# " and cover the title text
       assert.equal(result.range.start.line, 0)
@@ -128,7 +128,7 @@ suite("MarkdownRenameProvider", () => {
     const result = provider.prepareRename(document, position, {} as vscode.CancellationToken)
 
     assert.ok(result)
-    if (typeof result === 'object' && 'range' in result) {
+    if (typeof result === "object" && "range" in result) {
       assert.equal(result.placeholder, "Sub Heading Title")
       // Range should start after "### " and cover the title text
       assert.equal(result.range.start.line, 0)
