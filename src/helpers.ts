@@ -2,8 +2,9 @@ import * as vscode from "vscode"
 
 export function changeMdTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
   const lines = args.text.split(args.eol)
+  const oldTitleLine = `# ${args.oldTitle}`
   for (let i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith(`# ${args.oldTitle}`)) {
+    if (lines[i].startsWith(oldTitleLine)) {
       lines[i] = `# ${args.newTitle}`
       break
     }
