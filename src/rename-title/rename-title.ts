@@ -3,7 +3,7 @@ import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
 import { debug } from "../extension"
-import * as strings from "../helpers"
+import * as helpers from "../helpers"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -54,8 +54,8 @@ export async function renameTitle(): Promise<void> {
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
       if (doc) {
-        const newText = strings.changeMdTitle({
-          eol: strings.eol2string(doc.eol),
+        const newText = helpers.changeMdTitle({
+          eol: helpers.eol2string(doc.eol),
           newTitle,
           oldTitle,
           text: doc.getText()
