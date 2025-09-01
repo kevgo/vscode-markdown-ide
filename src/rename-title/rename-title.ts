@@ -3,6 +3,7 @@ import * as vscode from "vscode"
 
 import * as configuration from "../configuration"
 import { debug } from "../extension"
+import * as helpers from "../helpers"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
@@ -53,7 +54,12 @@ export async function renameTitle(): Promise<void> {
       // update the title in the active document
       const doc = vscode.window.activeTextEditor?.document
       if (doc) {
-        const newText = changeTitle({ eol: eol2string(doc.eol), newTitle, oldTitle, text: doc.getText() })
+        const newText = helpers.changeMdTitle({
+          eol: helpers.eol2string(doc.eol),
+          newTitle,
+          oldTitle,
+          text: doc.getText()
+        })
         const range = new vscode.Range(0, 0, doc.lineCount, 0)
         edit.replace(doc.uri, range, newText)
       }
@@ -81,17 +87,6 @@ export async function renameTitle(): Promise<void> {
   )
 }
 
-export function changeTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
-  const lines = args.text.split(args.eol)
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith(`# ${args.oldTitle}`)) {
-      lines[i] = `# ${args.newTitle}`
-      break
-    }
-  }
-  return lines.join(args.eol)
-}
-
 /** lets the user enter the new document title via a text input dialog */
 async function enterTitle(oldTitle: string): Promise<string | undefined> {
   return vscode.window.showInputBox({
@@ -99,15 +94,4 @@ async function enterTitle(oldTitle: string): Promise<string | undefined> {
     value: oldTitle,
     valueSelection: [oldTitle.length, oldTitle.length]
   })
-}
-
-function eol2string(eol: vscode.EndOfLine): string {
-  switch (eol) {
-    case vscode.EndOfLine.LF:
-      return "\n"
-    case vscode.EndOfLine.CRLF:
-      return "\r\n"
-    default:
-      throw new Error(`Unknown EndOfLine: ${eol}`)
-  }
 }
