@@ -87,13 +87,14 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const activeFilePath = document.fileName
 
     for (const file of mdFiles) {
-      const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
+      const filePath = path.join(wsRoot, file.filePath)
+      const pathToActive = path.relative(path.dirname(filePath), activeFilePath)
       const oldContent = await file.content
       const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
       if (newContent === oldContent) {
         continue
       }
-      debug.appendLine(`replace link in file ${path}`)
+      debug.appendLine(`replace link in file ${file.filePath}`)
       const range = new vscode.Range(0, 0, line.count(oldContent), 0)
       edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
     }
