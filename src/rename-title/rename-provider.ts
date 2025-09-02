@@ -70,6 +70,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     const edit = new vscode.WorkspaceEdit()
+    const modifiedDocuments: vscode.Uri[] = []
 
     debug.appendLine("Update the title in the current document")
     const newText = changeMdTitle({
@@ -94,9 +95,26 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       if (newContent === oldContent) {
         continue
       }
+      const fileUri = vscode.Uri.file(path.join(wsRoot, file.filePath))
       const range = new vscode.Range(0, 0, line.count(oldContent), 0)
       debug.appendLine(`replace link in file ${file.filePath}: 0-${line.count(oldContent)}`)
-      edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
+      edit.replace(fileUri, range, newContent)
+      modifiedDocuments.push(fileUri)
+    }
+
+    // Open all modified documents after the edit is applied
+    if (modifiedDocuments.length > 0) {
+      // Use setTimeout to defer opening documents until after the workspace edit is applied
+      setTimeout(async () => {
+        for (const uri of modifiedDocuments) {
+          try {
+            const doc = await vscode.workspace.openTextDocument(uri)
+            await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
+          } catch (error) {
+            debug.appendLine(`Failed to open document ${uri.fsPath}: ${error}`)
+          }
+        }
+      }, 100)
     }
 
     return edit
