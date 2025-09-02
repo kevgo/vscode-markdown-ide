@@ -36,6 +36,30 @@ Local installation:
 
 - <code type="npm/script-call">npm run update</code>
 
+### create a new animated gif
+
+- record a screencast
+- extract PNG files from MP4:
+
+  ```bash
+  ffmpeg -i input.mp4 frames/%03d.png
+  ```
+- go with an image viewer through the generated frames, delete the intermediary
+  frame
+- rename the remaining frames consecutively (`01.png`, `02.png`, ...)
+- assemble the frames into an animated GIF
+
+  ```bash
+  convert \
+    -delay 100 frames/01.png \
+    -delay 50 frames/02.png \
+    -delay 50 frames/03.png \
+    -loop 0 \
+    -layers Optimize \
+    -colors 16 \
+    output.gif
+  ```
+
 ### release
 
 - <code type="npm/script-call">npm run publish-patch</code>
