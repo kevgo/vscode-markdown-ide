@@ -1,7 +1,6 @@
 import * as path from "path"
 import * as vscode from "vscode"
 import * as configuration from "../configuration"
-import { debug } from "../extension"
 import { changeMdTitle } from "../helpers/change_md_title"
 import { eol2string } from "../helpers/eol_to_string"
 import * as files from "../helpers/files"
@@ -14,7 +13,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     position: vscode.Position,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.Range | { range: vscode.Range; placeholder: string }> {
-    debug.appendLine("prepare rename start")
     let myOutputChannel: vscode.OutputChannel
 
     // Only allow renaming if we're on the first line and it's a heading
@@ -39,8 +37,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const endPos = new vscode.Position(0, startOffset + titleText.length)
     const titleRange = new vscode.Range(startPos, endPos)
 
-    debug.appendLine(`prepare rename of ${titleText}: ${titleRange.start.line}-${titleRange.end.line}`)
-
     return {
       range: titleRange,
       placeholder: titleText
@@ -53,7 +49,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
-    debug.appendLine("determine rename edits")
     const wsRoot = configuration.workspacePath()
     if (!wsRoot) {
       return null
@@ -63,63 +58,47 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const titleLine = document.lineAt(0)
     const oldTitle = line.removeLeadingPounds(titleLine.text)
 
-    debug.appendLine(`rename ${oldTitle} to ${newName}`)
     if (oldTitle === newName) {
       // No change needed
       return null
     }
 
-    // Apply changes in-memory only by directly editing open documents
-    setTimeout(async () => {
-      try {
-        // Update the title in the current document
-        debug.appendLine("Update the title in the current document")
-        const newText = changeMdTitle({
-          eol: eol2string(document.eol),
-          newTitle: newName,
-          oldTitle,
-          text: document.getText()
-        })
-        
-        const activeEditor = vscode.window.activeTextEditor
-        if (activeEditor && activeEditor.document === document) {
-          await activeEditor.edit((editBuilder) => {
-            const range = new vscode.Range(0, 0, document.lineCount, 0)
-            editBuilder.replace(range, newText)
-          })
-        }
+    // Update the title in the current document
+    const newText = changeMdTitle({
+      eol: eol2string(document.eol),
+      newTitle: newName,
+      oldTitle,
+      text: document.getText()
+    })
 
-        // Update the title of all affected links in all documents
-        debug.appendLine("Update the title of all affected links in all documents")
-        const mdFiles: files.FileResult[] = []
-        await files.markdown(wsRoot, mdFiles)
-        const activeFilePath = document.fileName
+    const activeEditor = vscode.window.activeTextEditor
+    if (activeEditor && activeEditor.document === document) {
+      await activeEditor.edit((editBuilder) => {
+        const range = new vscode.Range(0, 0, document.lineCount, 0)
+        editBuilder.replace(range, newText)
+      })
+    }
 
-        for (const file of mdFiles) {
-          const filePath = path.join(wsRoot, file.filePath)
-          const pathToActive = path.relative(path.dirname(filePath), activeFilePath)
-          const oldContent = await file.content
-          const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
-          if (newContent === oldContent) {
-            continue
-          }
+    // Update the title of all affected links in all documents
+    const mdFiles: files.FileResult[] = []
+    await files.markdown(wsRoot, mdFiles)
 
-          debug.appendLine(`replace link in file ${file.filePath}`)
-          
-          // Open the document and apply changes in-memory
-          const fileUri = vscode.Uri.file(path.join(wsRoot, file.filePath))
-          const doc = await vscode.workspace.openTextDocument(fileUri)
-          const editor = await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
-          
-          await editor.edit((editBuilder) => {
-            const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-            editBuilder.replace(range, newContent)
-          })
-        }
-      } catch (error) {
-        debug.appendLine(`Failed to apply in-memory edits: ${error}`)
+    for (const file of mdFiles) {
+      const filePath = path.join(wsRoot, file.filePath)
+      const pathToActive = path.relative(path.dirname(filePath), document.fileName)
+      const oldContent = await file.content
+      const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
+      if (newContent === oldContent) {
+        continue
       }
-    }, 100)
+      const fileUri = vscode.Uri.file(filePath)
+      const doc = await vscode.workspace.openTextDocument(fileUri)
+      const editor = await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
+      await editor.edit((editBuilder) => {
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        editBuilder.replace(range, newContent)
+      })
+    }
 
     // Return null to prevent VSCode from applying file system changes
     return null
