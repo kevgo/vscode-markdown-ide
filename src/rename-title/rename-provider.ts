@@ -7,7 +7,6 @@ import { eol2string } from "../helpers/eol_to_string"
 import * as files from "../helpers/files"
 import * as line from "../helpers/line"
 import * as links from "../helpers/links"
-import { renameTitle } from "./rename-title"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
