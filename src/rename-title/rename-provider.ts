@@ -1,7 +1,6 @@
 import * as path from "path"
 import * as vscode from "vscode"
 import * as configuration from "../configuration"
-import { debug } from "../extension"
 import { changeMdTitle } from "../helpers/change_md_title"
 import { eol2string } from "../helpers/eol_to_string"
 import * as files from "../helpers/files"
@@ -19,7 +18,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     // Only allow renaming if we're on the first line and it's a heading
     if (position.line !== 0) {
-      throw new Error("Rename is only supported for the document title on the first line")
+      throw new Error("Rename is only supported for the document title on the first line.")
     }
 
     const titleLine = document.lineAt(0)
@@ -39,8 +38,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const endPos = new vscode.Position(0, startOffset + titleText.length)
     const titleRange = new vscode.Range(startPos, endPos)
 
-    debug.appendLine(`prepare rename of ${titleText}`)
-
     return {
       range: titleRange,
       placeholder: titleText
@@ -53,7 +50,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
-    debug.appendLine("determine rename edits")
     const wsRoot = configuration.workspacePath()
     if (!wsRoot) {
       return null
@@ -63,41 +59,47 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     const titleLine = document.lineAt(0)
     const oldTitle = line.removeLeadingPounds(titleLine.text)
 
-    debug.appendLine(`rename ${oldTitle} to ${newName}`)
     if (oldTitle === newName) {
       // No change needed
       return null
     }
 
     const edit = new vscode.WorkspaceEdit()
-
-    debug.appendLine("Update the title in the current document")
     const newText = changeMdTitle({
       eol: eol2string(document.eol),
       newTitle: newName,
       oldTitle,
       text: document.getText()
     })
-    const range = new vscode.Range(0, 0, document.lineCount, 0)
-    edit.replace(document.uri, range, newText)
 
-    debug.appendLine("Update the title of all affected links in all documents")
+    const activeEditor = vscode.window.activeTextEditor
+    if (activeEditor && activeEditor.document === document) {
+      await activeEditor.edit((editBuilder) => {
+        const range = new vscode.Range(0, 0, document.lineCount, 0)
+        editBuilder.replace(range, newText)
+      })
+    }
+
+    // Update the title of all affected links in all documents
     const mdFiles: files.FileResult[] = []
     await files.markdown(wsRoot, mdFiles)
-    const activeFilePath = document.fileName
 
     for (const file of mdFiles) {
-      const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
+      const filePath = path.join(wsRoot, file.filePath)
+      const pathToActive = path.relative(path.dirname(filePath), document.fileName)
       const oldContent = await file.content
       const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
       if (newContent === oldContent) {
         continue
       }
-      debug.appendLine(`replace link in file ${path}`)
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-      edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
+      const fileUri = vscode.Uri.file(filePath)
+      const doc = await vscode.workspace.openTextDocument(fileUri)
+      const editor = await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
+      await editor.edit((editBuilder) => {
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        editBuilder.replace(range, newContent)
+      })
     }
-
-    return edit
+    return null
   }
 }

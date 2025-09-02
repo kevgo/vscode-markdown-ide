@@ -73,6 +73,7 @@ export function replaceTarget(args: { newTarget: string; oldTarget: string; text
 /** replaces the given oldTitle in all links with the given oldTitle and target in the given text with the given newTitle */
 export function replaceTitle(args: { newTitle: string; oldTitle: string; target: string; text: string }): string {
   return args.text.replace(
+    // NOTE: need regex here to replace all matches
     new RegExp(`\\[${args.oldTitle}\\]\\(${args.target}\\)`, "g"),
     `[${args.newTitle}](${args.target})`
   )
