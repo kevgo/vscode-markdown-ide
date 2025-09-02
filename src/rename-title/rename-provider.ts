@@ -16,9 +16,9 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     let myOutputChannel: vscode.OutputChannel
 
     // Only allow renaming if we're on the first line and it's a heading
-    // if (position.line !== 0) {
-    //   throw new Error("Rename is only supported for the document title on the first line")
-    // }
+    if (position.line !== 0) {
+      throw new Error("Rename is only supported for the document title on the first line.")
+    }
 
     const titleLine = document.lineAt(0)
     const text = titleLine.text.trim()
