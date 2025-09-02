@@ -38,6 +38,7 @@ Local installation:
 
 ### create a new animated gif
 
+- install `ffmpeg` and `imagemagick`
 - record a screencast
 - extract PNG files from MP4:
 
@@ -47,13 +48,19 @@ Local installation:
 - go with an image viewer through the generated frames, delete the intermediary
   frame
 - rename the remaining frames consecutively (`01.png`, `02.png`, ...)
+- optionally crop the frames
+
+  ```bash
+  mkdir cropped
+  mogrify -path cropped -crop 1400x600+0+0 *.png
+  ```
 - assemble the frames into an animated GIF
 
   ```bash
   convert \
-    -delay 100 frames/01.png \
-    -delay 50 frames/02.png \
-    -delay 50 frames/03.png \
+    -delay 100 cropped/01.png \
+    -delay 50 cropped/02.png \
+    -delay 50 cropped/03.png \
     -loop 0 \
     -layers Optimize \
     -colors 16 \
