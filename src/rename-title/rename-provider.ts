@@ -69,54 +69,59 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       return null
     }
 
-    const edit = new vscode.WorkspaceEdit()
-    const modifiedDocuments: vscode.Uri[] = []
-
-    debug.appendLine("Update the title in the current document")
-    const newText = changeMdTitle({
-      eol: eol2string(document.eol),
-      newTitle: newName,
-      oldTitle,
-      text: document.getText()
-    })
-    const range = new vscode.Range(0, 0, document.lineCount, 0)
-    edit.replace(document.uri, range, newText)
-
-    debug.appendLine("Update the title of all affected links in all documents")
-    const mdFiles: files.FileResult[] = []
-    await files.markdown(wsRoot, mdFiles)
-    const activeFilePath = document.fileName
-
-    for (const file of mdFiles) {
-      const filePath = path.join(wsRoot, file.filePath)
-      const pathToActive = path.relative(path.dirname(filePath), activeFilePath)
-      const oldContent = await file.content
-      const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
-      if (newContent === oldContent) {
-        continue
-      }
-      const fileUri = vscode.Uri.file(path.join(wsRoot, file.filePath))
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-      debug.appendLine(`replace link in file ${file.filePath}: 0-${line.count(oldContent)}`)
-      edit.replace(fileUri, range, newContent)
-      modifiedDocuments.push(fileUri)
-    }
-
-    // Open all modified documents after the edit is applied
-    if (modifiedDocuments.length > 0) {
-      // Use setTimeout to defer opening documents until after the workspace edit is applied
-      setTimeout(async () => {
-        for (const uri of modifiedDocuments) {
-          try {
-            const doc = await vscode.workspace.openTextDocument(uri)
-            await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
-          } catch (error) {
-            debug.appendLine(`Failed to open document ${uri.fsPath}: ${error}`)
-          }
+    // Apply changes in-memory only by directly editing open documents
+    setTimeout(async () => {
+      try {
+        // Update the title in the current document
+        debug.appendLine("Update the title in the current document")
+        const newText = changeMdTitle({
+          eol: eol2string(document.eol),
+          newTitle: newName,
+          oldTitle,
+          text: document.getText()
+        })
+        
+        const activeEditor = vscode.window.activeTextEditor
+        if (activeEditor && activeEditor.document === document) {
+          await activeEditor.edit((editBuilder) => {
+            const range = new vscode.Range(0, 0, document.lineCount, 0)
+            editBuilder.replace(range, newText)
+          })
         }
-      }, 100)
-    }
 
-    return edit
+        // Update the title of all affected links in all documents
+        debug.appendLine("Update the title of all affected links in all documents")
+        const mdFiles: files.FileResult[] = []
+        await files.markdown(wsRoot, mdFiles)
+        const activeFilePath = document.fileName
+
+        for (const file of mdFiles) {
+          const filePath = path.join(wsRoot, file.filePath)
+          const pathToActive = path.relative(path.dirname(filePath), activeFilePath)
+          const oldContent = await file.content
+          const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
+          if (newContent === oldContent) {
+            continue
+          }
+
+          debug.appendLine(`replace link in file ${file.filePath}`)
+          
+          // Open the document and apply changes in-memory
+          const fileUri = vscode.Uri.file(path.join(wsRoot, file.filePath))
+          const doc = await vscode.workspace.openTextDocument(fileUri)
+          const editor = await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
+          
+          await editor.edit((editBuilder) => {
+            const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+            editBuilder.replace(range, newContent)
+          })
+        }
+      } catch (error) {
+        debug.appendLine(`Failed to apply in-memory edits: ${error}`)
+      }
+    }, 100)
+
+    // Return null to prevent VSCode from applying file system changes
+    return null
   }
 }
