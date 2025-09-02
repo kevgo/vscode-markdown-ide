@@ -94,8 +94,8 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       if (newContent === oldContent) {
         continue
       }
-      debug.appendLine(`replace link in file ${file.filePath}`)
       const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+      debug.appendLine(`replace link in file ${file.filePath}: 0-${line.count(oldContent)}`)
       edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
     }
 
