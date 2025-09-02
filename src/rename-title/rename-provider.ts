@@ -99,8 +99,6 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
         editBuilder.replace(range, newContent)
       })
     }
-
-    // Return null to prevent VSCode from applying file system changes
     return null
   }
 }

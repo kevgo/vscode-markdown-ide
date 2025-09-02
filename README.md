@@ -58,9 +58,13 @@ broken. Markdown IDE fixes this by removing these links.
 
 ## rename Markdown file title ⇒ update links containing this title
 
-Run the "Markdown IDE: Rename document title" command to change the primary
-heading of a document. Markdown IDE updates the title of matching links to that
-document.
+When you update the primary heading of a document (its top-most H1), Markdown
+IDE can update the matching title of links pointing to this document. To use
+this feature:
+
+- put the cursor into the top-most H1 heading and run VSCode's `rename symbol`
+  refactor (press F2)
+- alternatively, run the `Markdown IDE: Rename document title` command
 
 ![demo of the "rename document title" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title.gif)
 
