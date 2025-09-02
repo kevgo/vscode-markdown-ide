@@ -58,9 +58,9 @@ Local installation:
 
   ```bash
   convert \
-    -delay 100 cropped/01.png \
-    -delay 50 cropped/02.png \
-    -delay 50 cropped/03.png \
+    -delay 100 01.png \
+    -delay 50 02.png \
+    -delay 50 03.png \
     -loop 0 \
     -layers Optimize \
     -colors 16 \
