@@ -68,7 +68,7 @@ this feature:
 
 ![demo of the "rename document title" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title.gif)
 
-## "go to definition" for links
+## go to definition
 
 Markdown IDE supports the
 [go to definition](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
@@ -79,6 +79,19 @@ from. If bi-directional links are not activated, it jumps to the linked heading
 within the target document.
 
 ![demo of the "go to definition" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition.gif)
+
+## find all references
+
+When you highlight a Markdown note title (the top-level heading in a Markdown
+file) and activate VSCode's `find all references` feature (by choosing it from
+the context menu or hitting `ctrl-shift-F12`, Markdown IDE will locate every
+link across your workspace that points to the current file.
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-light.gif">
+</picture>
 
 ## extract new file with selected title
 
