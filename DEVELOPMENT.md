@@ -39,15 +39,15 @@ Local installation:
 ### create a new animated gif
 
 - install `ffmpeg` and `imagemagick`
-- record a screencast
-- extract PNG files from MP4:
+- record a screencast or take a series of screenshots of the region in question
+- if capturing as MP4 --> extract PNG files from MP4:
 
   ```bash
   ffmpeg -i input.mp4 frames/%03d.png
   ```
-- go with an image viewer through the generated frames, delete the intermediary
-  frame
+- go with an image viewer through the frames and delete unneeded ones
 - rename the remaining frames consecutively (`01.png`, `02.png`, ...)
+- optionally create a local Git repo and commit the images as a backup
 - optionally crop the frames
 
   ```bash
