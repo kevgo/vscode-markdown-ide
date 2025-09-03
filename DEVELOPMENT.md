@@ -53,7 +53,6 @@ Local installation:
 - optionally crop the frames
 
   ```bash
-  mkdir cropped
   mogrify -crop 1400x600+0+0 +repage *.png
   ```
 - assemble the frames into an animated GIF
