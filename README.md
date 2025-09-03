@@ -22,7 +22,13 @@ is the first heading in the linked file. If present, Markdown IDE uses the
 `titleRegEx` setting in `tikibase.json` to abbreviate the titles of
 auto-completed links.
 
-![demo of the "autocomplete links" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-dark.gif">
+  <img alt="demo of the autocomplete-links feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-light.gif">
+</picture>
+
+![](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link.gif)
 
 ## autocomplete image tags
 
