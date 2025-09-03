@@ -35,7 +35,7 @@ Typing `![` triggers autocompletion for image tags.
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-image-link-light.gif">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-image-link-dark.gif">
-  <img alt="demo of the autocomplete-image-link feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-light.gif">
+  <img alt="demo of the autocomplete-image-link feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-image-link-light.gif">
 </picture>
 
 ## autocomplete headings
@@ -43,7 +43,11 @@ Typing `![` triggers autocompletion for image tags.
 Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
 
-![demo of the "autocomplete headings" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-heading.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-dark.gif">
+  <img alt="demo of the autocomplete-headings feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-light.gif">
+</picture>
 
 ## autocomplete footnotes
 
