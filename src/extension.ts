@@ -9,7 +9,6 @@ import { filesRenamed } from "./files-renamed"
 import { MarkdownReferenceProvider } from "./find-references/reference-provider"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { MarkdownRenameProvider } from "./rename-title/rename-provider"
-import { renameTitle } from "./rename-title/rename-title"
 import * as tikibase from "./tikibase"
 
 export let debug: vscode.OutputChannel
@@ -35,9 +34,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // file deleted --> remove links to this file
   vscode.workspace.onDidDeleteFiles(filesDeleted)
-
-  // rename document title --> update links with the old document title
-  context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
 
   // register rename provider to enable the built-in "rename symbol" refactor for Markdown files
   context.subscriptions.push(
