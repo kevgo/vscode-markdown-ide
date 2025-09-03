@@ -96,6 +96,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       const range = new vscode.Range(0, 0, line.count(oldContent), 0)
       edit.replace(vscode.Uri.file(path.join(wsRoot, file.filePath)), range, newContent)
     }
-    await vscode.workspace.applyEdit(edit)
+    // await vscode.workspace.applyEdit(edit)
+    return edit
   }
 }
