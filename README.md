@@ -88,9 +88,9 @@ the context menu or hitting `ctrl-shift-F12`, Markdown IDE will locate every
 link across your workspace that points to the current file.
 
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-light.gif">
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-dark.gif">
-  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/kg-find-all-references/documentation/find-all-references-light.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/find-all-references-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/find-all-references-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/find-all-references-light.gif">
 </picture>
 
 ## extract new file with selected title
