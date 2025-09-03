@@ -44,8 +44,7 @@ export interface ReferenceResult {
  */
 export async function findReferencesToFile(workspacePath: string, targetFilePath: string): Promise<ReferenceResult[]> {
   const references: ReferenceResult[] = []
-  const mdFiles: files.FileResult[] = []
-  await files.markdown(workspacePath, mdFiles)
+  const mdFiles = await files.markdown(workspacePath)
   const targetFileAbsolutePath = path.join(workspacePath, targetFilePath)
   const linkRegex = /\[[^\]]*\]\(([^)]*)\)/g
   for (const mdFile of mdFiles) {

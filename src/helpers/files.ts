@@ -10,8 +10,7 @@ const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".tif", ".tiff"]
  * This function is performance optimized because it affects the user-visible latency of the auto-complete popup.
  * The `accumulator` argument exists to avoid creating and merging temporary arrays.
  */
-// TODO: make the accumulator an optional argument so that we can omit it from the callsites.
-export async function markdown(root: string, accumulator: FileResult[], subdir = ""): Promise<void> {
+export async function markdown(root: string, accumulator: FileResult[] = [], subdir = ""): Promise<FileResult[]> {
   const fullRoot = path.join(root, subdir)
   for (const entry of await fs.readdir(fullRoot, { withFileTypes: true })) {
     if (entry.isDirectory()) {
@@ -29,6 +28,7 @@ export async function markdown(root: string, accumulator: FileResult[], subdir =
       })
     }
   }
+  return accumulator
 }
 
 export interface FileResult {

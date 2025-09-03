@@ -100,13 +100,12 @@ async function headingsInFiles(args: {
   startTime: number
   wsRoot: string
 }): Promise<string[]> {
-  const mdFilesAcc: files.FileResult[] = []
-  await files.markdown(args.wsRoot, mdFilesAcc)
+  const mdFiles = await files.markdown(args.wsRoot)
   args.debug.appendLine(
-    `${new Date().getTime() - args.startTime}ms:  created all file load promises: ${mdFilesAcc.length}`
+    `${new Date().getTime() - args.startTime}ms:  created all file load promises: ${mdFiles.length}`
   )
   const headingsAcc: Set<string> = new Set()
-  for (const mdFile of mdFilesAcc) {
+  for (const mdFile of mdFiles) {
     headings.inFile(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
@@ -136,10 +135,9 @@ async function mdCompletionItems(args: {
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
-  const mdFilesAcc: files.FileResult[] = []
-  await files.markdown(args.wsRoot, mdFilesAcc)
+  const mdFiles = await files.markdown(args.wsRoot)
   const result = []
-  for (const mdFile of mdFilesAcc) {
+  for (const mdFile of mdFiles) {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath

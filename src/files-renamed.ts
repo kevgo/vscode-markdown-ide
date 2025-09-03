@@ -21,8 +21,7 @@ export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promis
   }
   await vscode.window.withProgress(progressOpts, async () => {
     const edit = new vscode.WorkspaceEdit()
-    const mdFiles: files.FileResult[] = []
-    await files.markdown(wsRoot, mdFiles)
+    const mdFiles = await files.markdown(wsRoot)
     for (const mdFile of mdFiles) {
       const oldContent = await mdFile.content
       let newContent = oldContent
