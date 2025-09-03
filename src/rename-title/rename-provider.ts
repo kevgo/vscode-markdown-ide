@@ -81,7 +81,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     // Update the title of all affected links in all documents
     const mdFiles: files.FileResult[] = []
-    await files.markdown(wsRoot, mdFiles)
+    await files.markdown(wsRoot)
 
     for (const file of mdFiles) {
       const filePath = path.join(wsRoot, file.filePath)

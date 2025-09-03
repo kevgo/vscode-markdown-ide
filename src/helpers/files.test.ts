@@ -6,8 +6,7 @@ import * as files from "./files"
 suite("files", function() {
   test("markdown", async function() {
     const examplesPath = path.join(__dirname, "..", "..", "examples")
-    const results: files.FileResult[] = []
-    await files.markdown(examplesPath, results)
+    const results = await files.markdown(examplesPath)
     const have = results.map(result => result.filePath)
     assert.deepEqual(have, ["1.md", "3.md", "two/2a.md", "two/2b.md"])
   })

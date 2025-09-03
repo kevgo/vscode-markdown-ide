@@ -100,8 +100,7 @@ async function headingsInFiles(args: {
   startTime: number
   wsRoot: string
 }): Promise<string[]> {
-  const mdFilesAcc: files.FileResult[] = []
-  await files.markdown(args.wsRoot, mdFilesAcc)
+  const mdFilesAcc = await files.markdown(args.wsRoot)
   args.debug.appendLine(
     `${new Date().getTime() - args.startTime}ms:  created all file load promises: ${mdFilesAcc.length}`
   )
@@ -136,8 +135,7 @@ async function mdCompletionItems(args: {
   titleRE: RegExp | undefined
   wsRoot: string
 }): Promise<vscode.CompletionItem[]> {
-  const mdFilesAcc: files.FileResult[] = []
-  await files.markdown(args.wsRoot, mdFilesAcc)
+  const mdFilesAcc = await files.markdown(args.wsRoot)
   const result = []
   for (const mdFile of mdFilesAcc) {
     const filePath = args.documentDir !== args.wsRoot

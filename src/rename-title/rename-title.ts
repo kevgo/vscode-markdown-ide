@@ -65,8 +65,7 @@ export async function renameTitle(): Promise<void> {
       if (!workspacePath) {
         return
       }
-      const mdFiles: files.FileResult[] = []
-      await files.markdown(wsRoot, mdFiles)
+      const mdFiles = await files.markdown(wsRoot)
       for (const file of mdFiles) {
         const pathToActive = path.relative(path.dirname(file.filePath), activeFilePath)
         const oldContent = await file.content
