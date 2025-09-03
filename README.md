@@ -28,8 +28,6 @@ auto-completed links.
   <img alt="demo of the autocomplete-links feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-light.gif">
 </picture>
 
-![](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link.gif)
-
 ## autocomplete image tags
 
 Typing `![` triggers autocompletion for image tags.
