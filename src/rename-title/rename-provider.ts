@@ -11,10 +11,8 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
     document: vscode.TextDocument,
     position: vscode.Position,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.Range | { range: vscode.Range; placeholder: string }> {
-    let myOutputChannel: vscode.OutputChannel
-
     // Only allow renaming if we're on the first line and it's a heading
     if (position.line !== 0) {
       throw new Error("Rename is only supported for the document title on the first line.")
@@ -45,7 +43,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
   async provideRenameEdits(
     document: vscode.TextDocument,
-    position: vscode.Position,
+    _position: vscode.Position,
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
