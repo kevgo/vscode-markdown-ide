@@ -44,24 +44,11 @@
   "contributes": {
     "commands": [
       {
-        "command": "markdownIDE.renameDocumentTitle",
-        "title": "Rename document title",
-        "category": "Markdown IDE"
-      },
-      {
         "command": "markdownIDE.tikibaseFix",
         "title": "Tikibase Fix all issues",
         "category": "Markdown IDE"
       }
-    ],
-    "menus": {
-      "commandPalette": [
-        {
-          "command": "markdownIDE.renameDocumentTitle",
-          "when": "editorLangId == markdown"
-        }
-      ]
-    }
+    ]
   },
   "activationEvents": [
     "onLanguage:markdown"

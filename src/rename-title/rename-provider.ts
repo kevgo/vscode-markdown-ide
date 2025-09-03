@@ -71,11 +71,12 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       text: document.getText()
     })
 
+    const edit = new vscode.WorkspaceEdit()
     const activeEditor = vscode.window.activeTextEditor
     if (activeEditor && activeEditor.document === document) {
       await activeEditor.edit((editBuilder) => {
         const range = new vscode.Range(0, 0, document.lineCount, 0)
-        editBuilder.replace(range, newText)
+        edit.replace(document.uri, range, newText)
       })
     }
 
@@ -89,14 +90,10 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       if (newContent === oldContent) {
         continue
       }
-      const fileUri = vscode.Uri.file(filePath)
-      const doc = await vscode.workspace.openTextDocument(fileUri)
-      const editor = await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true })
-      await editor.edit((editBuilder) => {
-        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-        editBuilder.replace(range, newContent)
-      })
+      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+      edit.replace(vscode.Uri.file(filePath), range, newContent)
     }
+    await vscode.workspace.applyEdit(edit, { isRefactoring: true })
     return null
   }
 }
