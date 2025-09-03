@@ -6,6 +6,7 @@ import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
+import { MarkdownReferenceProvider } from "./find-references/reference-provider"
 import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
 import { MarkdownRenameProvider } from "./rename-title/rename-provider"
 import { renameTitle } from "./rename-title/rename-title"
@@ -38,9 +39,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   // rename document title --> update links with the old document title
   context.subscriptions.push(vscode.commands.registerCommand("markdownIDE.renameDocumentTitle", renameTitle))
 
-  // register rename provider for built-in VSCode rename symbol functionality
+  // register rename provider to enable the built-in "rename symbol" refactor for Markdown files
   context.subscriptions.push(
     vscode.languages.registerRenameProvider("markdown", new MarkdownRenameProvider())
+  )
+
+  // register reference provider to enable the built-in "Find All References" feature for Markdown files
+  context.subscriptions.push(
+    vscode.languages.registerReferenceProvider("markdown", new MarkdownReferenceProvider())
   )
 
   // "go to definition" for links in Markdown documents
