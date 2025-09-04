@@ -26,20 +26,17 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
       const oldContent = await mdFile.content
       let newContent = oldContent
       const fullPath = path.join(wsRoot, mdFile.filePath)
+      const fullDir = path.dirname(fullPath)
       for (const deletedFile of deletedEvent.files) {
         newContent = links.removeWithTarget({
           text: newContent,
-          target: path.relative(path.dirname(fullPath), deletedFile.fsPath)
+          target: path.relative(fullDir, deletedFile.fsPath)
         })
       }
-      if (newContent === oldContent) {
-        continue
+      if (newContent !== oldContent) {
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        edit.replace(vscode.Uri.file(fullPath), range, newContent)
       }
-      const range = new vscode.Range(
-        new vscode.Position(0, 0),
-        new vscode.Position(line.count(oldContent), 0)
-      )
-      edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit, { isRefactoring: true })
   })
