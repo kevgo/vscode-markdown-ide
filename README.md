@@ -65,7 +65,13 @@ When you rename a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by changing the target of these links to the new
 filename.
 
-![demo of the "rename file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file-dark.gif">
+  <img alt="demo of the rename-file feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file-light.gif">
+</picture>
+
+![](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
 
 ## delete file ⇒ remove links to this file
 
