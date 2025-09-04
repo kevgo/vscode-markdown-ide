@@ -41,6 +41,6 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
       )
       edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
-    await vscode.workspace.applyEdit(edit)
+    await vscode.workspace.applyEdit(edit, { isRefactoring: true })
   })
 }
