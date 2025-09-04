@@ -53,6 +53,12 @@ files of the current workspace.
 
 Typing `[^` triggers autocompletion for footnotes.
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-footnote-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-footnote-dark.gif">
+  <img alt="demo of the autocomplete-headings feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-footnote-light.gif">
+</picture>
+
 ## rename file ⇒ update links to this file
 
 When you rename a file, all links to this file in other Markdown files would be
