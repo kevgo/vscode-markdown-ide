@@ -35,10 +35,7 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
       if (newContent === oldContent) {
         continue
       }
-      const range = new vscode.Range(
-        new vscode.Position(0, 0),
-        new vscode.Position(line.count(oldContent), 0)
-      )
+      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
       edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit, { isRefactoring: true })
