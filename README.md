@@ -71,14 +71,16 @@ filename.
   <img alt="demo of the rename-file feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file-light.gif">
 </picture>
 
-![](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-file.gif)
-
 ## delete file ⇒ remove links to this file
 
 When you delete a file, all links to this file in other Markdown files would be
 broken. Markdown IDE fixes this by removing these links.
 
-![demo of the "delete file" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file-dark.gif">
+  <img alt="demo of the delete-file feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/delete-file-light.gif">
+</picture>
 
 ## rename Markdown file title ⇒ update links containing this title
 
