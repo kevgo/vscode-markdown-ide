@@ -19,8 +19,8 @@ feedback or requests, please
 
 Typing `[` triggers autocompletion for links to Markdown files. The link title
 is the first heading in the linked file. If present, Markdown IDE uses the
-`titleRegEx` setting in `tikibase.json` to abbreviate the titles of
-auto-completed links.
+`titleRegEx` setting in [tikibase.json](https://github.com/kevgo/tikibase) to
+abbreviate the titles of auto-completed links.
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-link-light.gif">
