@@ -2,7 +2,6 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as configuration from "./configuration"
-import { debug } from "./extension"
 import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
@@ -34,13 +33,11 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
           target: path.relative(fullDir, deletedFile.fsPath)
         })
       }
-      if (newContent === oldContent) {
-        continue
+      if (newContent !== oldContent) {
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        edit.replace(vscode.Uri.file(fullPath), range, newContent)
       }
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-      edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
-    const success = await vscode.workspace.applyEdit(edit, { isRefactoring: true })
-    debug.appendLine(`success: ${success}`)
+    await vscode.workspace.applyEdit(edit, { isRefactoring: true })
   })
 }

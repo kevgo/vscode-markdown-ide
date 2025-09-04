@@ -34,11 +34,10 @@ export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promis
           newTarget: path.relative(fullDir, renamedFile.newUri.fsPath)
         })
       }
-      if (newContent === oldContent) {
-        continue
+      if (newContent !== oldContent) {
+        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        edit.replace(vscode.Uri.file(fullPath), range, newContent)
       }
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
-      edit.replace(vscode.Uri.file(fullPath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit, { isRefactoring: true })
   })
