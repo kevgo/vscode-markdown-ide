@@ -44,8 +44,8 @@ Typing `#` triggers autocompletion with the existing headings in all Markdown
 files of the current workspace.
 
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-light.gif">
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-dark.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-heading-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-heading-dark.gif">
   <img alt="demo of the autocomplete-headings feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/autocomplete-headings-light.gif">
 </picture>
 
