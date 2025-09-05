@@ -1,10 +1,10 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as configuration from "./configuration"
 import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
+import * as configuration from "./tikibase/config-file"
 
 export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below

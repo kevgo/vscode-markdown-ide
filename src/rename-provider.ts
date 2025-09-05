@@ -1,11 +1,11 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as configuration from "../configuration"
-import { changeMdTitle } from "../helpers/change_md_title"
-import { eol2string } from "../helpers/eol_to_string"
-import * as files from "../helpers/files"
-import * as line from "../helpers/line"
-import * as links from "../helpers/links"
+import { changeMdTitle } from "./helpers/change_md_title"
+import { eol2string } from "./helpers/eol_to_string"
+import * as files from "./helpers/files"
+import * as line from "./helpers/line"
+import * as links from "./helpers/links"
+import * as configuration from "./tikibase/config-file"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(

@@ -1,14 +1,14 @@
 import * as vscode from "vscode"
 import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action-provider"
 import { createCompletionProvider } from "./completion-item-provider"
-import * as configuration from "./configuration"
 import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
 import { MarkdownReferenceProvider } from "./reference-provider"
-import { MarkdownRenameProvider } from "./rename-title/rename-provider"
-import * as tikibase from "./tikibase"
+import { MarkdownRenameProvider } from "./rename-provider"
+import * as configuration from "./tikibase/config-file"
+import * as tikibase from "./tikibase/execute"
 
 export let debug: vscode.OutputChannel
 

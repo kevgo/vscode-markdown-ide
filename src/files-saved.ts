@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as tiki from "./tikibase"
+import * as tiki from "./tikibase/execute"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(

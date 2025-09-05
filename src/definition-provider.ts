@@ -3,8 +3,8 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import { Tikibase } from "./configuration"
 import * as line from "./helpers/line"
+import { Tikibase } from "./tikibase/config-file"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   private tikiConfig: Tikibase | undefined

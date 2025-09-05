@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 
 import { groupByFile } from "./files-saved"
-import * as tiki from "./tikibase"
+import * as tiki from "./tikibase/execute"
 
 suite("groupByFile", function() {
   test("works", function() {
