@@ -4,12 +4,12 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as line from "./text/lines"
-import { Tikibase } from "./tikibase/config-file"
+import { Config } from "./tikibase/config-file"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
-  private tikiConfig: Tikibase | undefined
+  private tikiConfig: Config | undefined
 
-  constructor(config: Tikibase | undefined) {
+  constructor(config: Config | undefined) {
     this.tikiConfig = config
   }
 

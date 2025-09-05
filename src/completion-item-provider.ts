@@ -6,12 +6,12 @@ import * as markdownFootnotes from "./markdown/footnotes"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownImages from "./markdown/images"
 import * as markdownLinks from "./markdown/links"
-import * as tikibaseConfiguration from "./tikibase/config-file"
+import * as tikibaseConfigFile from "./tikibase/config-file"
 
 export function createCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
-  tikiConfig: tikibaseConfiguration.Tikibase | undefined
+  tikiConfig: tikibaseConfigFile.Config | undefined
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
@@ -186,7 +186,7 @@ async function imgCompletionItems(args: {
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
   for (const dir of descendTree(documentDir)) {
-    const config = await tikibaseConfiguration.tikibase(dir)
+    const config = await tikibaseConfigFile.load(dir)
     const sections = config?.sections()
     if (sections) {
       return sections
