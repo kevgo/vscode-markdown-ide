@@ -22,6 +22,20 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
   })
+
+  test("extractLinkTarget", function() {
+    const give = "one [title1](target1.md) two [title2](target2.md) three"
+    const link2start = 29
+    for (let i = 0; i < link2start; i++) {
+      const have = links.extractTarget(give, i)
+      assert.equal(have, "target1.md", `pos ${i} -> ${have}`)
+    }
+    for (let i = link2start; i < give.length; i++) {
+      const have = links.extractTarget(give, i)
+      assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
+    }
+  })
+
   suite("regexes", function() {
     const regexText = "\\(([^)]+)\\)$"
     const regex = RegExp(regexText)

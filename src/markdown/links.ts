@@ -38,6 +38,41 @@ export function create(args: {
   return `[${match[1]}](${args.filePath})`
 }
 
+/** provides the target of the Markdown link around the given cursor position in the given text */
+export function extractTarget(lineText: string, cursorColumn: number): string | undefined {
+  // go left from the cursor until we find the beginning of the Markdown link
+  let start = cursorColumn
+  while (start >= 0 && lineText[start] !== "[") {
+    start--
+  }
+  if (start === -1) {
+    // didn't find the link beginning on the left of the cursor --> search to the right
+    start = cursorColumn
+    while (start <= lineText.length && lineText[start] !== "[") {
+      start++
+    }
+  }
+  if (start === lineText.length + 1) {
+    return
+  }
+  // keep going right until we find the start of the URL segment of the Markdown link
+  while (start <= lineText.length && lineText[start] !== "(") {
+    start++
+  }
+  if (start === lineText.length + 1) {
+    return
+  }
+  // keep going right until we find the end of the URL segment of the Markdown link
+  let end = start
+  while (end <= lineText.length && lineText[end] !== ")") {
+    end++
+  }
+  if (end === lineText.length + 1) {
+    return
+  }
+  return lineText.substring(start + 1, end)
+}
+
 /** removes all links from the given Markdown text*/
 export function remove(text: string): string {
   for (const match of text.match(linkRE) || []) {

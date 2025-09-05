@@ -1,31 +1,19 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
 import * as definitionProvider from "./definition-provider"
+import * as markdownLinks from "./markdown/links"
 import * as urls from "./urls/urls"
 
 suite("follow-bidi-link", function() {
-  test("extractLinkTarget", function() {
-    const give = "one [title1](target1.md) two [title2](target2.md) three"
-    const link2start = 29
-    for (let i = 0; i < link2start; i++) {
-      const have = definitionProvider.extractLinkTarget(give, i)
-      assert.equal(have, "target1.md", `pos ${i} -> ${have}`)
-    }
-    for (let i = link2start; i < give.length; i++) {
-      const have = definitionProvider.extractLinkTarget(give, i)
-      assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
-    }
-  })
-
   test("extractUrl", function() {
     const give = "one http://one.com two https://two.com three"
     const link2start = 23
     for (let i = 0; i < link2start; i++) {
-      const have = definitionProvider.extractUrl(give, i)
+      const have = urls.extractAt(give, i)
       assert.equal(have, "http://one.com", `pos ${i} -> ${have}`)
     }
     for (let i = link2start; i < give.length; i++) {
-      const have = definitionProvider.extractUrl(give, i)
+      const have = urls.extractAt(give, i)
       assert.equal(have, "https://two.com", `pos ${i} -> ${have}`)
     }
   })
