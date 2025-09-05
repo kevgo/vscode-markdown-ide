@@ -4,7 +4,7 @@ import * as vscode from "vscode"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownLinks from "./markdown/links"
 import * as tikibaseConfig from "./tikibase/config-file"
-import * as urls from "./urls/urls"
+import * as urls from "./urls"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   private tikiConfig: tikibaseConfig.Data | undefined

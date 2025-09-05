@@ -5,7 +5,7 @@ import * as files from "./files"
 
 suite("files", function() {
   test("markdown", async function() {
-    const examplesPath = path.join(__dirname, "..", "..", "examples")
+    const examplesPath = path.join(__dirname, "..", "examples")
     const results = await files.markdown(examplesPath)
     const have = results.map(result => result.filePath)
     assert.deepEqual(have, ["1.md", "3.md", "two/2a.md", "two/2b.md"])
@@ -29,7 +29,7 @@ suite("files", function() {
 
   test("images", async function() {
     const have: string[] = []
-    await files.images(path.join(__dirname, "..", "..", "examples"), have)
+    await files.images(path.join(__dirname, "..", "examples"), have)
     const want = ["foo.png", "two/two.gif"]
     assert.deepEqual(have, want)
   })
