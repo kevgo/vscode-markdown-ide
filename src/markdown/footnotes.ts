@@ -1,4 +1,4 @@
-/** provides all headings in the given file content */
+/** provides all footnotes in the given file content */
 export function inText(text: string): string[] {
   let result: Set<string> = new Set()
   const matches = text.matchAll(footnoteRE)
