@@ -2,10 +2,10 @@ import * as path from "path"
 import * as vscode from "vscode"
 import { eol2string } from "./helpers/eol_to_string"
 import * as files from "./helpers/files"
-import * as links from "./helpers/links"
 import * as workspace from "./helpers/workspace"
 import * as markdownTitle from "./markdown/title"
 import * as line from "./text/line"
+import * as links from "./text/links"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(

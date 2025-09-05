@@ -2,9 +2,9 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as files from "./helpers/files"
-import * as links from "./helpers/links"
 import * as workspace from "./helpers/workspace"
 import * as line from "./text/line"
+import * as links from "./text/links"
 
 export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below

@@ -2,10 +2,10 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as files from "./helpers/files"
-import * as links from "./helpers/links"
 import * as markdownFootnotes from "./markdown/footnotes"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownImages from "./markdown/images"
+import * as links from "./text/links"
 import * as configuration from "./tikibase/config-file"
 
 export function createCompletionProvider(

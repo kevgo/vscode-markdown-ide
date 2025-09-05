@@ -1,5 +1,5 @@
 import * as vscode from "vscode"
-import * as line from "../text/line"
+import * as line from "./line"
 
 // helper functions for Markdown links
 
