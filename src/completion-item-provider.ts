@@ -5,13 +5,13 @@ import * as files from "./filesystem/files"
 import * as markdownFootnotes from "./markdown/footnotes"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownImages from "./markdown/images"
-import * as links from "./markdown/links"
-import * as configuration from "./tikibase/config-file"
+import * as markdownLinks from "./markdown/links"
+import * as tikibaseConfiguration from "./tikibase/config-file"
 
 export function createCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
-  tikiConfig: configuration.Tikibase | undefined
+  tikiConfig: tikibaseConfiguration.Tikibase | undefined
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
@@ -142,7 +142,7 @@ async function mdCompletionItems(args: {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
-    const link = links.create({
+    const link = markdownLinks.create({
       filePath,
       fileContent: await mdFile.content,
       debug: args.debug,
@@ -186,7 +186,7 @@ async function imgCompletionItems(args: {
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
   for (const dir of descendTree(documentDir)) {
-    const config = await configuration.tikibase(dir)
+    const config = await tikibaseConfiguration.tikibase(dir)
     const sections = config?.sections()
     if (sections) {
       return sections
