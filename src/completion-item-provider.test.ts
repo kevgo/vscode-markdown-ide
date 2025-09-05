@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as provider from "./provider"
+import * as provider from "./completion-item-provider"
 
 suite("analyzeInput", function() {
   suite("markdown link", function() {

@@ -1,11 +1,11 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as configuration from "../configuration"
-import * as files from "../helpers/files"
-import * as footnotes from "../helpers/footnotes"
-import * as headings from "../helpers/headings"
-import * as links from "../helpers/links"
+import * as configuration from "./configuration"
+import * as files from "./helpers/files"
+import * as footnotes from "./helpers/footnotes"
+import * as headings from "./helpers/headings"
+import * as links from "./helpers/links"
 
 export function createCompletionProvider(
   debug: vscode.OutputChannel,
