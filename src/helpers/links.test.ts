@@ -13,7 +13,7 @@ suite("image", function() {
 suite("markdown", function() {
   suite("arguments", function() {
     test("link to heading without regex", function() {
-      const have = links.markdown({
+      const have = links.link({
         filePath: "foo.md",
         fileContent: "# Foo\nthe foo is strong today"
       })
@@ -21,7 +21,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("link to heading with regex", function() {
-      const have = links.markdown({
+      const have = links.link({
         filePath: "foo.md",
         fileContent: "# Foo\nthe foo is strong today",
         titleRE: /^#+ (.*)$/
@@ -34,7 +34,7 @@ suite("markdown", function() {
     const regexText = "\\(([^)]+)\\)$"
     const regex = RegExp(regexText)
     test("all-caps abbreviation", function() {
-      const have = links.markdown({
+      const have = links.link({
         filePath: "amazon-web-services.md",
         fileContent: "# Amazon Web Services (AWS)\na cloud provider",
         titleRE: regex
@@ -43,7 +43,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("mixed-caps abbreviation", function() {
-      const have = links.markdown({
+      const have = links.link({
         filePath: "software-as-a-service.md",
         fileContent: "# Software-as-a-Service (SaaS)\na software distribution model",
         titleRE: regex
@@ -52,7 +52,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("heading contains a markdown link", function() {
-      const have = links.markdown({
+      const have = links.link({
         filePath: "foo.md",
         fileContent: "# A [Foo](foo.md) walks into a [bar](bar.md)",
         titleRE: regex

@@ -5,7 +5,7 @@ import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 import * as workspace from "./helpers/workspace"
-import { changeTitle } from "./markdown/change_title"
+import * as markdown from "./markdown"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
@@ -62,7 +62,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     // Update the title in the current document
-    const newText = changeTitle({
+    const newText = markdown.changeTitle({
       eol: eol2string(document.eol),
       newTitle: newName,
       oldTitle,

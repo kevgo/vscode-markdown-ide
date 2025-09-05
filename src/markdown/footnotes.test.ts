@@ -13,7 +13,7 @@ text
 [^footnote2]: https://footnotes.com/2
 `
     const want = ["^footnote1]", "^footnote2]"]
-    const have = footnotes.inText(give)
+    const have = footnotes.footnotes(give)
     assert.deepEqual(have, want)
   })
 
@@ -24,14 +24,14 @@ text
 text
 `
     const want: string[] = []
-    const have = footnotes.inText(give)
+    const have = footnotes.footnotes(give)
     assert.deepEqual(have, want)
   })
 
   test("empty text", function() {
     const give = ``
     const want: string[] = []
-    const have = footnotes.inText(give)
+    const have = footnotes.footnotes(give)
     assert.deepEqual(have, want)
   })
 })

@@ -3,8 +3,7 @@ import * as vscode from "vscode"
 
 import * as files from "./helpers/files"
 import * as links from "./helpers/links"
-import * as footnotes from "./markdown/footnotes"
-import * as headings from "./markdown/headings"
+import * as markdown from "./markdown"
 import * as configuration from "./tikibase/config-file"
 
 export function createCompletionProvider(
@@ -25,7 +24,7 @@ export function createCompletionProvider(
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
-          return mdItems.concat(await completionItems(footnotes.inText(document.getText())))
+          return mdItems.concat(await completionItems(markdown.footnotes(document.getText())))
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
@@ -89,7 +88,7 @@ async function headingCompletionItems(
     wsRoot: args.wsRoot
   })
   const existingHeadings: Set<string> = new Set()
-  headings.inFile(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
+  markdown.headings(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
   const missingHeadings = allHeadings.filter((heading) => !existingHeadings.has(heading))
   return completionItems(removeFirstChars(missingHeadings))
 }
@@ -106,7 +105,7 @@ async function headingsInFiles(args: {
   )
   const headingsAcc: Set<string> = new Set()
   for (const mdFile of mdFiles) {
-    headings.inFile(await mdFile.content, headingsAcc)
+    markdown.headings(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
   const result: string[] = []
@@ -141,7 +140,7 @@ async function mdCompletionItems(args: {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
-    const link = links.markdown({
+    const link = links.link({
       filePath,
       fileContent: await mdFile.content,
       debug: args.debug,

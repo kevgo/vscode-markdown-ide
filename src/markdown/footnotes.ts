@@ -1,5 +1,5 @@
 /** provides all footnotes in the given file content */
-export function inText(text: string): string[] {
+export function footnotes(text: string): string[] {
   let result: Set<string> = new Set()
   const matches = text.matchAll(footnoteRE)
   if (!matches) {

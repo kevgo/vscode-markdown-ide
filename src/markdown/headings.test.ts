@@ -14,7 +14,7 @@ text`
     want.add("### caption 1")
     want.add("### caption 2")
     const have: Set<string> = new Set()
-    headings.inFile(give, have)
+    headings.headings(give, have)
     assert.deepEqual(have, want)
   })
 })

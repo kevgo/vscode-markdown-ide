@@ -10,7 +10,7 @@ export function image(fileName: string): string {
 }
 
 /** creates a Markdown link to the file with the given name and content */
-export function markdown(args: {
+export function link(args: {
   /** vscode debug channel to print user guidance if the titleRE is wrong */
   debug?: vscode.OutputChannel | null
   fileContent: string
