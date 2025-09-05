@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as markdownFootnotes from "./markdown-footnotes"
+import * as footnotes from "./footnotes"
 
 test("footnotes", function() {
   test("text with footnotes", function() {
@@ -13,7 +13,7 @@ text
 [^footnote2]: https://footnotes.com/2
 `
     const want = ["^footnote1]", "^footnote2]"]
-    const have = markdownFootnotes.footnotes(give)
+    const have = footnotes.find(give)
     assert.deepEqual(have, want)
   })
 
@@ -24,14 +24,14 @@ text
 text
 `
     const want: string[] = []
-    const have = markdownFootnotes.footnotes(give)
+    const have = footnotes.find(give)
     assert.deepEqual(have, want)
   })
 
   test("empty text", function() {
     const give = ``
     const want: string[] = []
-    const have = markdownFootnotes.footnotes(give)
+    const have = footnotes.find(give)
     assert.deepEqual(have, want)
   })
 })

@@ -3,7 +3,9 @@ import * as vscode from "vscode"
 
 import * as files from "./helpers/files"
 import * as links from "./helpers/links"
-import * as markdown from "./markdown"
+import * as markdownFootnotes from "./markdown/footnotes"
+import * as markdownHeadings from "./markdown/headings"
+import * as markdownImages from "./markdown/images"
 import * as configuration from "./tikibase/config-file"
 
 export function createCompletionProvider(
@@ -24,7 +26,7 @@ export function createCompletionProvider(
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
-          return mdItems.concat(await completionItems(markdown.footnotes(document.getText())))
+          return mdItems.concat(await completionItems(markdownFootnotes.find(document.getText())))
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
@@ -88,7 +90,7 @@ async function headingCompletionItems(
     wsRoot: args.wsRoot
   })
   const existingHeadings: Set<string> = new Set()
-  markdown.headings(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
+  markdownHeadings.find(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
   const missingHeadings = allHeadings.filter((heading) => !existingHeadings.has(heading))
   return completionItems(removeFirstChars(missingHeadings))
 }
@@ -105,7 +107,7 @@ async function headingsInFiles(args: {
   )
   const headingsAcc: Set<string> = new Set()
   for (const mdFile of mdFiles) {
-    markdown.headings(await mdFile.content, headingsAcc)
+    markdownHeadings.find(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
   const result: string[] = []
@@ -173,7 +175,7 @@ async function imgCompletionItems(args: {
       : filename
     result.push(
       new vscode.CompletionItem(
-        markdown.createImage(filePath).substring(1),
+        markdownImages.create(filePath).substring(1),
         vscode.CompletionItemKind.Text
       )
     )

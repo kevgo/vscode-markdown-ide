@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as markdownTitle from "./markdown-title"
+import * as markdownTitle from "./title"
 
 suite("strings", function() {
   suite("changeMdTitle", function() {

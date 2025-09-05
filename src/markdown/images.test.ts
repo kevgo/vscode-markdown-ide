@@ -1,9 +1,9 @@
 import { strict as assert } from "assert"
-import * as markdown from "../markdown"
+import * as images from "./images"
 
 suite("image", function() {
   test("valid filename", function() {
-    const have = markdown.createImage("foo.png")
+    const have = images.create("foo.png")
     const want = "[](foo.png)"
     assert.equal(have, want)
   })

@@ -1,5 +1,5 @@
 /** provides all headings in the given file content */
-export function headings(text: string, headings: Set<string>) {
+export function find(text: string, headings: Set<string>) {
   const matches = text.matchAll(headingRE)
   if (!matches) {
     return
