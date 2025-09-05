@@ -4,7 +4,7 @@ import * as files from "./files"
 import * as markdownLinks from "./markdown/links"
 import * as markdownTitle from "./markdown/title"
 import * as eol from "./text/eol"
-import * as line from "./text/lines"
+import * as textLines from "./text/lines"
 import * as workspace from "./workspace"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
@@ -26,7 +26,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     // Extract the title text (without the # and spaces)
-    const titleText = line.removeLeadingPounds(text)
+    const titleText = textLines.removeLeadingPounds(text)
 
     // Find the range of just the title text (not including the # symbols and spaces)
     const hashMatch = text.match(/^#+\s*/)
@@ -54,7 +54,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     // Get the current title
     const titleLine = document.lineAt(0)
-    const oldTitle = line.removeLeadingPounds(titleLine.text)
+    const oldTitle = textLines.removeLeadingPounds(titleLine.text)
 
     if (oldTitle === newName) {
       // No change needed
@@ -93,7 +93,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       if (newContent === oldContent) {
         continue
       }
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+      const range = new vscode.Range(0, 0, textLines.count(oldContent), 0)
       edit.replace(vscode.Uri.file(filePath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit, { isRefactoring: true })
