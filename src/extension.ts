@@ -5,6 +5,7 @@ import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
+import * as helpers from "./helpers"
 import { MarkdownReferenceProvider } from "./reference-provider"
 import { MarkdownRenameProvider } from "./rename-provider"
 import * as configuration from "./tikibase/config-file"
@@ -13,7 +14,7 @@ import * as tikibase from "./tikibase/execute"
 export let debug: vscode.OutputChannel
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const workspacePath = configuration.workspacePath()
+  const workspacePath = helpers.workspacePath()
   if (!workspacePath) {
     return
   }
