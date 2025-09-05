@@ -146,6 +146,12 @@ file with this content" refactor. It asks the user for a title, creates a new
 file with the given title and the selected text as its content, and replaces the
 selection with a link to this new file.
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-body-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-body-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-body-light.gif">
+</picture>
+
 ## "link to note" refactor
 
 When selecting text that is also the title of an existing note, Markdown IDE
