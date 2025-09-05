@@ -2,7 +2,7 @@ import { strict as assert } from "assert"
 import * as urls from "./urls"
 
 suite("urls", function() {
-  test("extractUrl", function() {
+  test("extractAt", function() {
     const give = "one http://one.com two https://two.com three"
     const link2start = 23
     for (let i = 0; i < link2start; i++) {
