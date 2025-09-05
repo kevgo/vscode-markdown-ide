@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as tiki from "./tikibase/execute"
+import * as tikibaseExec from "./tikibase/execute"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(
@@ -12,9 +12,9 @@ export function createCallback(
     // Note: running all lengthy operations upfront
     // so that we can clear and re-populate the collection as quickly as possible
     // and avoid flickering on screen
-    const output = await tiki.check(args.workspacePath, args.debug)
+    const output = await tikibaseExec.check(args.workspacePath, args.debug)
     const files_diagnostics: Map<vscode.Uri, vscode.Diagnostic[]> = new Map()
-    for (const [file, messages] of tiki.groupByFile(output)) {
+    for (const [file, messages] of tikibaseExec.groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         if (message.line === undefined || message.start === undefined || message.end === undefined) {
