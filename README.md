@@ -92,7 +92,11 @@ this feature:
   refactor (press F2)
 - alternatively, run the `Markdown IDE: Rename document title` command
 
-![demo of the "rename document title" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title-dark.gif">
+  <img alt="demo of the rename-document-title feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/rename-document-title-light.gif">
+</picture>
 
 ## go to definition
 
