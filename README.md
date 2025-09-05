@@ -133,6 +133,12 @@ When the selection highlights a single line, Markdown IDE provides an "extract
 file with this title" refactor. It creates a new file with the selected text as
 its title and replaces the selection with a link to this new file.
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-title-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-title-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/extract-file-with-title-light.gif">
+</picture>
+
 ## extract new file with selected content
 
 When the selection highlights multiple lines, Markdown IDE provides an "extract

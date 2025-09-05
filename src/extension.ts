@@ -35,17 +35,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   // file deleted --> remove links to this file
   vscode.workspace.onDidDeleteFiles(filesDeleted)
 
-  // register rename provider to enable the built-in "rename symbol" refactor for Markdown files
+  // "rename symbol" refactor for Markdown titles
   context.subscriptions.push(
     vscode.languages.registerRenameProvider("markdown", new MarkdownRenameProvider())
   )
 
-  // register reference provider to enable the built-in "Find All References" feature for Markdown files
+  // "Find All References" for Markdown files
   context.subscriptions.push(
     vscode.languages.registerReferenceProvider("markdown", new MarkdownReferenceProvider())
   )
 
-  // "go to definition" for links in Markdown documents
+  // "go to definition", "find all references"
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider(tikiConfig))
 
   if (tikiConfig) {
