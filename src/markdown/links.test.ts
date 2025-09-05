@@ -1,5 +1,6 @@
 import { strict as assert } from "assert"
 
+import * as vscode from "vscode"
 import * as links from "./links"
 
 suite("markdown", function() {
@@ -34,6 +35,16 @@ suite("markdown", function() {
       const have = links.extractTarget(give, i)
       assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
     }
+  })
+
+  test("locate", function() {
+    const give = `# title
+text
+one [link](target.md) two
+three`
+    const want = new vscode.Position(2, 4)
+    const have = links.locate({ target: "target.md", text: give })
+    assert.deepEqual(have, want)
   })
 
   suite("regexes", function() {

@@ -73,6 +73,19 @@ export function extractTarget(lineText: string, cursorColumn: number): string | 
   return lineText.substring(start + 1, end)
 }
 
+/** provides the position where the first link with the given target occurs in the given text */
+export function locate(
+  args: { target: string; text: string }
+): vscode.Position | undefined {
+  const re = new RegExp(`\\[[^\\]]*\\]\\(${args.target}\\)`)
+  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
+    const match = re.exec(line)
+    if (match) {
+      return new vscode.Position(i, match.index)
+    }
+  }
+}
+
 /** removes all links from the given Markdown text*/
 export function remove(text: string): string {
   for (const match of text.match(linkRE) || []) {

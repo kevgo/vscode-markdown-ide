@@ -47,14 +47,4 @@ suite("follow-bidi-link", function() {
       })
     }
   })
-
-  test("locateLinkWithTarget", function() {
-    const give = `# title
-text
-one [link](target.md) two
-three`
-    const want = new vscode.Position(2, 4)
-    const have = definitionProvider.locateLinkWithTarget({ target: "target.md", text: give })
-    assert.deepEqual(have, want)
-  })
 })

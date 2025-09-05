@@ -32,7 +32,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       newCursor = locateAnchor({ target, text: newFileContent })
     }
     if (!newCursor) {
-      newCursor = locateLinkWithTarget({ target: oldFileName, text: newFileContent })
+      newCursor = markdownLinks.locate({ target: oldFileName, text: newFileContent })
     }
     if (!newCursor) {
       newCursor = new vscode.Position(0, 0)
@@ -57,17 +57,4 @@ export function isHeadingMatchingTarget(args: { line: string; target: string }):
   }
   const slug = slugify(line.removeLeadingPounds(args.line).trim())
   return slug === args.target
-}
-
-/** provides the position where the first link with the given target occurs in the given text */
-export function locateLinkWithTarget(
-  args: { target: string; text: string }
-): vscode.Position | undefined {
-  const re = new RegExp(`\\[[^\\]]*\\]\\(${args.target}\\)`)
-  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
-    const match = re.exec(line)
-    if (match) {
-      return new vscode.Position(i, match.index)
-    }
-  }
 }
