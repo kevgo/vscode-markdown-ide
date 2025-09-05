@@ -1,19 +1,12 @@
 import { strict as assert } from "assert"
 
+import * as vscode from "vscode"
 import * as links from "./links"
-
-suite("image", function() {
-  test("valid filename", function() {
-    const have = links.image("foo.png")
-    const want = "[](foo.png)"
-    assert.equal(have, want)
-  })
-})
 
 suite("markdown", function() {
   suite("arguments", function() {
     test("link to heading without regex", function() {
-      const have = links.markdown({
+      const have = links.create({
         filePath: "foo.md",
         fileContent: "# Foo\nthe foo is strong today"
       })
@@ -21,7 +14,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("link to heading with regex", function() {
-      const have = links.markdown({
+      const have = links.create({
         filePath: "foo.md",
         fileContent: "# Foo\nthe foo is strong today",
         titleRE: /^#+ (.*)$/
@@ -30,11 +23,35 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
   })
+
+  test("extractLinkTarget", function() {
+    const give = "one [title1](target1.md) two [title2](target2.md) three"
+    const link2start = 29
+    for (let i = 0; i < link2start; i++) {
+      const have = links.extractTarget(give, i)
+      assert.equal(have, "target1.md", `pos ${i} -> ${have}`)
+    }
+    for (let i = link2start; i < give.length; i++) {
+      const have = links.extractTarget(give, i)
+      assert.equal(have, "target2.md", `pos ${i} -> ${have}`)
+    }
+  })
+
+  test("locate", function() {
+    const give = `# title
+text
+one [link](target.md) two
+three`
+    const want = new vscode.Position(2, 4)
+    const have = links.locate({ target: "target.md", text: give })
+    assert.deepEqual(have, want)
+  })
+
   suite("regexes", function() {
     const regexText = "\\(([^)]+)\\)$"
     const regex = RegExp(regexText)
     test("all-caps abbreviation", function() {
-      const have = links.markdown({
+      const have = links.create({
         filePath: "amazon-web-services.md",
         fileContent: "# Amazon Web Services (AWS)\na cloud provider",
         titleRE: regex
@@ -43,7 +60,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("mixed-caps abbreviation", function() {
-      const have = links.markdown({
+      const have = links.create({
         filePath: "software-as-a-service.md",
         fileContent: "# Software-as-a-Service (SaaS)\na software distribution model",
         titleRE: regex
@@ -52,7 +69,7 @@ suite("markdown", function() {
       assert.equal(have, want)
     })
     test("heading contains a markdown link", function() {
-      const have = links.markdown({
+      const have = links.create({
         filePath: "foo.md",
         fileContent: "# A [Foo](foo.md) walks into a [bar](bar.md)",
         titleRE: regex

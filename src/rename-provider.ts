@@ -1,11 +1,11 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as configuration from "../configuration"
-import { changeMdTitle } from "../helpers/change_md_title"
-import { eol2string } from "../helpers/eol_to_string"
-import * as files from "../helpers/files"
-import * as line from "../helpers/line"
-import * as links from "../helpers/links"
+import * as files from "./files"
+import * as markdownLinks from "./markdown/links"
+import * as markdownTitle from "./markdown/title"
+import * as eol from "./text/eol"
+import * as textLines from "./text/lines"
+import * as workspace from "./workspace"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
@@ -26,7 +26,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     // Extract the title text (without the # and spaces)
-    const titleText = line.removeLeadingPounds(text)
+    const titleText = textLines.removeLeadingPounds(text)
 
     // Find the range of just the title text (not including the # symbols and spaces)
     const hashMatch = text.match(/^#+\s*/)
@@ -47,14 +47,14 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
-    const wsRoot = configuration.workspacePath()
+    const wsRoot = workspace.path()
     if (!wsRoot) {
       return null
     }
 
     // Get the current title
     const titleLine = document.lineAt(0)
-    const oldTitle = line.removeLeadingPounds(titleLine.text)
+    const oldTitle = textLines.removeLeadingPounds(titleLine.text)
 
     if (oldTitle === newName) {
       // No change needed
@@ -62,8 +62,8 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     // Update the title in the current document
-    const newText = changeMdTitle({
-      eol: eol2string(document.eol),
+    const newText = markdownTitle.change({
+      eol: eol.toString(document.eol),
       newTitle: newName,
       oldTitle,
       text: document.getText()
@@ -84,11 +84,16 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       const filePath = path.join(wsRoot, file.filePath)
       const pathToActive = path.relative(path.dirname(filePath), document.fileName)
       const oldContent = await file.content
-      const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
+      const newContent = markdownLinks.replaceTitle({
+        text: oldContent,
+        oldTitle,
+        target: pathToActive,
+        newTitle: newName
+      })
       if (newContent === oldContent) {
         continue
       }
-      const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+      const range = new vscode.Range(0, 0, textLines.count(oldContent), 0)
       edit.replace(vscode.Uri.file(filePath), range, newContent)
     }
     await vscode.workspace.applyEdit(edit, { isRefactoring: true })

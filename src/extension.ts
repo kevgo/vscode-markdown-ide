@@ -1,25 +1,26 @@
 import * as vscode from "vscode"
-import { createCompletionProvider } from "./autocomplete/provider"
 import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action-provider"
-import * as configuration from "./configuration"
-import * as fileSaved from "./file-saved/file-saved"
+import { createCompletionProvider } from "./completion-item-provider"
+import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
-import { MarkdownReferenceProvider } from "./find-references/reference-provider"
-import { MarkdownDefinitionProvider } from "./follow-link/follow-bidi-link"
-import { MarkdownRenameProvider } from "./rename-title/rename-provider"
-import * as tikibase from "./tikibase"
+import * as fileSaved from "./files-saved"
+import { MarkdownReferenceProvider } from "./reference-provider"
+import { MarkdownRenameProvider } from "./rename-provider"
+import * as tikibaseConfig from "./tikibase/config-file"
+import * as tikibase from "./tikibase/execute"
+import * as workspace from "./workspace"
 
 export let debug: vscode.OutputChannel
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const workspacePath = configuration.workspacePath()
+  const workspacePath = workspace.path()
   if (!workspacePath) {
     return
   }
   debug = vscode.window.createOutputChannel("Markdown IDE")
   debug.appendLine("Markdown IDE activated")
-  const tikiConfig = await configuration.tikibase(workspacePath)
+  const tikiConfig = await tikibaseConfig.load(workspacePath)
 
   // autocomplete links by typing `[`
   const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)

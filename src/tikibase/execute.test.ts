@@ -1,11 +1,10 @@
 import { strict as assert } from "assert"
 
-import * as tiki from "../tikibase"
-import { groupByFile } from "./file-saved"
+import * as tikiExec from "./execute"
 
 suite("groupByFile", function() {
   test("works", function() {
-    const give: tiki.Message[] = [{
+    const give: tikiExec.Message[] = [{
       file: "1.md",
       text: "issue 1",
       line: 2,
@@ -27,7 +26,7 @@ suite("groupByFile", function() {
       end: 22,
       fixable: false
     }]
-    const have = groupByFile(give)
+    const have = tikiExec.groupByFile(give)
     const want = new Map()
     want.set("1.md", [{
       file: "1.md",

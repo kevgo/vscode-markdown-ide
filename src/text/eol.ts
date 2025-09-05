@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-export function eol2string(eol: vscode.EndOfLine): string {
+export function toString(eol: vscode.EndOfLine): string {
   switch (eol) {
     case vscode.EndOfLine.LF:
       return "\n"

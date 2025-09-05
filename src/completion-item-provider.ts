@@ -1,16 +1,17 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as configuration from "../configuration"
-import * as files from "../helpers/files"
-import * as footnotes from "../helpers/footnotes"
-import * as headings from "../helpers/headings"
-import * as links from "../helpers/links"
+import * as files from "./files"
+import * as markdownFootnotes from "./markdown/footnotes"
+import * as markdownHeadings from "./markdown/headings"
+import * as markdownImages from "./markdown/images"
+import * as markdownLinks from "./markdown/links"
+import * as tikibaseConfig from "./tikibase/config-file"
 
 export function createCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
-  tikiConfig: configuration.Tikibase | undefined
+  tikiConfig: tikibaseConfig.Data | undefined
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
@@ -25,7 +26,7 @@ export function createCompletionProvider(
             titleRE: tikiConfig?.titleRegex(),
             wsRoot: workspacePath
           })
-          return mdItems.concat(await completionItems(footnotes.inText(document.getText())))
+          return mdItems.concat(await completionItems(markdownFootnotes.find(document.getText())))
         case AutocompleteType.IMG:
           return imgCompletionItems({ debug, documentDir, startTime, wsRoot: workspacePath })
         case AutocompleteType.HEADING:
@@ -89,7 +90,7 @@ async function headingCompletionItems(
     wsRoot: args.wsRoot
   })
   const existingHeadings: Set<string> = new Set()
-  headings.inFile(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
+  markdownHeadings.find(vscode.window.activeTextEditor?.document.getText() || "", existingHeadings)
   const missingHeadings = allHeadings.filter((heading) => !existingHeadings.has(heading))
   return completionItems(removeFirstChars(missingHeadings))
 }
@@ -106,7 +107,7 @@ async function headingsInFiles(args: {
   )
   const headingsAcc: Set<string> = new Set()
   for (const mdFile of mdFiles) {
-    headings.inFile(await mdFile.content, headingsAcc)
+    markdownHeadings.find(await mdFile.content, headingsAcc)
   }
   args.debug.appendLine(`${new Date().getTime() - args.startTime}ms  loaded and parsed headings`)
   const result: string[] = []
@@ -141,7 +142,7 @@ async function mdCompletionItems(args: {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
-    const link = links.markdown({
+    const link = markdownLinks.create({
       filePath,
       fileContent: await mdFile.content,
       debug: args.debug,
@@ -174,7 +175,7 @@ async function imgCompletionItems(args: {
       : filename
     result.push(
       new vscode.CompletionItem(
-        links.image(filePath).substring(1),
+        markdownImages.create(filePath).substring(1),
         vscode.CompletionItemKind.Text
       )
     )
@@ -185,7 +186,7 @@ async function imgCompletionItems(args: {
 
 async function loadConfiguredSections(documentDir: string): Promise<string[] | undefined> {
   for (const dir of descendTree(documentDir)) {
-    const config = await configuration.tikibase(dir)
+    const config = await tikibaseConfig.load(dir)
     const sections = config?.sections()
     if (sections) {
       return sections

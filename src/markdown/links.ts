@@ -1,16 +1,10 @@
 import * as vscode from "vscode"
-
-import * as line from "../helpers/line"
+import * as line from "../text/lines"
 
 // helper functions for Markdown links
 
-/** creates a Markdown link to the given image */
-export function image(fileName: string): string {
-  return `[](${fileName})`
-}
-
 /** creates a Markdown link to the file with the given name and content */
-export function markdown(args: {
+export function create(args: {
   /** vscode debug channel to print user guidance if the titleRE is wrong */
   debug?: vscode.OutputChannel | null
   fileContent: string
@@ -44,7 +38,55 @@ export function markdown(args: {
   return `[${match[1]}](${args.filePath})`
 }
 
-/** removes all links in the given Markdown text*/
+/** provides the target of the Markdown link around the given cursor position in the given text */
+export function extractTarget(lineText: string, cursorColumn: number): string | undefined {
+  // go left from the cursor until we find the beginning of the Markdown link
+  let start = cursorColumn
+  while (start >= 0 && lineText[start] !== "[") {
+    start--
+  }
+  if (start === -1) {
+    // didn't find the link beginning on the left of the cursor --> search to the right
+    start = cursorColumn
+    while (start <= lineText.length && lineText[start] !== "[") {
+      start++
+    }
+  }
+  if (start === lineText.length + 1) {
+    return
+  }
+  // keep going right until we find the start of the URL segment of the Markdown link
+  while (start <= lineText.length && lineText[start] !== "(") {
+    start++
+  }
+  if (start === lineText.length + 1) {
+    return
+  }
+  // keep going right until we find the end of the URL segment of the Markdown link
+  let end = start
+  while (end <= lineText.length && lineText[end] !== ")") {
+    end++
+  }
+  if (end === lineText.length + 1) {
+    return
+  }
+  return lineText.substring(start + 1, end)
+}
+
+/** provides the position where the first link with the given target occurs in the given text */
+export function locate(
+  args: { target: string; text: string }
+): vscode.Position | undefined {
+  const re = new RegExp(`\\[[^\\]]*\\]\\(${args.target}\\)`)
+  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
+    const match = re.exec(line)
+    if (match) {
+      return new vscode.Position(i, match.index)
+    }
+  }
+}
+
+/** removes all links from the given Markdown text*/
 export function remove(text: string): string {
   for (const match of text.match(linkRE) || []) {
     text = text.replace(match, titleRE.exec(match)?.[1] || "")

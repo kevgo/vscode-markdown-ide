@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as configuration from "../configuration"
-import * as files from "../helpers/files"
+import * as files from "./files"
+import * as workspace from "./workspace"
 
 /**
  * VSCode ReferenceProvider implementation for Markdown files
@@ -14,7 +14,7 @@ export class MarkdownReferenceProvider implements vscode.ReferenceProvider {
     _reference: vscode.ReferenceContext,
     _token: vscode.CancellationToken
   ): Promise<vscode.Location[]> {
-    const workspacePath = configuration.workspacePath()
+    const workspacePath = workspace.path()
     if (!workspacePath) {
       return []
     }

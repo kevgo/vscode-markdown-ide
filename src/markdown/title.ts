@@ -1,4 +1,4 @@
-export function changeMdTitle(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
+export function change(args: { eol: string; newTitle: string; oldTitle: string; text: string }): string {
   const lines = args.text.split(args.eol)
   const oldTitleLine = `# ${args.oldTitle}`
   for (let i = 0; i < lines.length; i++) {

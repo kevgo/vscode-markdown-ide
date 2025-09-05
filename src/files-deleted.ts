@@ -1,16 +1,16 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as configuration from "./configuration"
-import * as files from "./helpers/files"
-import * as line from "./helpers/line"
-import * as links from "./helpers/links"
+import * as files from "./files"
+import * as markdownLinks from "./markdown/links"
+import * as textLines from "./text/lines"
+import * as workspace from "./workspace"
 
 export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
-  const wsRoot = configuration.workspacePath()
+  const wsRoot = workspace.path()
   if (!wsRoot) {
     return
   }
@@ -28,13 +28,13 @@ export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promis
       const fullPath = path.join(wsRoot, mdFile.filePath)
       const fullDir = path.dirname(fullPath)
       for (const deletedFile of deletedEvent.files) {
-        newContent = links.removeWithTarget({
+        newContent = markdownLinks.removeWithTarget({
           text: newContent,
           target: path.relative(fullDir, deletedFile.fsPath)
         })
       }
       if (newContent !== oldContent) {
-        const range = new vscode.Range(0, 0, line.count(oldContent), 0)
+        const range = new vscode.Range(0, 0, textLines.count(oldContent), 0)
         edit.replace(vscode.Uri.file(fullPath), range, newContent)
       }
     }
