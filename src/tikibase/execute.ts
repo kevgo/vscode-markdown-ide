@@ -31,6 +31,7 @@ function exec(
 
 /** organizes the given Tikibase messages in the structure VSCode needs */
 export function groupByFile(messages: Message[]): Map<string, Message[]> {
+  // TODO: use a newtype to describe the details of the quite complex return type
   const result: Map<string, Message[]> = new Map()
   for (const message of messages) {
     const messagesForFile = result.get(message.file)
