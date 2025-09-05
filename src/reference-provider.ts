@@ -1,8 +1,8 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as files from "./helpers/files"
-import * as workspace from "./helpers/workspace"
+import * as files from "./filesystem/files"
 import * as configuration from "./tikibase/config-file"
+import * as workspace from "./workspace"
 
 /**
  * VSCode ReferenceProvider implementation for Markdown files

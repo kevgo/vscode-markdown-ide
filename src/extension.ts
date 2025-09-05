@@ -5,11 +5,11 @@ import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
-import * as workspace from "./helpers/workspace"
 import { MarkdownReferenceProvider } from "./reference-provider"
 import { MarkdownRenameProvider } from "./rename-provider"
 import * as configuration from "./tikibase/config-file"
 import * as tikibase from "./tikibase/execute"
+import * as workspace from "./workspace"
 
 export let debug: vscode.OutputChannel
 
