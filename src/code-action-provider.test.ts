@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import { mdFileName } from "./tikibase-provider"
+import { mdFileName } from "./code-action-provider"
 
 suite("mdFileName", function() {
   test("normal", function() {

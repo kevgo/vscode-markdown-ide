@@ -1,7 +1,6 @@
 import * as vscode from "vscode"
-
 import { createCompletionProvider } from "./autocomplete/provider"
-import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action/tikibase-provider"
+import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action-provider"
 import * as configuration from "./configuration"
 import * as fileSaved from "./file-saved/file-saved"
 import { filesDeleted } from "./files-deleted"
