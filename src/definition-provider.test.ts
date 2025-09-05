@@ -8,7 +8,7 @@ import {
   isWebLink,
   locateLinkWithTarget,
   splitAnchor
-} from "./follow-bidi-link"
+} from "./definition-provider"
 
 suite("follow-bidi-link", function() {
   test("extractLinkTarget", function() {
