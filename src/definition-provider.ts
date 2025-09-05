@@ -3,7 +3,7 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as line from "./text/line"
+import * as line from "./text/lines"
 import { Tikibase } from "./tikibase/config-file"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {

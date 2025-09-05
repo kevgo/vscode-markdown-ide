@@ -1,6 +1,6 @@
 import { strict as assert } from "assert"
 
-import * as line from "./line"
+import * as line from "./lines"
 
 suite("count", function() {
   const tests = {

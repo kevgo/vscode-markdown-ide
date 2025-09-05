@@ -5,7 +5,7 @@ import * as files from "./filesystem/files"
 import * as markdownFootnotes from "./markdown/footnotes"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownImages from "./markdown/images"
-import * as links from "./text/links"
+import * as links from "./markdown/links"
 import * as configuration from "./tikibase/config-file"
 
 export function createCompletionProvider(

@@ -2,8 +2,8 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as files from "./filesystem/files"
-import * as line from "./text/line"
-import * as links from "./text/links"
+import * as links from "./markdown/links"
+import * as line from "./text/lines"
 import * as workspace from "./workspace"
 
 export async function filesDeleted(deletedEvent: vscode.FileDeleteEvent): Promise<void> {
