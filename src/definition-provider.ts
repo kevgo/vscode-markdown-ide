@@ -4,7 +4,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 import * as line from "./text/lines"
 import { Data } from "./tikibase/config-file"
-import * as anchor from "./urls/anchor"
+import * as urls from "./urls/urls"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   private tikiConfig: Data | undefined
@@ -19,11 +19,11 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   ): Promise<vscode.Definition | vscode.DefinitionLink[]> {
     const oldFilePath = document.fileName
     const linkTarget = extractLinkTarget(document.lineAt(position.line).text, position.character)
-    if (!linkTarget || isWebLink(linkTarget)) {
+    if (!linkTarget || urls.isWebLink(linkTarget)) {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
-    const [newFileName, target] = anchor.split(linkTarget)
+    const [newFileName, target] = urls.splitAnchor(linkTarget)
     const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     let newCursor: vscode.Position | undefined
@@ -132,8 +132,3 @@ export function extractUrl(lineText: string, cursorColumn: number): string | und
 }
 /** characters that mark the end of a URL */
 const urlEnds = [" ", "\n"]
-
-/** indicates whether the given */
-export function isWebLink(text: string): boolean {
-  return text.startsWith("https://") || text.startsWith("http://")
-}

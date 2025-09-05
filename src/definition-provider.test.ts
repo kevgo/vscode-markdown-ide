@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import * as vscode from "vscode"
-
 import * as definitionProvider from "./definition-provider"
+import * as urls from "./urls/urls"
 
 suite("follow-bidi-link", function() {
   test("extractLinkTarget", function() {
@@ -39,7 +39,7 @@ suite("follow-bidi-link", function() {
       "httpsfile.md": false
     }
     for (const [give, want] of Object.entries(tests)) {
-      const have = definitionProvider.isWebLink(give)
+      const have = urls.isWebLink(give)
       assert.equal(have, want, `${give} --> ${have}`)
     }
   })

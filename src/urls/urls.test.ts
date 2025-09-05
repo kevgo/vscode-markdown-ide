@@ -1,5 +1,5 @@
 import { strict as assert } from "assert"
-import * as anchor from "./anchor"
+import * as anchor from "./urls"
 
 suite("anchor", function() {
   suite("splitAnchor", function() {
@@ -10,7 +10,7 @@ suite("anchor", function() {
     }
     for (const [give, want] of Object.entries(tests)) {
       test(`${give} --> ${want}`, function() {
-        const have = anchor.split(give)
+        const have = anchor.splitAnchor(give)
         assert.deepEqual(have, want)
       })
     }
