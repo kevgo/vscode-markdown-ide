@@ -58,7 +58,7 @@ Local installation:
 - assemble the frames into an animated GIF
 
   ```bash
-  convert \
+  magick \
     -delay 100 01.png \
     -delay 50 02.png \
     -delay 50 03.png \
