@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as tiki from "../tikibase"
+import * as tiki from "./tikibase"
 
 /** provides a callback function to provide to vscode.workspace.onDidSaveTextDocument */
 export function createCallback(
@@ -51,7 +51,7 @@ export function groupByFile(messages: tiki.Message[]): Map<string, tiki.Message[
   return result
 }
 
-export function fixability(fixable: boolean): string {
+function fixability(fixable: boolean): string {
   if (fixable) {
     return "fixable"
   } else {
