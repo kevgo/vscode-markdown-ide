@@ -29,7 +29,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     let newCursor: vscode.Position | undefined
     if (!this.tikiConfig?.bidiLinks() && target) {
-      newCursor = locateAnchor({ target, text: newFileContent })
+      newCursor = markdownHeadings.locateAnchor({ target, text: newFileContent })
     }
     if (!newCursor) {
       newCursor = markdownLinks.locate({ target: oldFileName, text: newFileContent })
@@ -38,14 +38,5 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       newCursor = new vscode.Position(0, 0)
     }
     return new vscode.Location(vscode.Uri.file(newFilePath), newCursor)
-  }
-}
-
-/** provides the line in the given text to which the given target points */
-export function locateAnchor(args: { target: string; text: string }): vscode.Position | undefined {
-  for (const [i, line] of args.text.split(/\r?\n/).entries()) {
-    if (markdownHeadings.matchesTarget({ line, target: args.target })) {
-      return new vscode.Position(i, 0)
-    }
   }
 }
