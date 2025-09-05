@@ -4,7 +4,7 @@ import * as line from "./line"
 // helper functions for Markdown links
 
 /** creates a Markdown link to the file with the given name and content */
-export function link(args: {
+export function create(args: {
   /** vscode debug channel to print user guidance if the titleRE is wrong */
   debug?: vscode.OutputChannel | null
   fileContent: string
@@ -38,7 +38,7 @@ export function link(args: {
   return `[${match[1]}](${args.filePath})`
 }
 
-/** removes all links in the given Markdown text*/
+/** removes all links from the given Markdown text*/
 export function remove(text: string): string {
   for (const match of text.match(linkRE) || []) {
     text = text.replace(match, titleRE.exec(match)?.[1] || "")

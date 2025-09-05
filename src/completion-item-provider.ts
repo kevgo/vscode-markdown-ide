@@ -142,7 +142,7 @@ async function mdCompletionItems(args: {
     const filePath = args.documentDir !== args.wsRoot
       ? path.relative(args.documentDir, path.join(args.wsRoot, mdFile.filePath))
       : mdFile.filePath
-    const link = links.link({
+    const link = links.create({
       filePath,
       fileContent: await mdFile.content,
       debug: args.debug,
