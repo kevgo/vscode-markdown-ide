@@ -1,13 +1,7 @@
 import * as vscode from "vscode"
-
 import * as line from "../helpers/line"
 
 // helper functions for Markdown links
-
-/** creates a Markdown link to the given image */
-export function image(fileName: string): string {
-  return `[](${fileName})`
-}
 
 /** creates a Markdown link to the file with the given name and content */
 export function link(args: {

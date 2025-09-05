@@ -173,7 +173,7 @@ async function imgCompletionItems(args: {
       : filename
     result.push(
       new vscode.CompletionItem(
-        links.image(filePath).substring(1),
+        markdown.createImage(filePath).substring(1),
         vscode.CompletionItemKind.Text
       )
     )
