@@ -158,6 +158,12 @@ When selecting text that is also the title of an existing note, Markdown IDE
 offers a code action that replaces the selection with a link to the respective
 note.
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/link-to-note-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/link-to-note-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/link-to-note-light.gif">
+</picture>
+
 ## Tikibase support
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
