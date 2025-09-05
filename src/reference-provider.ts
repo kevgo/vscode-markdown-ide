@@ -1,6 +1,6 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as files from "./filesystem/files"
+import * as files from "./files"
 import * as configuration from "./tikibase/config-file"
 import * as workspace from "./workspace"
 

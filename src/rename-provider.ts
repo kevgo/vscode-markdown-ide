@@ -1,6 +1,6 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as files from "./filesystem/files"
+import * as files from "./files"
 import * as links from "./markdown/links"
 import * as markdownTitle from "./markdown/title"
 import { eol2string } from "./text/eol_to_string"

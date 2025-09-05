@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 
-import * as files from "./filesystem/files"
+import * as files from "./files"
 import * as links from "./markdown/links"
 import * as line from "./text/lines"
 import * as workspace from "./workspace"
