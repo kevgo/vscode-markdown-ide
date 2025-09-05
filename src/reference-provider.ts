@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import * as configuration from "../configuration"
-import * as files from "../helpers/files"
+import * as configuration from "./configuration"
+import * as files from "./helpers/files"
 
 /**
  * VSCode ReferenceProvider implementation for Markdown files
