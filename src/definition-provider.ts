@@ -2,9 +2,9 @@ import slugify from "@sindresorhus/slugify"
 import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
-
 import * as line from "./text/lines"
 import { Data } from "./tikibase/config-file"
+import * as anchor from "./urls/anchor"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
   private tikiConfig: Data | undefined
@@ -23,7 +23,7 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       return []
     }
     const oldFileName = path.basename(oldFilePath)
-    const [newFileName, target] = splitAnchor(linkTarget)
+    const [newFileName, target] = anchor.split(linkTarget)
     const newFilePath = path.resolve(path.dirname(oldFilePath), newFileName)
     const newFileContent = await fs.readFile(newFilePath, "utf-8")
     let newCursor: vscode.Position | undefined
@@ -136,13 +136,4 @@ const urlEnds = [" ", "\n"]
 /** indicates whether the given */
 export function isWebLink(text: string): boolean {
   return text.startsWith("https://") || text.startsWith("http://")
-}
-
-/** splits off the anchor portion from the given link */
-export function splitAnchor(link: string): [string, string] {
-  const pos = link.indexOf("#")
-  if (pos === -1) {
-    return [link, ""]
-  }
-  return [link.substring(0, pos), link.substring(pos + 1, link.length)]
 }
