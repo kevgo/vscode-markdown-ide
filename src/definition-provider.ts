@@ -1,7 +1,7 @@
-import slugify from "@sindresorhus/slugify"
 import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
+import * as markdownHeadings from "./markdown/headings"
 import * as markdownLinks from "./markdown/links"
 import * as line from "./text/lines"
 import { Data } from "./tikibase/config-file"
@@ -44,17 +44,8 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
 /** provides the line in the given text to which the given target points */
 export function locateAnchor(args: { target: string; text: string }): vscode.Position | undefined {
   for (const [i, line] of args.text.split(/\r?\n/).entries()) {
-    if (isHeadingMatchingTarget({ line, target: args.target })) {
+    if (markdownHeadings.matchesTarget({ line, target: args.target })) {
       return new vscode.Position(i, 0)
     }
   }
-}
-
-/** indicates whether this line matches the given link target */
-export function isHeadingMatchingTarget(args: { line: string; target: string }): boolean {
-  if (!args.line.startsWith("#")) {
-    return false
-  }
-  const slug = slugify(line.removeLeadingPounds(args.line).trim())
-  return slug === args.target
 }

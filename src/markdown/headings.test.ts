@@ -17,4 +17,20 @@ text`
     headings.find(give, have)
     assert.deepEqual(have, want)
   })
+
+  suite("matchesTarget", function() {
+    const tests = {
+      "# heading 2": true,
+      "### heading 2": true,
+      "# heading 1": false,
+      "### heading 3": false,
+      "heading 2": false
+    }
+    for (const [give, want] of Object.entries(tests)) {
+      test(`${give} --> ${want}`, function() {
+        const have = headings.matchesTarget({ line: give, target: "heading-2" })
+        assert.equal(have, want)
+      })
+    }
+  })
 })
