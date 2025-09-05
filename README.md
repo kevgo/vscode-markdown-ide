@@ -108,7 +108,11 @@ document always moves the cursor to the first backreference to the file you came
 from. If bi-directional links are not activated, it jumps to the linked heading
 within the target document.
 
-![demo of the "go to definition" feature](https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition.gif)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition-dark.gif">
+  <img alt="demo of the go-to-definition feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/go-to-definition-light.gif">
+</picture>
 
 ## find all references
 
