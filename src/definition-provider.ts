@@ -3,14 +3,13 @@ import * as path from "path"
 import * as vscode from "vscode"
 import * as markdownHeadings from "./markdown/headings"
 import * as markdownLinks from "./markdown/links"
-import * as line from "./text/lines"
-import { Data } from "./tikibase/config-file"
+import * as tikibaseConfig from "./tikibase/config-file"
 import * as urls from "./urls/urls"
 
 export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
-  private tikiConfig: Data | undefined
+  private tikiConfig: tikibaseConfig.Data | undefined
 
-  constructor(config: Data | undefined) {
+  constructor(config: tikibaseConfig.Data | undefined) {
     this.tikiConfig = config
   }
 
