@@ -2,9 +2,9 @@ import * as childProcess from "child_process"
 import * as vscode from "vscode"
 
 /** executes "tikibase check" and provides the identified issues */
-export async function check(dir: string, debug: vscode.OutputChannel): Promise<Message[]> {
+export async function check(dir: string, debug: vscode.OutputChannel): Promise<Map<string, Message[]>> {
   const output = await exec({ argv: ["--format=json", "check"], execOpts: { cwd: dir }, debug })
-  return parseOutput(output, debug)
+  return groupByFile(parseOutput(output, debug))
 }
 
 export async function fix(dir: string, debug: vscode.OutputChannel): Promise<void> {

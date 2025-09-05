@@ -14,7 +14,7 @@ export function createCallback(
     // and avoid flickering on screen
     const output = await tikibaseExec.check(args.workspacePath, args.debug)
     const files_diagnostics: Map<vscode.Uri, vscode.Diagnostic[]> = new Map()
-    for (const [file, messages] of tikibaseExec.groupByFile(output)) {
+    for (const [file, messages] of output) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         if (message.line === undefined || message.start === undefined || message.end === undefined) {
