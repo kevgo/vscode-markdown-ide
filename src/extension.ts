@@ -48,6 +48,30 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   // "go to definition", "find all references"
   vscode.languages.registerDefinitionProvider("markdown", new MarkdownDefinitionProvider(tikiConfig))
 
+  // "extract title" refactor
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      TikibaseProvider.extractTitleCommandName,
+      extractNoteTitle
+    )
+  )
+
+  // "extract body" refactor
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      TikibaseProvider.extractBodyCommandName,
+      extractNoteBody
+    )
+  )
+
+  // "link to note" refactor
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      TikibaseProvider.linkToNoteCommandName,
+      linkToNote
+    )
+  )
+
   if (tikiConfig) {
     vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
 
@@ -75,30 +99,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
           await tikibase.fix(workspacePath, debug)
           await runTikibaseCheck()
         }
-      )
-    )
-
-    // "extract title" refactor
-    context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.extractTitleCommandName,
-        extractNoteTitle
-      )
-    )
-
-    // "extract body" refactor
-    context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.extractBodyCommandName,
-        extractNoteBody
-      )
-    )
-
-    // "link to note" refactor
-    context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.linkToNoteCommandName,
-        linkToNote
       )
     )
 
