@@ -1,11 +1,11 @@
 import * as path from "path"
 import * as vscode from "vscode"
-import { changeMdTitle } from "./helpers/change_md_title"
 import { eol2string } from "./helpers/eol_to_string"
 import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 import * as workspace from "./helpers/workspace"
+import { changeTitle } from "./markdown/change_title"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
@@ -62,7 +62,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     }
 
     // Update the title in the current document
-    const newText = changeMdTitle({
+    const newText = changeTitle({
       eol: eol2string(document.eol),
       newTitle: newName,
       oldTitle,
