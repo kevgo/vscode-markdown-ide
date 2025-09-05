@@ -1,7 +1,6 @@
 import { strict as assert } from "assert"
 
-import { groupByFile } from "./files-saved"
-import * as tiki from "./tikibase/execute"
+import * as tiki from "./execute"
 
 suite("groupByFile", function() {
   test("works", function() {
@@ -27,7 +26,7 @@ suite("groupByFile", function() {
       end: 22,
       fixable: false
     }]
-    const have = groupByFile(give)
+    const have = tiki.groupByFile(give)
     const want = new Map()
     want.set("1.md", [{
       file: "1.md",

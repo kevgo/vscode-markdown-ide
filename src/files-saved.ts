@@ -14,7 +14,7 @@ export function createCallback(
     // and avoid flickering on screen
     const output = await tiki.check(args.workspacePath, args.debug)
     const files_diagnostics: Map<vscode.Uri, vscode.Diagnostic[]> = new Map()
-    for (const [file, messages] of groupByFile(output)) {
+    for (const [file, messages] of tiki.groupByFile(output)) {
       const diagnostics: vscode.Diagnostic[] = []
       for (const message of messages) {
         if (message.line === undefined || message.start === undefined || message.end === undefined) {
@@ -35,20 +35,6 @@ export function createCallback(
       diagnosticsCollection.set(uri, diag)
     }
   }
-}
-
-/** organizes the given Tikibase messages in the structure VSCode needs */
-export function groupByFile(messages: tiki.Message[]): Map<string, tiki.Message[]> {
-  const result: Map<string, tiki.Message[]> = new Map()
-  for (const message of messages) {
-    const messagesForFile = result.get(message.file)
-    if (messagesForFile) {
-      messagesForFile.push(message)
-    } else {
-      result.set(message.file, [message])
-    }
-  }
-  return result
 }
 
 function fixability(fixable: boolean): string {

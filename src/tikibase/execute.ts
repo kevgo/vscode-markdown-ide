@@ -29,6 +29,20 @@ function exec(
   })
 }
 
+/** organizes the given Tikibase messages in the structure VSCode needs */
+export function groupByFile(messages: Message[]): Map<string, Message[]> {
+  const result: Map<string, Message[]> = new Map()
+  for (const message of messages) {
+    const messagesForFile = result.get(message.file)
+    if (messagesForFile) {
+      messagesForFile.push(message)
+    } else {
+      result.set(message.file, [message])
+    }
+  }
+  return result
+}
+
 /** parses the given Tikibase output into TS structures */
 function parseOutput(output: string, debug?: vscode.OutputChannel): Message[] {
   try {
