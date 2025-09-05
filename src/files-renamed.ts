@@ -4,13 +4,13 @@ import * as vscode from "vscode"
 import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
-import * as configuration from "./tikibase/config-file"
+import * as workspace from "./helpers/workspace"
 
 export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
   await vscode.workspace.saveAll(false)
 
-  const wsRoot = configuration.workspacePath()
+  const wsRoot = workspace.path()
   if (!wsRoot) {
     return
   }

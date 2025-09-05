@@ -5,7 +5,7 @@ import { eol2string } from "./helpers/eol_to_string"
 import * as files from "./helpers/files"
 import * as line from "./helpers/line"
 import * as links from "./helpers/links"
-import * as configuration from "./tikibase/config-file"
+import * as workspace from "./helpers/workspace"
 
 export class MarkdownRenameProvider implements vscode.RenameProvider {
   prepareRename(
@@ -47,7 +47,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
     newName: string,
     token: vscode.CancellationToken
   ): Promise<vscode.WorkspaceEdit | null> {
-    const wsRoot = configuration.workspacePath()
+    const wsRoot = workspace.path()
     if (!wsRoot) {
       return null
     }

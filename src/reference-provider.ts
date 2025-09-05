@@ -1,6 +1,7 @@
 import * as path from "path"
 import * as vscode from "vscode"
 import * as files from "./helpers/files"
+import * as workspace from "./helpers/workspace"
 import * as configuration from "./tikibase/config-file"
 
 /**
@@ -14,7 +15,7 @@ export class MarkdownReferenceProvider implements vscode.ReferenceProvider {
     _reference: vscode.ReferenceContext,
     _token: vscode.CancellationToken
   ): Promise<vscode.Location[]> {
-    const workspacePath = configuration.workspacePath()
+    const workspacePath = workspace.path()
     if (!workspacePath) {
       return []
     }

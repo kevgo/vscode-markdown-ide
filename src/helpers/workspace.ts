@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 /** provides the active VSCode workspace path */
-export function workspacePath(): string | undefined {
+export function path(): string | undefined {
   const currentFilePath = vscode.window.activeTextEditor?.document.uri.fsPath
   if (currentFilePath) {
     for (const wsFolder of vscode.workspace.workspaceFolders || []) {
