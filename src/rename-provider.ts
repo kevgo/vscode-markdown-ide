@@ -1,9 +1,9 @@
 import * as path from "path"
 import * as vscode from "vscode"
 import * as files from "./files"
-import * as links from "./markdown/links"
+import * as markdownLinks from "./markdown/links"
 import * as markdownTitle from "./markdown/title"
-import { eol2string } from "./text/eol_to_string"
+import * as eol from "./text/eol"
 import * as line from "./text/lines"
 import * as workspace from "./workspace"
 
@@ -63,7 +63,7 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
 
     // Update the title in the current document
     const newText = markdownTitle.change({
-      eol: eol2string(document.eol),
+      eol: eol.toString(document.eol),
       newTitle: newName,
       oldTitle,
       text: document.getText()
@@ -84,7 +84,12 @@ export class MarkdownRenameProvider implements vscode.RenameProvider {
       const filePath = path.join(wsRoot, file.filePath)
       const pathToActive = path.relative(path.dirname(filePath), document.fileName)
       const oldContent = await file.content
-      const newContent = links.replaceTitle({ text: oldContent, oldTitle, target: pathToActive, newTitle: newName })
+      const newContent = markdownLinks.replaceTitle({
+        text: oldContent,
+        oldTitle,
+        target: pathToActive,
+        newTitle: newName
+      })
       if (newContent === oldContent) {
         continue
       }
