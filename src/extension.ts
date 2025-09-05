@@ -7,7 +7,7 @@ import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
 import { MarkdownReferenceProvider } from "./reference-provider"
 import { MarkdownRenameProvider } from "./rename-provider"
-import * as tikibaseConfigFile from "./tikibase/config-file"
+import * as tikibaseConfig from "./tikibase/config-file"
 import * as tikibase from "./tikibase/execute"
 import * as workspace from "./workspace"
 
@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   }
   debug = vscode.window.createOutputChannel("Markdown IDE")
   debug.appendLine("Markdown IDE activated")
-  const tikiConfig = await tikibaseConfigFile.load(workspacePath)
+  const tikiConfig = await tikibaseConfig.load(workspacePath)
 
   // autocomplete links by typing `[`
   const completionProvider = createCompletionProvider(debug, workspacePath, tikiConfig)
