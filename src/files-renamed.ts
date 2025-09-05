@@ -2,9 +2,9 @@ import * as path from "path"
 import * as vscode from "vscode"
 
 import * as files from "./helpers/files"
-import * as line from "./helpers/line"
 import * as links from "./helpers/links"
 import * as workspace from "./helpers/workspace"
+import * as line from "./text/line"
 
 export async function filesRenamed(renamedEvent: vscode.FileRenameEvent): Promise<void> {
   // flush all open changes to the filesystem since we are reading files below
