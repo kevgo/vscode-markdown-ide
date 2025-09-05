@@ -11,7 +11,7 @@ import * as tikibaseConfigFile from "./tikibase/config-file"
 export function createCompletionProvider(
   debug: vscode.OutputChannel,
   workspacePath: string,
-  tikiConfig: tikibaseConfigFile.Config | undefined
+  tikiConfig: tikibaseConfigFile.Data | undefined
 ): vscode.CompletionItemProvider {
   return {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {

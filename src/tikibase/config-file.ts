@@ -2,41 +2,43 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
-export interface Data {
+/** the data as it is stored in the configuration file */
+export interface Raw {
   bidiLinks?: boolean
   sections?: string[]
   titleRegEx?: string
 }
 
-export class Config {
-  private data: Data
+/** provides high-level access to Tikibase configuration data */
+export class Data {
+  private raw: Raw
 
-  constructor(data: Data) {
-    this.data = data
+  constructor(raw: Raw) {
+    this.raw = raw
   }
 
   bidiLinks(): boolean {
-    return this.data.bidiLinks ?? false
+    return this.raw.bidiLinks ?? false
   }
 
   sections(): string[] | undefined {
-    return this.data.sections
+    return this.raw.sections
   }
 
   /** provides the titleRegEx setting as a proper regular expression */
   titleRegex(): RegExp | undefined {
-    if (this.data.titleRegEx) {
+    if (this.raw.titleRegEx) {
       try {
-        return new RegExp(this.data.titleRegEx)
+        return new RegExp(this.raw.titleRegEx)
       } catch (e) {
-        void vscode.window.showErrorMessage(`error parsing the regex "${this.data.titleRegEx}": ${e}`)
+        void vscode.window.showErrorMessage(`error parsing the regex "${this.raw.titleRegEx}": ${e}`)
       }
     }
   }
 }
 
 /** provides the Tikibase configuration */
-export async function load(wsRoot: string): Promise<Config | undefined> {
+export async function load(wsRoot: string): Promise<Data | undefined> {
   let text = ""
   try {
     text = await fs.readFile(path.join(wsRoot, "tikibase.json"), "utf8")
@@ -44,7 +46,7 @@ export async function load(wsRoot: string): Promise<Config | undefined> {
     return
   }
   try {
-    return new Config(JSON.parse(text) as Data)
+    return new Data(JSON.parse(text) as Raw)
   } catch (e) {
     await vscode.window.showErrorMessage(`file tikibase.json contains invalid JSON: ${e}`)
   }
