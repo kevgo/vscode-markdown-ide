@@ -203,9 +203,8 @@ By default, an auto-completed link looks like this:
 Consider the [Gross Domestic Product (GDP)](gross-domestic-product.md)
 ```
 
-That’s pretty verbose and feels repetitive. Instead, let's just use the
-abbreviation `GDP` as the link title. To make this happen, add the following to
-**tikibase.json**:
+That's verbose and repetitive. Instead, let's just use the abbreviation `GDP` as
+the link title. To make this happen, add the following to **tikibase.json**:
 
 ```json
 {
