@@ -1,5 +1,5 @@
 import * as vscode from "vscode"
-import { TikibaseProvider } from "./code-action-provider"
+import { MdCodeActionsProvider } from "./code-action-provider"
 import * as commands from "./commands"
 import { createCompletionProvider } from "./completion-item-provider"
 import { MarkdownDefinitionProvider } from "./definition-provider"
@@ -65,6 +65,15 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.commands.registerCommand(commands.linkToNote, refactor.linkToNote)
   )
 
+  // code actions
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      "markdown",
+      new MdCodeActionsProvider(),
+      { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.RefactorExtract] }
+    )
+  )
+
   if (tikiConfig) {
     vscode.window.setStatusBarMessage("Markdown IDE: Tikibase mode", 10000)
 
@@ -77,14 +86,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       await tikibase.fix(workspacePath, debug)
     }))
 
-    // "tikibase fix" code action
-    context.subscriptions.push(
-      vscode.languages.registerCodeActionsProvider(
-        "markdown",
-        new TikibaseProvider(),
-        { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.RefactorExtract] }
-      )
-    )
     context.subscriptions.push(
       vscode.commands.registerCommand(commands.autofix, async () => {
         await tikibase.fix(workspacePath, debug)

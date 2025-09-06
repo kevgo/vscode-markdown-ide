@@ -4,7 +4,7 @@ import * as vscode from "vscode"
 import * as commands from "./commands"
 import * as files from "./files"
 
-export class TikibaseProvider implements vscode.CodeActionProvider {
+export class MdCodeActionsProvider implements vscode.CodeActionProvider {
   async provideCodeActions(
     document: vscode.TextDocument,
     range: vscode.Range | vscode.Selection,
