@@ -1,5 +1,5 @@
 import * as vscode from "vscode"
-import { CodeActionsProvider } from "./code-action-provider"
+import { MdCodeActionsProvider } from "./code-action-provider"
 import * as commands from "./commands"
 import { createCompletionProvider } from "./completion-item-provider"
 import { MarkdownDefinitionProvider } from "./definition-provider"
@@ -69,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
       "markdown",
-      new CodeActionsProvider(),
+      new MdCodeActionsProvider(),
       { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.RefactorExtract] }
     )
   )
