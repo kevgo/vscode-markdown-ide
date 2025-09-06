@@ -173,6 +173,12 @@ the identified issues in VSCode, and applies auto-fixes via
 [code actions](https://code.visualstudio.com/docs/editor/refactoring) or the
 [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
+</picture>
+
 ## configuration
 
 If present, Markdown IDE uses the `titleRegEx` setting in `tikibase.json` to
