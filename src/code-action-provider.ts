@@ -12,7 +12,7 @@ export class MdCodeActionsProvider implements vscode.CodeActionProvider {
   ): Promise<vscode.CodeAction[]> {
     const result: vscode.CodeAction[] = []
 
-    // "extract note" refactor
+    // "extract note" refactors
     if (!range.isEmpty) {
       if (range.isSingleLine) {
         const text = document.getText(range)
@@ -20,57 +20,72 @@ export class MdCodeActionsProvider implements vscode.CodeActionProvider {
         const filePath = path.join(path.dirname(document.fileName), fileName)
         const isFile = await files.isFile(filePath)
         if (isFile) {
-          // "link to note" refactor
-          const linkToFileAction = new vscode.CodeAction(
-            `link to ${fileName}`,
-            vscode.CodeActionKind.RefactorRewrite
-          )
-          linkToFileAction.command = {
-            command: commands.linkToNote,
-            title: "replace the selection with a link to the selected file"
-          }
-          result.push(linkToFileAction)
+          result.push(linkToFileAction(fileName))
         } else {
-          // "extract title" refactor
-          const extractTitleAction = new vscode.CodeAction(
-            `create ${fileName}`,
-            vscode.CodeActionKind.RefactorExtract
-          )
-          extractTitleAction.command = {
-            command: commands.extractTitle,
-            title: `create a new note with the filename "${fileName}"`
-          }
-          result.push(extractTitleAction)
+          result.push(extractTitleAction(fileName))
         }
       } else {
-        // "extract body" refactor
-        const extractBodyAction = new vscode.CodeAction(
-          "extract note with this content",
-          vscode.CodeActionKind.RefactorExtract
-        )
-        extractBodyAction.command = {
-          command: commands.extractBody,
-          title: "create a new note with the selected text as content"
-        }
-        result.push(extractBodyAction)
+        result.push(extractBodyAction())
       }
     }
 
     // provide autofixes for the fixable issues
     for (const diagnostic of context.diagnostics) {
-      if (diagnostic.code !== "tikibase.fixable") {
-        continue
+      if (diagnostic.code === "tikibase.fixable") {
+        result.push(autoFixAction(diagnostic))
       }
-      const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
-      action.command = {
-        command: commands.autofix,
-        title: "let Tikibase fix this and all other problems"
-      }
-      action.diagnostics = [diagnostic]
-      action.isPreferred = true
-      result.push(action)
     }
 
     return result
   }
+}
+
+// "link to note" refactor
+function linkToFileAction(fileName: string): vscode.CodeAction {
+  const result = new vscode.CodeAction(
+    `link to ${fileName}`,
+    vscode.CodeActionKind.RefactorRewrite
+  )
+  result.command = {
+    command: commands.linkToNote,
+    title: "replace the selection with a link to the selected file"
+  }
+  return result
+}
+
+// "extract title" refactor
+function extractTitleAction(fileName: string): vscode.CodeAction {
+  const result = new vscode.CodeAction(
+    `create ${fileName}`,
+    vscode.CodeActionKind.RefactorExtract
+  )
+  result.command = {
+    command: commands.extractTitle,
+    title: `create a new note with the filename "${fileName}"`
+  }
+  return result
+}
+
+// "extract body" refactor
+function extractBodyAction(): vscode.CodeAction {
+  const result = new vscode.CodeAction(
+    "extract note with this content",
+    vscode.CodeActionKind.RefactorExtract
+  )
+  result.command = {
+    command: commands.extractBody,
+    title: "create a new note with the selected text as content"
+  }
+  return result
+}
+
+function autoFixAction(diagnostic: vscode.Diagnostic): vscode.CodeAction {
+  const result = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
+  result.command = {
+    command: commands.autofix,
+    title: "let Tikibase fix this and all other problems"
+  }
+  result.diagnostics = [diagnostic]
+  result.isPreferred = true
+  return result
 }
