@@ -6,10 +6,9 @@ import * as vscode from "vscode"
 export const autofixCommandName = "vscode-markdown-ide.autofix"
 export const extractTitleCommandName = "vscode-markdown-ide.extractTitle"
 export const extractBodyCommandName = "vscode-markdown-ide.extractBody"
+export const linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
 export class TikibaseProvider implements vscode.CodeActionProvider {
-  public static readonly linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
-
   async provideCodeActions(
     document: vscode.TextDocument,
     range: vscode.Range | vscode.Selection,
@@ -37,7 +36,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
             vscode.CodeActionKind.RefactorRewrite
           )
           linkToFileAction.command = {
-            command: TikibaseProvider.linkToNoteCommandName,
+            command: linkToNoteCommandName,
             title: "replace the selection with a link to the selected file"
           }
           result.push(linkToFileAction)

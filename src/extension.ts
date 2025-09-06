@@ -6,6 +6,7 @@ import {
   extractNoteTitle,
   extractTitleCommandName,
   linkToNote,
+  linkToNoteCommandName,
   TikibaseProvider
 } from "./code-action-provider"
 import { createCompletionProvider } from "./completion-item-provider"
@@ -68,10 +69,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // "link to note" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.linkToNoteCommandName,
-      linkToNote
-    )
+    vscode.commands.registerCommand(linkToNoteCommandName, linkToNote)
   )
 
   if (tikiConfig) {
