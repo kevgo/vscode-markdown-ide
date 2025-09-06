@@ -2,10 +2,7 @@ import * as vscode from "vscode"
 import {
   autofixCommandName,
   extractBodyCommandName,
-  extractNoteBody,
-  extractNoteTitle,
   extractTitleCommandName,
-  linkToNote,
   linkToNoteCommandName,
   TikibaseProvider
 } from "./code-action-provider"
@@ -14,6 +11,7 @@ import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
+import * as refactor from "./refactors"
 import { MarkdownReferenceProvider } from "./reference-provider"
 import { MarkdownRenameProvider } from "./rename-provider"
 import * as tikibaseConfig from "./tikibase/config-file"
@@ -59,17 +57,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // "extract title" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(extractTitleCommandName, extractNoteTitle)
+    vscode.commands.registerCommand(extractTitleCommandName, refactor.extractNoteTitle)
   )
 
   // "extract body" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(extractBodyCommandName, extractNoteBody)
+    vscode.commands.registerCommand(extractBodyCommandName, refactor.extractNoteBody)
   )
 
   // "link to note" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(linkToNoteCommandName, linkToNote)
+    vscode.commands.registerCommand(linkToNoteCommandName, refactor.linkToNote)
   )
 
   if (tikiConfig) {

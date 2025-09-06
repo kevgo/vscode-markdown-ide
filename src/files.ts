@@ -1,3 +1,4 @@
+import slugify from "@sindresorhus/slugify"
 import { promises as fs } from "fs"
 import * as path from "path"
 
@@ -67,4 +68,13 @@ export function isImage(filename: string): boolean {
     }
   }
   return false
+}
+
+/** provides the filename for a note with the given title */
+export function mdFileName(title: string): string {
+  let result = `${slugify(title)}`
+  if (!result.endsWith(".md")) {
+    result = result + ".md"
+  }
+  return result
 }
