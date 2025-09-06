@@ -18,8 +18,7 @@ export class MdCodeActionsProvider implements vscode.CodeActionProvider {
         const text = document.getText(range)
         const fileName = files.mdFileName(text)
         const filePath = path.join(path.dirname(document.fileName), fileName)
-        const isFile = await files.isFile(filePath)
-        if (isFile) {
+        if (await files.isFile(filePath)) {
           result.push(linkToFileAction(fileName))
         } else {
           result.push(extractTitleAction(fileName))
