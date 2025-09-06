@@ -39,7 +39,6 @@ export class MdCodeActionsProvider implements vscode.CodeActionProvider {
   }
 }
 
-// "link to note" refactor
 function linkToFileAction(fileName: string): vscode.CodeAction {
   const result = new vscode.CodeAction(
     `link to ${fileName}`,
@@ -52,7 +51,6 @@ function linkToFileAction(fileName: string): vscode.CodeAction {
   return result
 }
 
-// "extract title" refactor
 function extractTitleAction(fileName: string): vscode.CodeAction {
   const result = new vscode.CodeAction(
     `create ${fileName}`,
@@ -65,7 +63,6 @@ function extractTitleAction(fileName: string): vscode.CodeAction {
   return result
 }
 
-// "extract body" refactor
 function extractBodyAction(): vscode.CodeAction {
   const result = new vscode.CodeAction(
     "extract note with this content",
