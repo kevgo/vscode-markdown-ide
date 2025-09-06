@@ -18,14 +18,8 @@ export class MdCodeActionsProvider implements vscode.CodeActionProvider {
         const text = document.getText(range)
         const fileName = files.mdFileName(text)
         const filePath = path.join(path.dirname(document.fileName), fileName)
-        let fileExists: boolean
-        try {
-          const stats = await fs.stat(filePath)
-          fileExists = stats.isFile()
-        } catch (e) {
-          fileExists = false
-        }
-        if (fileExists) {
+        const isFile = await files.isFile(filePath)
+        if (isFile) {
           // "link to note" refactor
           const linkToFileAction = new vscode.CodeAction(
             `link to ${fileName}`,

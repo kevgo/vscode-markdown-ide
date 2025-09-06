@@ -78,3 +78,12 @@ export function mdFileName(title: string): string {
   }
   return result
 }
+
+export async function isFile(filePath: string) {
+  try {
+    const stats = await fs.stat(filePath)
+    return stats.isFile()
+  } catch (e) {
+    return false
+  }
+}
