@@ -164,13 +164,20 @@ note.
   <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/link-to-note-light.gif">
 </picture>
 
-## Tikibase support
+## Tikibase integration
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
-wikis and knowledge bases. If you have a `tikibase.json` file in your document
-repo and the Tikibase linter installed, Markdown IDE runs it for you, highlights
-the identified issues in VSCode, and applies auto-fixes via
-[code actions](https://code.visualstudio.com/docs/editor/refactoring) or the
+wikis and knowledge bases. If you have a
+[Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
+file in your document repo and the Tikibase linter is installed, Markdown IDE
+integrates with it.
+
+### Run linters and auto-fixes
+
+Markdown-IDE runs `tikibase check` when you save files, and it highlights the
+identified issues in VSCode. You also get
+[code actions](https://code.visualstudio.com/docs/editor/refactoring) to fix
+identified issues. You can also trigger `tikibase fix` via the
 [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
 
 <picture>
@@ -179,13 +186,10 @@ the identified issues in VSCode, and applies auto-fixes via
   <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
 </picture>
 
-## configuration
-
 ### TitleRegex
 
-If present, Markdown IDE uses the `titleRegEx` setting in the
-[Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
-to shorten auto-completed link texts.
+If present, Markdown IDE uses the `titleRegEx` setting in `tikibase.json` to
+shorten auto-completed link texts.
 
 For example, say we want to link to the note titled:
 
@@ -199,9 +203,8 @@ By default, an auto-completed link looks like this:
 Consider the [Gross Domestic Product (GDP)](gross-domestic-product.md)
 ```
 
-That’s pretty verbose and feels repetitive. Instead, let's just use the
-abbreviation `GDP` as the link title. To make this happen, add the following to
-**tikibase.json**:
+That's verbose and repetitive. Instead, let's just use the abbreviation `GDP` as
+the link title. To make this happen, add the following to **tikibase.json**:
 
 ```json
 {
