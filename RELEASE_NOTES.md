@@ -1,5 +1,17 @@
 # Markdown IDE Release Notes
 
+## 0.7.0
+
+- Added support for VS Code’s **Find All References**: quickly see every
+  document linking to the one you're working in.
+- The **extract-note-with-title**, **extract-note-with-content**, and
+  **link-to-note** refactors are now always available, regardless of whether
+  Tikibase mode is enabled.
+- File deletes, renames, and title updates now run as proper refactors: link
+  updates happen in the background and are flushed to disk automatically.
+- Cleaned up redundant command palette actions that are now covered by regular
+  refactoring.
+
 ## 0.6.0
 
 - This extension no longer opens external links when the user triggers the
