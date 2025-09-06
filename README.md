@@ -222,7 +222,7 @@ Consider the [GDP](gross-domestic-product.md)
 Here’s an animation showing the feature in action:
 
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-dark.gif">
-  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/title-regex-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/title-regex-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/title-regex-light.gif">
 </picture>
