@@ -1,10 +1,12 @@
 import * as vscode from "vscode"
-import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action-provider"
+import { TikibaseProvider } from "./code-action-provider"
+import * as commands from "./commands"
 import { createCompletionProvider } from "./completion-item-provider"
 import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
 import { filesRenamed } from "./files-renamed"
 import * as fileSaved from "./files-saved"
+import * as refactor from "./refactors"
 import { MarkdownReferenceProvider } from "./reference-provider"
 import { MarkdownRenameProvider } from "./rename-provider"
 import * as tikibaseConfig from "./tikibase/config-file"
@@ -50,26 +52,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // "extract title" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.extractTitleCommandName,
-      extractNoteTitle
-    )
+    vscode.commands.registerCommand(commands.extractTitle, refactor.extractNoteTitle)
   )
 
   // "extract body" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.extractBodyCommandName,
-      extractNoteBody
-    )
+    vscode.commands.registerCommand(commands.extractBody, refactor.extractNoteBody)
   )
 
   // "link to note" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.linkToNoteCommandName,
-      linkToNote
-    )
+    vscode.commands.registerCommand(commands.linkToNote, refactor.linkToNote)
   )
 
   if (tikiConfig) {
@@ -93,13 +86,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       )
     )
     context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.autofixCommandName,
-        async () => {
-          await tikibase.fix(workspacePath, debug)
-          await runTikibaseCheck()
-        }
-      )
+      vscode.commands.registerCommand(commands.autofix, async () => {
+        await tikibase.fix(workspacePath, debug)
+        await runTikibaseCheck()
+      })
     )
 
     // run "tikibase check" at startup
