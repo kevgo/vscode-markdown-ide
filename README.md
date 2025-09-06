@@ -170,7 +170,7 @@ note.
 wikis and knowledge bases. If you have a
 [Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
 file in your document repo and the Tikibase linter is installed, Markdown IDE
-runs it for you.
+integrates with it.
 
 ### Run linters and auto-fixes
 
