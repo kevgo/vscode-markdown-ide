@@ -181,5 +181,42 @@ the identified issues in VSCode, and applies auto-fixes via
 
 ## configuration
 
-If present, Markdown IDE uses the `titleRegEx` setting in `tikibase.json` to
-abbreviate auto-completed links.
+### TitleRegex
+
+If present, Markdown IDE uses the `titleRegEx` setting in the
+[Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
+to abbreviate auto-completed links.
+
+As an example, let's say we want to link to the note with the title
+`# Gross Domestic Product`. Auto-completed links to this document look like this
+by default:
+
+```md
+Consider the [Gross Domestic Product](gross-domestic-product.md)
+```
+
+This is a pretty long link, which reads repetitive. We might want to used the
+shorter form `GDP` in links. To achieve this, we add this setting to
+**tikibase.json**:
+
+```json
+{
+  "titleRegEx": "\\(([^)]+)\\)$"
+}
+```
+
+This `titleRegex` matches the last word of the note title, but only if it is
+surrounded by parentheses. With this setting in place, when we auto-complete a
+link to the note, it would look like this:
+
+```md
+Consider the [GDP](gross-domestic-product.md)
+```
+
+This screencast demonstrates the feature in action:
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-dark.gif">
+  <img alt="demo of the find-all-references feature" src="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
+</picture>
