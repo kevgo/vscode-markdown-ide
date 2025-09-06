@@ -219,7 +219,7 @@ parentheses. With this setting in place, auto-completed links now look like:
 Consider the [GDP](gross-domestic-product.md)
 ```
 
-Here’s a screencast showing the feature in action:
+Here’s an animation showing the feature in action:
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
