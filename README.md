@@ -185,18 +185,22 @@ the identified issues in VSCode, and applies auto-fixes via
 
 If present, Markdown IDE uses the `titleRegEx` setting in the
 [Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
-to abbreviate auto-completed links.
+to shorten auto-completed link texts.
 
-As an example, let's say we want to link to the note with the title
-`# Gross Domestic Product`. Auto-completed links to this document look like this
-by default:
+For example, say we want to link to the note titled:
 
 ```md
-Consider the [Gross Domestic Product](gross-domestic-product.md)
+# Gross Domestic Product (GDP)
 ```
 
-This is a pretty long link, which reads repetitive. We might want to used the
-shorter form `GDP` in links. To achieve this, we add this setting to
+By default, an auto-completed link looks like this:
+
+```md
+Consider the [Gross Domestic Product (GDP)](gross-domestic-product.md)
+```
+
+That’s pretty verbose and feels repetitive. Instead, let's just use the
+abbreviation `GDP` as the link title. To make this happen, add the following to
 **tikibase.json**:
 
 ```json
@@ -205,15 +209,14 @@ shorter form `GDP` in links. To achieve this, we add this setting to
 }
 ```
 
-This `titleRegex` matches the last word of the note title, but only if it is
-surrounded by parentheses. With this setting in place, when we auto-complete a
-link to the note, it would look like this:
+This `titleRegEx` extracts the last word in the note title if it’s wrapped in
+parentheses. With this setting in place, auto-completed links now look like:
 
 ```md
 Consider the [GDP](gross-domestic-product.md)
 ```
 
-This screencast demonstrates the feature in action:
+Here’s a screencast showing the feature in action:
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kevgo/vscode-markdown-ide/main/documentation/tikibase-fix-light.gif">
