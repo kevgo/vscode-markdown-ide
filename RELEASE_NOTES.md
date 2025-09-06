@@ -2,16 +2,15 @@
 
 ## 0.7.0
 
-- Markdown IDE now supports the "find all references" feature, which lists all
-  documents that link to the currently active document.
-- Markdown IDE now always provides the extract-note-with-title,
-  extract-note-with-content, and link-to-note refactors independent of whether
-  Tikibase mode is enabled or not.
-- When deleting or renaming files, or updating the document title, updating the
-  links to that document is now a proper refactor with changes performed in the
-  background and flushed to disk.
-- Removes redundant command palette actions that are available via proper
-  refactors now.
+- Added support for VS Code’s **Find All References**: quickly see every
+  document linking to the one you're working in.
+- The **extract-note-with-title**, **extract-note-with-content**, and
+  **link-to-note** refactors are now always available, regardless of whether
+  Tikibase mode is enabled.
+- File deletes, renames, and title updates now run as proper refactors: link
+  updates happen in the background and are flushed to disk automatically.
+- Cleaned up redundant command palette actions that are now covered by regular
+  refactoring.
 
 ## 0.6.0
 
