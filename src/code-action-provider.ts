@@ -1,12 +1,8 @@
 import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
+import * as commands from "./commands"
 import * as files from "./files"
-
-export const autofixCommandName = "vscode-markdown-ide.autofix"
-export const extractTitleCommandName = "vscode-markdown-ide.extractTitle"
-export const extractBodyCommandName = "vscode-markdown-ide.extractBody"
-export const linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
 export class TikibaseProvider implements vscode.CodeActionProvider {
   async provideCodeActions(
@@ -36,7 +32,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
             vscode.CodeActionKind.RefactorRewrite
           )
           linkToFileAction.command = {
-            command: linkToNoteCommandName,
+            command: commands.linkToNote,
             title: "replace the selection with a link to the selected file"
           }
           result.push(linkToFileAction)
@@ -47,7 +43,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
             vscode.CodeActionKind.RefactorExtract
           )
           extractTitleAction.command = {
-            command: extractTitleCommandName,
+            command: commands.extractTitle,
             title: `create a new note with the filename "${fileName}"`
           }
           result.push(extractTitleAction)
@@ -59,7 +55,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
           vscode.CodeActionKind.RefactorExtract
         )
         extractBodyAction.command = {
-          command: extractBodyCommandName,
+          command: commands.extractBody,
           title: "create a new note with the selected text as content"
         }
         result.push(extractBodyAction)
@@ -73,7 +69,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
       }
       const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
-        command: autofixCommandName,
+        command: commands.autofix,
         title: "let Tikibase fix this and all other problems"
       }
       action.diagnostics = [diagnostic]
