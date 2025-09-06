@@ -3,11 +3,11 @@ import { promises as fs } from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 
+export const autofixCommandName = "vscode-markdown-ide.autofix"
+export const extractTitleCommandName = "vscode-markdown-ide.extractTitle"
+export const extractBodyCommandName = "vscode-markdown-ide.extractBody"
+
 export class TikibaseProvider implements vscode.CodeActionProvider {
-  /** name of the code action that this provider implements */
-  public static readonly autofixCommandName = "vscode-markdown-ide.autofix"
-  public static readonly extractTitleCommandName = "vscode-markdown-ide.extractTitle"
-  public static readonly extractBodyCommandName = "vscode-markdown-ide.extractBody"
   public static readonly linkToNoteCommandName = "vscode-markdown-ide.linkToNote"
 
   async provideCodeActions(
@@ -48,7 +48,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
             vscode.CodeActionKind.RefactorExtract
           )
           extractTitleAction.command = {
-            command: TikibaseProvider.extractTitleCommandName,
+            command: extractTitleCommandName,
             title: `create a new note with the filename "${fileName}"`
           }
           result.push(extractTitleAction)
@@ -60,7 +60,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
           vscode.CodeActionKind.RefactorExtract
         )
         extractBodyAction.command = {
-          command: TikibaseProvider.extractBodyCommandName,
+          command: extractBodyCommandName,
           title: "create a new note with the selected text as content"
         }
         result.push(extractBodyAction)
@@ -74,7 +74,7 @@ export class TikibaseProvider implements vscode.CodeActionProvider {
       }
       const action = new vscode.CodeAction("tikibase fix", vscode.CodeActionKind.QuickFix)
       action.command = {
-        command: TikibaseProvider.autofixCommandName,
+        command: autofixCommandName,
         title: "let Tikibase fix this and all other problems"
       }
       action.diagnostics = [diagnostic]

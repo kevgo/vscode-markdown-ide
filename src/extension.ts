@@ -1,5 +1,13 @@
 import * as vscode from "vscode"
-import { extractNoteBody, extractNoteTitle, linkToNote, TikibaseProvider } from "./code-action-provider"
+import {
+  autofixCommandName,
+  extractBodyCommandName,
+  extractNoteBody,
+  extractNoteTitle,
+  extractTitleCommandName,
+  linkToNote,
+  TikibaseProvider
+} from "./code-action-provider"
 import { createCompletionProvider } from "./completion-item-provider"
 import { MarkdownDefinitionProvider } from "./definition-provider"
 import { filesDeleted } from "./files-deleted"
@@ -50,18 +58,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // "extract title" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.extractTitleCommandName,
-      extractNoteTitle
-    )
+    vscode.commands.registerCommand(extractTitleCommandName, extractNoteTitle)
   )
 
   // "extract body" refactor
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      TikibaseProvider.extractBodyCommandName,
-      extractNoteBody
-    )
+    vscode.commands.registerCommand(extractBodyCommandName, extractNoteBody)
   )
 
   // "link to note" refactor
@@ -93,13 +95,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       )
     )
     context.subscriptions.push(
-      vscode.commands.registerCommand(
-        TikibaseProvider.autofixCommandName,
-        async () => {
-          await tikibase.fix(workspacePath, debug)
-          await runTikibaseCheck()
-        }
-      )
+      vscode.commands.registerCommand(autofixCommandName, async () => {
+        await tikibase.fix(workspacePath, debug)
+        await runTikibaseCheck()
+      })
     )
 
     // run "tikibase check" at startup
