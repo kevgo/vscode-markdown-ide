@@ -79,7 +79,7 @@ export function mdFileName(title: string): string {
   return result
 }
 
-export async function isFile(filePath: string) {
+export async function isFile(filePath: string): Promise<boolean> {
   try {
     const stats = await fs.stat(filePath)
     return stats.isFile()
