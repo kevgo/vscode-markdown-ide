@@ -167,8 +167,10 @@ note.
 ## Tikibase integration
 
 [Tikibase](https://github.com/kevgo/tikibase) is a linter for Markdown-based
-wikis and knowledge bases. If you have a `tikibase.json` file in your document
-repo and the Tikibase linter is installed, Markdown IDE runs it for you,
+wikis and knowledge bases. If you have a
+[Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
+file in your document repo and the Tikibase linter is installed, Markdown IDE
+runs it for you,
 
 ### Run linters and auto-fixes
 
@@ -186,9 +188,8 @@ identified issues. You can also trigger `tikibase fix` via the
 
 ### TitleRegex
 
-If present, Markdown IDE uses the `titleRegEx` setting in the
-[Tikibase configuration file](https://github.com/kevgo/tikibase?tab=readme-ov-file#configuration)
-to shorten auto-completed link texts.
+If present, Markdown IDE uses the `titleRegEx` setting in `tikibase.json` to
+shorten auto-completed link texts.
 
 For example, say we want to link to the note titled:
 
