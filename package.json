@@ -65,7 +65,7 @@
     "assert-no-diff": "4.1.0",
     "dprint": "0.50.2",
     "esbuild": "0.25.10",
-    "eslint": "9.34.0",
+    "eslint": "9.37.0",
     "mocha": "11.7.4",
     "npm-check-updates": "19.0.0",
     "sort-package-json": "3.4.0",
