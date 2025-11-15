@@ -2,10 +2,11 @@
 <img src="documentation/logo_800.png" width="800" height="175">
 </center>
 
-This extension for [VSCode](https://code.visualstudio.com) and
-[compatible editors](https://open-vsx.org) provides IDE-grade editing and
-refactoring support for Markdown files. This is most useful for large
-collections of Markdown documents containing lots of links between them.
+This extension provides IDE-grade editing and refactoring support for Markdown
+files. This is most useful for large collections of Markdown documents
+containing lots of links between them. It is available on the
+[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=kevgo.vscode-markdown-ide)
+and on [Open-VSX](https://open-vsx.org/extension/kevgo/vscode-markdown-ide).
 
 This extension works best with Markdown files formatted via
 [Prettier](https://prettier.io) or [dprint](https://dprint.dev). It ignores
