@@ -31,9 +31,9 @@
     "lint": "eslint && sort-package-json --check --quiet && dprint check && git diff --check",
     "list-shipped-files": "vsce ls",
     "package": "vsce package",
-    "publish-major": "vsce publish major",
-    "publish-minor": "vsce publish minor",
-    "publish-patch": "vsce publish patch",
+    "publish-major": "vsce publish major && ovsx publish",
+    "publish-minor": "vsce publish minor && ovsx publish",
+    "publish-patch": "vsce publish patch && ovsx publish",
     "setup": "npm install && npm run build",
     "test": "npm run build && npm run lint && npm run unit && npm run doc",
     "unit": "npm run build && npm run compile && node out/test/main.js",
@@ -68,6 +68,7 @@
     "eslint": "9.37.0",
     "mocha": "11.7.4",
     "npm-check-updates": "19.0.0",
+    "ovsx": "0.10.6",
     "sort-package-json": "3.4.0",
     "text-runner": "7.2.1",
     "textrun-npm": "0.4.1",
@@ -77,7 +78,7 @@
     "vsce": "2.15.0"
   },
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.105.0"
   },
   "icon": "documentation/logo.png",
   "badges": [
